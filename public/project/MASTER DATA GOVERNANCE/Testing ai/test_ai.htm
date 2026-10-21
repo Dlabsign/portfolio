@@ -1,0 +1,4005 @@
+<%@page language="abap" %>
+<%
+  DATA: lv_usr_bapi      TYPE bapiaddr3,
+        lt_usr_ret       TYPE TABLE OF bapiret2,
+        lv_usr_pers      TYPE usr21-persnumber,
+        lv_first_name    TYPE string,
+        lv_greeting      TYPE string,
+        lv_full_name     TYPE string.
+
+  " 1. Ambil nama depan pengguna via BAPI standar SAP
+  CALL FUNCTION 'BAPI_USER_GET_DETAIL'
+    EXPORTING
+      username = sy-uname
+    IMPORTING
+      address  = lv_usr_bapi
+    TABLES
+      return   = lt_usr_ret.
+
+  IF lv_usr_bapi-firstname IS NOT INITIAL.
+    lv_first_name = lv_usr_bapi-firstname.
+  ELSE.
+    " 2. Fallback melalui tabel master USR21 dan ADRP
+    SELECT SINGLE persnumber
+      FROM usr21
+      INTO lv_usr_pers
+      WHERE bname = sy-uname.
+    IF sy-subrc = 0.
+      SELECT SINGLE name_first
+        FROM adrp
+        INTO lv_first_name
+        WHERE persnumber = lv_usr_pers.
+    ENDIF.
+  ENDIF.
+
+  " 3. Jika nama depan kosong, ambil kata pertama dari fullname atau sy-uname
+  IF lv_first_name IS INITIAL.
+    IF lv_usr_bapi-fullname IS NOT INITIAL.
+      SPLIT lv_usr_bapi-fullname AT space INTO lv_first_name lv_full_name.
+    ELSE.
+      lv_first_name = sy-uname.
+    ENDIF.
+  ENDIF.
+  CONDENSE lv_first_name.
+
+  " 4. Sapaan dinamis berdasarkan jam server SAP
+  IF sy-uzeit >= '043000' AND sy-uzeit < '110000'.
+    lv_greeting = 'Selamat Pagi'.
+  ELSEIF sy-uzeit >= '110000' AND sy-uzeit < '153000'.
+    lv_greeting = 'Selamat Siang'.
+  ELSEIF sy-uzeit >= '153000' AND sy-uzeit < '183000'.
+    lv_greeting = 'Selamat Sore'.
+  ELSEIF sy-uzeit >= '183000'.
+    lv_greeting = 'Selamat Malam'.
+  ELSE.
+    lv_greeting = 'Selamat Dini Hari'.
+  ENDIF.
+%>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PT Kayu Mebel Indonesia - SAP MDG Assistant</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter (Standard KMI MDG) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Marked.js CDN for Markdown Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- SheetJS CDN for Excel (.xlsx, .xls, .csv) Parsing & Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- PDF.js CDN for Client-Side PDF Parsing & Text Extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (typeof window !== 'undefined' && window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <!-- jsPDF & jsPDF-AutoTable for Client-Side PDF Generation & Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kmi: {
+              forest: '#184434',
+              mint: '#52b788',
+              emerald: '#10b981',
+              emeraldDark: '#059669',
+              emeraldDeep: '#047857',
+              emeraldBtn: '#038356',
+              canvas: '#f7f9f8',
+              surface: '#f7faf9',
+              border: '#e2e8f0',
+              borderSubtle: '#edf2f0'
+            }
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "'Inter'", "-apple-system", "sans-serif"],
+            heading: ["'Plus Jakarta Sans'", "-apple-system", "sans-serif"],
+            mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #fbfbfd;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
+        color: #0f172a;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 9999px;
+      }
+
+      .landing-bg-glow {
+        background: radial-gradient(circle at 50% 18%,
+            rgba(16, 185, 129, 0.05) 0%,
+            rgba(251, 251, 253, 0) 72%);
+      }
+
+      .top-navbar {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        z-index: 50;
+      }
+
+      .brand-logo-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+      }
+
+      .markdown-content p {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+        color: #334155;
+        font-weight: 500;
+      }
+
+      .markdown-content strong {
+        color: #0f172a;
+        font-weight: 700;
+      }
+
+      .markdown-content code {
+        background-color: #f1f5f9;
+        color: #059669;
+        padding: 0.15rem 0.35rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        font-size: 0.85em;
+      }
+
+      .markdown-content pre {
+        background-color: #0f172a;
+        color: #34d399;
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        margin-bottom: 0.5rem;
+        font-family: monospace;
+        font-size: 0.8em;
+      }
+
+      .markdown-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.85em;
+        display: block;
+        overflow-x: auto;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .markdown-content th {
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        padding: 0.4rem 0.6rem;
+        text-align: left;
+        font-weight: 700;
+        color: #334155;
+      }
+
+      .markdown-content td {
+        border: 1px solid #e2e8f0;
+        padding: 0.35rem 0.6rem;
+        color: #1e293b;
+      }
+
+      .markdown-content tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+
+  <body class="bg-[#fbfbfd] text-slate-900 h-screen flex flex-col landing-bg-glow relative overflow-hidden">
+
+    <!-- TOP NAVBAR WITH APPLE GLASS DESIGN -->
+    <header class="top-navbar">
+      <div class="w-full px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+
+        <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <!-- Sidebar Toggle Button (Apple Style) -->
+          <button type="button" onclick="toggleSidebar()" id="btn-toggle-sidebar"
+                  title="Buka / Tutup Riwayat Chat"
+                  class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200/80
+                         text-slate-600 flex items-center justify-center transition
+                         active:scale-95 cursor-pointer">
+            <i class="fas fa-bars-staggered text-sm"></i>
+          </button>
+
+          <!-- Brand Logo & Title with KMI Logo -->
+          <a href="http://kmiprd.kmi.com:8001/sap(bD1lbiZjPTMwMA==)/bc/bsp/sap/zmdg_request/landing_page.htm"
+             class="flex items-center gap-2.5 sm:gap-3 shrink-0 group transition cursor-pointer">
+            <img src="ENJOYSAP_LOGO.png" alt="PT Kayu Mebel Indonesia"
+                 class="h-8 w-auto object-contain transition-transform group-hover:scale-105 shrink-0"
+                 onerror="this.style.display='none'">
+            <div>
+              <h1 class="font-heading font-bold text-slate-900 text-sm sm:text-base leading-tight tracking-tight">
+                SAP MDG Assistant
+              </h1>
+              <span class="hidden md:inline text-[11px] font-medium text-slate-500 tracking-wide">
+                PT Kayu Mebel Indonesia &bull; Master Data Governance
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Right Action Items -->
+        <div class="flex items-center gap-2 sm:gap-2.5 text-xs font-semibold shrink-0">
+
+          <!-- Server Status Indicator Badge (Debian AI Server) -->
+          <div id="ai-server-status-badge"
+               title="Status Server AI Debian (192.168.254.167:3005)"
+               class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                      bg-slate-100 border border-slate-200/80 text-[11px]
+                      font-medium text-slate-600 transition">
+            <span id="ai-server-status-dot"
+                  class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="ai-server-status-text">Memeriksa AI Server...</span>
+          </div>
+
+          <!-- New Chat Button -->
+          <button type="button" onclick="resetToHome()" title="Mulai Percakapan Baru"
+                  class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-slate-900 hover:bg-black
+                         text-white shadow-sm transition flex
+                         items-center gap-1.5 min-h-[36px] active:scale-95 cursor-pointer">
+            <i class="fas fa-plus text-xs"></i>
+            <span class="hidden sm:inline">Percakapan Baru</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- APP SHELL: SIDEBAR + MAIN AREA -->
+    <div class="flex-1 flex overflow-hidden relative w-full h-[calc(100vh-57px)]">
+
+      <!-- SIDEBAR BACKDROP OVERLAY -->
+      <div id="sidebar-backdrop" onclick="toggleSidebar(false)"
+           class="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-xs hidden transition-opacity">
+      </div>
+
+      <!-- LEFT SIDEBAR: HISTORY & SEARCH (DRAWER OVERLAY) -->
+      <aside id="history-sidebar"
+             class="fixed inset-y-0 left-0 z-50
+                    w-72 sm:w-80 h-full flex flex-col bg-white/95
+                    backdrop-blur-xl border-r border-slate-200/80 shadow-2xl
+                    -translate-x-full transition-transform duration-300 ease-in-out">
+
+        <!-- Sidebar Header: Title, Count & New Session Button -->
+        <div class="p-3.5 border-b border-slate-200/70 space-y-2.5 bg-slate-50/50">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-clock-rotate-left text-slate-500 text-xs"></i>
+              <span class="font-heading font-bold text-slate-900 text-xs tracking-tight">
+                Riwayat Chat
+              </span>
+              <span id="history-count"
+                    class="px-2 py-0.5 rounded-full bg-slate-200/80 text-[10px]
+                           font-semibold text-slate-600">
+                0
+              </span>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="resetToHome()" title="Percakapan Baru"
+                      class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border
+                             border-slate-200/70 text-[11px] font-semibold text-slate-700
+                             transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                <i class="fas fa-plus text-[10px]"></i>
+                <span>Baru</span>
+              </button>
+
+              <button type="button" onclick="toggleSidebar(false)" title="Tutup Menu"
+                      class="p-1.5 rounded-lg hover:bg-slate-200 text-slate-500 transition">
+                <i class="fas fa-xmark text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- History Search Input Field (Requirement 2 & 3) -->
+          <div class="relative">
+            <i class="fas fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2
+                      text-slate-400 text-xs pointer-events-none"></i>
+            <input type="text" id="history-search-input"
+                   oninput="handleHistorySearch(this.value)"
+                   placeholder="Cari riwayat percakapan..."
+                   class="w-full pl-8 pr-7 py-1.5 bg-white hover:bg-white focus:bg-white
+                          border border-slate-200/80 focus:border-slate-400 rounded-xl text-xs
+                          text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2
+                          focus:ring-slate-900/5 transition">
+            <button type="button" id="btn-clear-history-search" onclick="clearHistorySearch()"
+                    title="Hapus filter pencarian"
+                    class="hidden absolute right-2.5 top-1/2 -translate-y-1/2
+                           text-slate-400 hover:text-slate-600 p-0.5 rounded-full transition">
+              <i class="fas fa-circle-xmark text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- History Sessions List Container -->
+        <div id="history-list" class="flex-1 overflow-y-auto p-2.5 space-y-1.5 text-xs">
+          <div class="text-center text-slate-400 py-8 text-xs">
+            Memuat riwayat percakapan...
+          </div>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-2.5 border-t border-slate-200/70 bg-slate-50/50 flex items-center justify-between text-[10px] text-slate-400 select-none">
+          <span class="flex items-center gap-1.5">
+            <i class="fas fa-database text-slate-400"></i>
+            <span>ZMDG_AI_CHAT_LOG</span>
+          </span>
+          <span class="font-medium text-emerald-600">S/4HANA</span>
+        </div>
+
+      </aside>
+
+      <!-- MAIN CANVAS AREA -->
+      <main id="main-scroll-area" class="flex-1 overflow-y-auto px-3 sm:px-6 py-4 flex flex-col w-full relative">
+
+        <!-- HERO SECTION WITH APPLE MINIMALIST DESIGN -->
+        <div id="hero-section"
+          class="flex flex-col items-center justify-center text-center space-y-6 sm:space-y-7 max-w-2xl w-full mx-auto my-auto">
+
+          <!-- KMI Brand Logo (ENJOYSAP_LOGO.png) Centered -->
+          <div class="flex items-center justify-center transition-transform duration-300 hover:scale-[1.02]">
+            <img src="ENJOYSAP_LOGO.png" alt="PT Kayu Mebel Indonesia"
+                 class="h-12 sm:h-14 w-auto object-contain select-none"
+                 onerror="this.style.display='none'">
+          </div>
+
+          <!-- Dynamic Greeting & Personalized Title -->
+          <div class="space-y-2">
+            <h2 id="hero-greeting"
+                class="inline-block font-heading text-2xl sm:text-3xl lg:text-[34px] font-bold
+                       tracking-tight leading-tight bg-gradient-to-r from-emerald-700
+                       via-emerald-600 to-teal-500 bg-clip-text text-transparent">
+              <span id="greeting-text"><%= lv_greeting %></span>, <span id="user-display-name"><%= lv_first_name %></span>
+            </h2>
+          </div>
+
+          <!-- CENTERED TEXTAREA CARD (APPLE SPOTLIGHT / LIQUID GLASS STYLE) -->
+          <div id="hero-drop-zone"
+            class="w-full bg-white/90 backdrop-blur-xl border border-slate-200/90
+                   focus-within:border-slate-400/80 focus-within:ring-4
+                   focus-within:ring-slate-900/5 rounded-3xl p-4 sm:p-5
+                   shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_10px_35px_rgb(0,0,0,0.06)]
+                   transition-all duration-200 space-y-3 text-left relative overflow-hidden">
+
+            <!-- Drag & Drop Overlay Indicator Hero -->
+            <div id="hero-drag-overlay"
+              class="hidden absolute inset-0 bg-emerald-50/95 backdrop-blur-xs
+                     border-2 border-dashed border-emerald-500 rounded-3xl z-30
+                     flex flex-col items-center justify-center gap-2 pointer-events-none
+                     text-emerald-700 font-semibold text-xs select-none">
+              <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                <i class="fas fa-cloud-arrow-up text-lg"></i>
+              </div>
+              <p class="font-bold text-sm">Lepaskan Foto / File Excel / PDF di Sini</p>
+              <p class="text-[11px] text-emerald-600/80 font-normal">Format PNG, JPG, WEBP, XLSX, XLS, CSV, PDF</p>
+            </div>
+
+            <!-- Attachment Preview Box Hero (Image / Excel / PDF) -->
+            <div id="hero-image-preview-box" class="hidden p-2.5 bg-slate-50/95
+                 rounded-2xl border border-slate-200/90 flex items-center
+                 justify-between gap-3 transition-all duration-200">
+              <div class="flex items-center gap-2.5 overflow-hidden">
+                <div id="hero-preview-icon-container" class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
+                  <img id="hero-preview-thumb" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                  <i id="hero-preview-excel-icon" class="fas fa-file-excel text-emerald-600 text-xl hidden"></i>
+                  <i id="hero-preview-pdf-icon" class="fas fa-file-pdf text-rose-600 text-xl hidden"></i>
+                </div>
+                <div class="min-w-0">
+                  <p id="hero-preview-name" class="text-xs font-semibold text-slate-700 truncate"></p>
+                  <p id="hero-preview-size" class="text-[10px] text-slate-400"></p>
+                </div>
+              </div>
+              <button type="button" onclick="removeSelectedImage()"
+                class="text-slate-400 hover:text-red-500 p-1.5 rounded-full hover:bg-red-50 transition shrink-0"
+                title="Hapus lampiran">
+                <i class="fas fa-times text-xs"></i>
+              </button>
+            </div>
+
+            <div class="relative">
+              <textarea id="chat-search-input" rows="2"
+                placeholder="Tanyakan status material, analisis Excel / PDF, cari MATNR, atau drag / paste file..."
+                onkeydown="handleTextareaKeyDown(event, false)"
+                oninput="handleInputContentChange(this, false)"
+                class="w-full bg-transparent border-none text-slate-800
+                       placeholder-slate-400 text-sm focus:outline-none focus:ring-0
+                       resize-none py-1 pr-8 overflow-y-auto max-h-36 font-sans
+                       font-medium leading-relaxed"></textarea>
+
+              <!-- Quick Clear Button Hero -->
+              <button type="button" id="btn-clear-hero" onclick="clearHeroInput()"
+                title="Hapus input"
+                class="hidden absolute right-1 top-1 text-slate-400
+                       hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition">
+                <i class="fas fa-circle-xmark text-sm"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between pt-2.5 border-t border-slate-100 text-xs">
+              <div class="flex items-center gap-2">
+                <button type="button" id="btn-upload-hero" onclick="triggerImageUpload()"
+                  title="Unggah Foto, File Excel, atau Dokumen PDF"
+                  class="py-1.5 px-3 rounded-full font-medium transition text-xs
+                         flex items-center gap-1.5 border border-slate-200/90 text-slate-600
+                         hover:text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/80
+                         cursor-pointer active:scale-95">
+                  <i class="fas fa-paperclip text-emerald-600 text-xs"></i>
+                  <span class="text-[11px] font-semibold">Unggah File</span>
+                </button>
+
+                <div class="text-[11px] text-slate-400 hidden sm:flex items-center gap-1.5 select-none">
+                  <span class="px-1.5 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-600 font-medium border border-slate-200/60">Enter</span>
+                  <span>Kirim</span>
+                  <span class="text-slate-300">&bull;</span>
+                  <span class="px-1.5 py-0.5 rounded-md bg-slate-100 font-mono text-[10px] text-slate-600 font-medium border border-slate-200/60">Shift + Enter</span>
+                  <span>Baris Baru</span>
+                </div>
+              </div>
+
+              <button type="button" id="btn-send-hero" onclick="executeSearchFromInput()" disabled
+                class="py-2 px-5 rounded-full font-bold transition text-xs
+                       flex items-center gap-2 ml-auto opacity-40 bg-slate-200
+                       text-slate-400 cursor-not-allowed">
+                <span id="btn-send-hero-text">Kirim</span>
+                <i id="btn-send-hero-icon" class="fas fa-arrow-right text-xs"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- QUICK ACTION PILLS (APPLE SUBTLE PILLS) -->
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <button onclick="triggerFilter('Berapa total staging material saat ini?')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Total Staging Material
+            </button>
+            <button onclick="triggerFilter('Siapa saja yang mengajukan request hari ini?')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Request Hari Ini
+            </button>
+            <button onclick="triggerFilter('Berapa data yang sudah di-approve?')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Sudah Di-Approve
+            </button>
+            <button onclick="triggerFilter('Berapa data yang masih menunggu approval?')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Menunggu Approval
+            </button>
+            <button onclick="triggerFilter('Status material 20078227')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Status 20078227
+            </button>
+            <button onclick="triggerFilter('Cari material GAMELINA')" 
+                    class="px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-slate-100 text-slate-600 
+                           hover:text-slate-900 border border-slate-200/70 shadow-xs 
+                           text-xs font-medium transition active:scale-95 cursor-pointer">
+              Material GAMELINA
+            </button>
+          </div>
+
+        </div>
+
+        <!-- CHAT THREAD CONTAINER -->
+        <div id="chat-thread"
+          class="space-y-3.5 max-w-3xl w-full mx-auto hidden pt-2 pb-36 sm:pb-40 px-1">
+          <!-- Dynamic conversation messages populated here -->
+        </div>
+
+      </main>
+
+      <!-- FLOATING BOTTOM TEXTAREA INPUT BAR -->
+      <div id="thread-input-bar"
+        class="hidden fixed bottom-0 left-0 right-0 z-40 pointer-events-none
+               pb-3 sm:pb-4 pt-4 px-3 sm:px-6 bg-gradient-to-t from-[#fbfbfd]
+               via-[#fbfbfd]/95 to-transparent">
+        <div class="max-w-3xl mx-auto w-full pointer-events-auto space-y-2">
+
+          <!-- Attachment Preview Box Thread -->
+          <div id="thread-image-preview-box" class="hidden p-2.5 bg-white/95
+               backdrop-blur-md rounded-2xl border border-slate-200/90 flex items-center
+               justify-between gap-3 shadow-md shadow-slate-900/5 transition-all">
+            <div class="flex items-center gap-2.5 overflow-hidden">
+              <div id="thread-preview-icon-container" class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
+                <img id="thread-preview-thumb" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                <i id="thread-preview-excel-icon" class="fas fa-file-excel text-emerald-600 text-xl hidden"></i>
+                <i id="thread-preview-pdf-icon" class="fas fa-file-pdf text-rose-600 text-xl hidden"></i>
+              </div>
+              <div class="min-w-0">
+                <p id="thread-preview-name" class="text-xs font-semibold text-slate-700 truncate"></p>
+                <p id="thread-preview-size" class="text-[10px] text-slate-400"></p>
+              </div>
+            </div>
+            <button type="button" onclick="removeSelectedImage()"
+              class="text-slate-400 hover:text-red-500 p-1.5 rounded-full hover:bg-red-50 transition shrink-0"
+              title="Hapus lampiran">
+              <i class="fas fa-times text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Glass Input Box -->
+          <div id="thread-drop-zone"
+               class="bg-white/95 backdrop-blur-md border border-slate-200/90
+                      focus-within:border-emerald-500 focus-within:ring-4
+                      focus-within:ring-emerald-500/10 rounded-2xl sm:rounded-3xl
+                      p-2 sm:p-2.5 shadow-xl shadow-slate-900/5 transition-all
+                      flex items-end gap-2 relative overflow-hidden">
+
+            <!-- Drag & Drop Overlay Indicator Thread -->
+            <div id="thread-drag-overlay"
+              class="hidden absolute inset-0 bg-emerald-50/95 backdrop-blur-xs
+                     border-2 border-dashed border-emerald-500 rounded-2xl sm:rounded-3xl z-30
+                     flex items-center justify-center gap-2 pointer-events-none
+                     text-emerald-700 font-semibold text-xs select-none">
+              <i class="fas fa-cloud-arrow-up text-base text-emerald-600"></i>
+              <span>Lepaskan Foto / File Excel / PDF (PNG/JPG/XLSX/CSV/PDF)</span>
+            </div>
+
+            <!-- KMI Logo Decoration Badge -->
+            <div class="shrink-0 w-8 h-8 rounded-xl bg-white border border-slate-200/80
+                        flex items-center justify-center p-1 mb-0.5 select-none shadow-2xs"
+                 title="SAP MDG Assistant">
+              <img src="ENJOYSAP_LOGO.png" alt="Logo KMI" class="h-5 w-auto object-contain"
+                   onerror="this.style.display='none'">
+            </div>
+
+            <!-- Upload Attachment Button Thread -->
+            <button type="button" id="btn-upload-thread" onclick="triggerImageUpload()"
+              title="Unggah Foto, File Excel, atau Dokumen PDF"
+              class="shrink-0 w-8 h-8 rounded-xl bg-white border border-slate-200/80
+                     hover:border-emerald-300 hover:bg-emerald-50 text-slate-500
+                     hover:text-emerald-700 flex items-center justify-center p-1 mb-0.5
+                     select-none shadow-2xs transition cursor-pointer active:scale-95">
+              <i class="fas fa-paperclip text-xs"></i>
+            </button>
+
+            <!-- Textarea Thread -->
+            <textarea id="chat-search-input-thread" rows="1"
+              placeholder="Tanyakan ke SAP MDG Assistant, atau drag / paste foto / file Excel / PDF..."
+              onkeydown="handleTextareaKeyDown(event, true)"
+              oninput="handleInputContentChange(this, true)"
+              class="w-full bg-transparent border-none text-slate-800
+                     placeholder-slate-400 text-xs sm:text-sm focus:outline-none
+                     focus:ring-0 resize-none py-2 overflow-y-auto max-h-36
+                     font-sans font-medium leading-relaxed"></textarea>
+
+            <!-- Clear Button Thread -->
+            <button type="button" id="btn-clear-thread" onclick="clearThreadInput()"
+              title="Bersihkan input"
+              class="hidden text-slate-400 hover:text-slate-600 p-1.5 rounded-full
+                     hover:bg-slate-100 transition mb-1 shrink-0">
+              <i class="fas fa-circle-xmark text-sm"></i>
+            </button>
+
+            <!-- Send Button Thread -->
+            <button type="button" id="btn-send-thread" onclick="executeSearchFromThreadInput()" disabled
+              class="py-2 px-4 sm:py-2.5 sm:px-6 rounded-full font-bold
+                     transition shrink-0 text-xs flex items-center gap-1.5 min-h-[38px]
+                     opacity-40 bg-slate-200 text-slate-400 cursor-not-allowed">
+              <span id="btn-send-thread-text">Kirim</span>
+              <i id="btn-send-thread-icon" class="fas fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Micro Info Desktop -->
+          <div class="hidden sm:flex items-center justify-between px-3 text-[10px] text-slate-400 select-none">
+            <span><b class="text-slate-500 font-semibold">Enter</b> kirim &bull; <b class="text-slate-500 font-semibold">Shift + Enter</b> baris baru</span>
+            <span class="tracking-wide">SAP S/4HANA Master Data Governance</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hidden File Input for Image, Excel & PDF Upload -->
+    <input type="file" id="chat-image-file-input"
+      accept="image/png,image/jpeg,image/webp,image/gif,.xlsx,.xls,.csv,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
+      onchange="handleImageFileInputChange(event)"
+      class="hidden">
+
+    <!-- TOAST NOTIFICATION CONTAINER (APPLE MINIMALIST TOAST) -->
+    <div id="toast-container"
+      class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
+    </div>
+
+    <!-- MODAL KONFIRMASI HAPUS RIWAYAT (APPLE LIQUID GLASS DIALOG) -->
+    <div id="delete-session-modal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40
+             backdrop-blur-sm hidden transition-opacity duration-200">
+      <div class="bg-white/95 backdrop-blur-xl border border-slate-200/90
+                  rounded-2xl sm:rounded-3xl p-5 sm:p-6 max-w-sm w-full
+                  shadow-2xl space-y-4 text-left">
+        <div class="flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-100
+                      text-rose-600 flex items-center justify-center shrink-0">
+            <i class="far fa-trash-can text-base"></i>
+          </div>
+          <div class="space-y-1 min-w-0">
+            <h3 class="text-sm font-bold text-slate-900">
+              Hapus Riwayat Chat?
+            </h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Percakapan <span id="delete-modal-title" class="font-semibold text-slate-700"></span> akan dihapus permanen dari riwayat Anda.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeDeleteModal()"
+            class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs
+                   font-semibold text-slate-600 hover:bg-slate-100 transition
+                   active:scale-95 cursor-pointer">
+            Batal
+          </button>
+          <button type="button" id="btn-confirm-delete" onclick="executeDeleteSession()"
+            class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white
+                   text-xs font-semibold shadow-xs transition active:scale-95
+                   cursor-pointer flex items-center gap-1.5">
+            <i class="far fa-trash-can text-[11px]"></i>
+            <span>Hapus</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+      let liveODataMaterials = [];
+      let liveODataChatLogs = [];
+      let liveODataStagingMaterials = [];
+      let currentChatId = "";
+      let activeSessionMessages = [];
+      let isRequestInProgress = false;
+      let allHistorySessions = [];
+      let currentSearchQuery = "";
+      let isSidebarOpen = false;
+      let currentActiveImageData = null;
+      let currentActiveExcelData = null;
+      let currentActivePdfData = null;
+
+      // ----------------------------------------------------
+      // MAPPING FIELD TEKNIKAL SAP KE DISPLAY LABEL USER
+      // ----------------------------------------------------
+      const SAP_FIELD_LABELS = {
+        'MATNR': 'Material',
+        'MAKTX': 'Material Description',
+        'MTART': 'Material Type',
+        'MATKL': 'Material Group',
+        'WERKS': 'Plant',
+        'LGORT': 'SLoc',
+        'DISMM': 'MRP Type',
+        'DISGR': 'MRP Group',
+        'DISPO': 'MRP Controller',
+        'MEINS': 'Base UoM',
+        'MENGE': 'Quantity',
+        'POSNR': 'Item Number',
+        'POSTP': 'Item Category',
+        'IDNRK': 'Component Material',
+        'OJTXP': 'Component Description',
+        'STLNR': 'BOM Number',
+        'STPO': 'BOM Item',
+        'CHARG': 'Batch Number',
+        'BWART': 'Movement Type',
+        'LIFNR': 'Vendor',
+        'KUNNR': 'Customer',
+        'BUKRS': 'Company Code',
+        'VKORG': 'Sales Organization',
+        'VTWEG': 'Distribution Channel',
+        'SPART': 'Division',
+        'EKORG': 'Purchasing Organization',
+        'EKGRP': 'Purchasing Group',
+
+        // Parameter Basic Data & Dimensi Material (MARA)
+        'MBRSH': 'Sektor Industri',
+        'BISMT': 'Nomor Material Lama',
+        'MTPOS_MARA': 'Kategori Item Umum',
+        'WRKST': 'Catatan Produksi / Standar',
+        'DOKNR': 'Nomor Dokumen Teknis',
+        'NORMT': 'Standar Industri',
+        'GROES': 'Dimensi Fisik',
+        'XCHPF': 'Indikator Batch Management',
+        'LAENG': 'Panjang',
+        'BREIT': 'Lebar',
+        'HOEHE': 'Tinggi',
+        'MEABM': 'Satuan Dimensi',
+        'BRGEW': 'Berat Kotor',
+        'NTGEW': 'Berat Bersih',
+        'GEWEI': 'Satuan Berat',
+        'VOLUM': 'Volume',
+        'VOLEH': 'Satuan Volume',
+        'MEINH': 'Satuan Alternatif',
+        'UMREZ': 'Numerator Konversi',
+        'UMREN': 'Denominator Konversi',
+        'KZUMW': 'Indikator Proporsi Unit',
+        'CLASS': 'Kelas Klasifikasi',
+        'WARNA': 'Karakteristik Warna',
+        'VOL_PROD': 'Karakteristik Volume',
+        'MATNR_LONG': 'Format Material Panjang',
+        'MATERIAL_GUID': 'GUID Eksternal',
+        'MATNR_VERSN': 'Versi Nomor Material',
+
+        // Sales & Distribusi
+        'DWERK': 'Pabrik Pengirim',
+        'VRKME': 'Satuan Penjualan',
+        'TATYP': 'Kategori Pajak',
+        'TAXKM': 'Klasifikasi Pajak',
+        'MTPOS': 'Grup Item Penjualan',
+        'KTGRM': 'Akun Pendapatan',
+        'MVGR1': 'Grup Material 1',
+        'MVGR2': 'Grup Material 2',
+        'MVGR3': 'Grup Material 3',
+        'MVGR4': 'Grup Material 4',
+        'MVGR5': 'Grup Material 5',
+        'VERSG': 'Grup Statistik Penjualan',
+
+        // Purchasing & Logistik
+        'HERKL': 'Negara Asal',
+        'TRAGR': 'Transportation Group',
+        'LADGR': 'Loading Group',
+        'MAGRV': 'Material Package',
+        'VHART': 'Tipe Kemasan',
+        'UNTTO': 'Toleransi Kurang Kirim',
+        'UEBTO': 'Toleransi Lebih Kirim',
+        'UEBTK': 'Unlimited Lebih Kirim',
+
+        // Plant, SLoc, & Perencanaan Produksi (MRP)
+        'DISLS': 'Lot Sizing',
+        'BSTMI': 'Ukuran Lot Minimum',
+        'BSTMA': 'Ukuran Lot Maksimum',
+        'BSTRF': 'Rounding Value',
+        'BESKZ': 'Procurement Type',
+        'SOBSL': 'Special Procurement Type',
+        'RGEKZ': 'Backflush Indicator',
+        'DZEIT': 'In-House Production Time',
+        'PLIFZ': 'Planned Delivery Time',
+        'WEBAZ': 'GR Processing Time',
+        'FHORI': 'Scheduling Margin Key',
+        'EISBE': 'Safety Stock',
+        'STRGR': 'Strategy Group',
+        'VRMOD': 'Consumption Mode',
+        'VINT1': 'Backward Consumption',
+        'VINT2': 'Forward Consumption',
+        'MTVFP': 'Availability Check',
+        'ALTSL': 'Selection Method',
+        'SBDKZ': 'Individual / Collective',
+        'AUSME': 'Unit of Issue',
+        'LGPRO': 'Gudang Produksi',
+        'LGFSB': 'Gudang Penerimaan Eksternal',
+        'SFADP': 'Prod. Scheduling Profile',
+        'MMSTA': 'Plant-Specific Mat. Status',
+        'EPRIO': 'Stock Determination Group',
+        'PERKZ': 'Period Indicator',
+
+        // Akuntansi & Kalkulasi Biaya (Costing)
+        'BWKEY': 'Valuation Area',
+        'BKLAS': 'Valuation Class',
+        'VPRSV': 'Price Control',
+        'STPRS': 'Standard Price',
+        'VERPR': 'Moving Average Price',
+        'PEINH': 'Price Unit',
+        'PEINH_HC': 'Price Unit Hard Currency',
+        'PRCTR': 'Profit Center',
+        'HKMAT': 'Material-Related Origin',
+        'HRKFT': 'Origin Group',
+        'AWSLS': 'Variance Key',
+        'EKALR': 'Qty Structure Indicator',
+        'LOSGR': 'Costing Lot Size',
+        'NCOST': 'Do Not Cost',
+        'VERID': 'Production Version',
+
+        // Quality Management (QM)
+        'QMPUR': 'QM in Procurement Aktif',
+        'SSQSS': 'Control Key QM Procurement',
+        'SERNP': 'Pengelolaan Nomor Seri',
+        'ART': 'Inspection Type',
+        'AKTIV': 'Inspection Type Aktif',
+        'APA': 'Preferred Inspection Type',
+        'MIT_PLENG': 'Inspection with Task List',
+        'SPEZUEBER': 'Insp. Material Specification',
+        'CONF': 'Insp. dari Configuration',
+        'CHG': 'Insp. Batch Determination',
+        'ANWSPEZR': 'Automatic Spec Assignment',
+        'MERK': 'Inspect by Characteristics',
+        'INSMK': 'Masuk ke Stok Inspeksi',
+        'AVE': 'Keputusan Penggunaan Otomatis',
+        'STPRVERF': 'Sampling Procedure',
+        'DYNREGEL': 'Dynamic Modification Rule',
+        'PRZNT': 'Inspection Percentage',
+        'VOLL': '100% Inspection',
+        'SKIP_QM': 'Skips Allowed',
+        'MAN': 'Sample Manual',
+        'MANST': 'Hitung Sample Manual',
+        'MPDAU': 'Rata-rata Durasi Inspeksi',
+        'CHG_DRU': 'Control Lot Creation',
+        'QKZVERF': 'Prosedur Skor Mutu',
+        'AUSSCHUSS': 'Batas Toleransi Afkir',
+        'AUFNR_CO': 'Appraisal Costs QM Order',
+        'AUFNR': 'Order Number Biaya Inspeksi',
+        'LOEKZ_QM': 'Penanda Hapus Inspeksi',
+        'HU': 'Inspection Handling Unit',
+        'MULTISPEC': 'Multiple Specifications',
+
+        // Parameter Staging Material Master (ZMDG_REQ_HDR & ZMDG_REQ_DTL)
+        'REQ_NO': 'Nomor Request',
+        'REQNO': 'Nomor Request',
+        'ITEM_NO': 'Nomor Item Request',
+        'ITEMNO': 'Nomor Item Request',
+        'REQUESTOR': 'Pemohon / Requester',
+        'REQ_DATE': 'Tanggal Request',
+        'REQDATE': 'Tanggal Request',
+        'REQ_TIME': 'Jam Request',
+        'REQTIME': 'Jam Request',
+        'STATUS': 'Status Approval',
+        'REMARKS': 'Catatan / Nama File',
+        'SUB_REASON': 'Alasan Pengajuan',
+        'SUBREASON': 'Alasan Pengajuan',
+        'REJ_REASON': 'Alasan Penolakan',
+        'REJREASON': 'Alasan Penolakan',
+        'APPROVER': 'Approver',
+        'MATNR_EXT': 'Nomor Material Diajukan',
+        'MATNREXT': 'Nomor Material Diajukan'
+      };
+
+      function getSapDisplayLabel(techFieldName) {
+        if (!techFieldName) return '';
+        const key = String(techFieldName).toUpperCase().trim();
+        return SAP_FIELD_LABELS[key] || techFieldName;
+      }
+
+      function setSendLoadingState(isLoading) {
+        isRequestInProgress = !!isLoading;
+
+        const btnHero = document.getElementById('btn-send-hero');
+        const btnHeroText = document.getElementById('btn-send-hero-text');
+        const btnHeroIcon = document.getElementById('btn-send-hero-icon');
+
+        const btnThread = document.getElementById('btn-send-thread');
+        const btnThreadText = document.getElementById('btn-send-thread-text');
+        const btnThreadIcon = document.getElementById('btn-send-thread-icon');
+
+        const inpHero = document.getElementById('chat-search-input');
+        const inpThread = document.getElementById('chat-search-input-thread');
+
+        if (isLoading) {
+          if (inpHero) {
+            inpHero.disabled = true;
+            inpHero.placeholder = 'Sedang memproses permintaan MDG...';
+          }
+          if (inpThread) {
+            inpThread.disabled = true;
+            inpThread.placeholder = 'Sedang memproses permintaan MDG...';
+          }
+
+          if (btnHero) {
+            btnHero.disabled = true;
+            btnHero.className = 'py-2 px-6 rounded-full font-bold transition text-xs ' +
+              'flex items-center gap-2 ml-auto opacity-75 bg-emerald-600 text-white cursor-wait';
+          }
+          if (btnHeroText) btnHeroText.innerText = 'Memproses...';
+          if (btnHeroIcon) {
+            btnHeroIcon.className = 'fas fa-circle-notch fa-spin text-xs';
+          }
+
+          if (btnThread) {
+            btnThread.disabled = true;
+            btnThread.className = 'py-2 px-4 sm:py-2.5 sm:px-6 rounded-full font-bold ' +
+              'transition shrink-0 text-xs flex items-center gap-1.5 min-h-[38px] ' +
+              'opacity-75 bg-emerald-600 text-white cursor-wait';
+          }
+          if (btnThreadText) btnThreadText.innerText = 'Memproses...';
+          if (btnThreadIcon) {
+            btnThreadIcon.className = 'fas fa-circle-notch fa-spin text-xs';
+          }
+        } else {
+          if (inpHero) {
+            inpHero.disabled = false;
+            inpHero.placeholder = 'Tanyakan status material, cari nomor MATNR, atau instruksi MDG...';
+            handleInputContentChange(inpHero, false);
+          }
+          if (inpThread) {
+            inpThread.disabled = false;
+            inpThread.placeholder = 'Tanyakan ke SAP MDG Assistant (contoh: status material, no MATNR, aturan MRP)...';
+            handleInputContentChange(inpThread, true);
+          }
+
+          if (btnHeroText) btnHeroText.innerText = 'Kirim';
+          if (btnHeroIcon) btnHeroIcon.className = 'fas fa-arrow-right text-xs';
+
+          if (btnThreadText) btnThreadText.innerText = 'Kirim';
+          if (btnThreadIcon) btnThreadIcon.className = 'fas fa-arrow-right text-xs';
+
+          // Auto-focus active input
+          setTimeout(() => {
+            const threadBar = document.getElementById('thread-input-bar');
+            if (threadBar && !threadBar.classList.contains('hidden') && inpThread) {
+              inpThread.focus();
+            } else if (inpHero) {
+              inpHero.focus();
+            }
+          }, 100);
+        }
+      }
+
+      // ----------------------------------------------------
+      // ATTACHMENT UPLOAD & EXCEL / VISION SUPPORT
+      // ----------------------------------------------------
+      function triggerImageUpload() {
+        const fileInput = document.getElementById('chat-image-file-input');
+        if (fileInput) {
+          fileInput.value = '';
+          fileInput.click();
+        }
+      }
+
+      function formatFileSize(bytes) {
+        if (!bytes || bytes <= 0) return '0 KB';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+      }
+
+      function processImageFile(file, customName) {
+        if (!file) return;
+
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+          alert('Format file tidak didukung. Harap pilih gambar JPG, PNG, WEBP, atau GIF.');
+          return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+          alert('Ukuran file gambar maksimal 10MB.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataUrl = e.target.result;
+          let mediaType = file.type || 'image/jpeg';
+          let base64Data = '';
+          if (dataUrl.includes(',')) {
+            base64Data = dataUrl.split(',')[1];
+          }
+
+          currentActiveExcelData = null;
+          currentActivePdfData = null;
+          currentActiveImageData = {
+            name: customName || file.name || 'image.png',
+            sizeStr: formatFileSize(file.size),
+            media_type: mediaType,
+            base64: base64Data,
+            dataUrl: dataUrl
+          };
+
+          updateImagePreviewUI();
+          updateSendButtonsState();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function removeLoneSurrogates(str) {
+        if (!str || typeof str !== 'string') return '';
+        if (typeof str.toWellFormed === 'function') {
+          return str.toWellFormed();
+        }
+        let result = '';
+        for (let i = 0; i < str.length; i++) {
+          const code = str.charCodeAt(i);
+          if (code >= 0xD800 && code <= 0xDBFF) {
+            if (i + 1 < str.length) {
+              const next = str.charCodeAt(i + 1);
+              if (next >= 0xDC00 && next <= 0xDFFF) {
+                result += str[i] + str[i + 1];
+                i++;
+                continue;
+              }
+            }
+            continue;
+          } else if (code >= 0xDC00 && code <= 0xDFFF) {
+            continue;
+          }
+          result += str[i];
+        }
+        return result;
+      }
+
+      function safeTruncate(str, maxLen) {
+        if (!str) return '';
+        const clean = removeLoneSurrogates(String(str));
+        if (clean.length <= maxLen) return clean;
+        let cut = clean.substring(0, maxLen);
+        const lastCode = cut.charCodeAt(cut.length - 1);
+        if (lastCode >= 0xD800 && lastCode <= 0xDBFF) {
+          cut = cut.substring(0, cut.length - 1);
+        }
+        return cut;
+      }
+
+      function sanitizeExcelCellString(val) {
+        if (val === null || val === undefined) return '';
+        let str = String(val);
+        const bs = String.fromCharCode(92);
+        str = str.split(bs).join('/');
+        str = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+        str = str.replace(/\|/g, '&#124;');
+        str = str.replace(/\r?\n/g, ' ');
+        return removeLoneSurrogates(str).trim();
+      }
+
+      function processExcelFile(file) {
+        if (!file) return;
+
+        if (file.size > 30 * 1024 * 1024) {
+          alert('Ukuran file Excel maksimal 30MB.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = new Uint8Array(e.target.result);
+            if (typeof XLSX === 'undefined') {
+              alert('Pustaka SheetJS belum dimuat. Harap muat ulang halaman.');
+              return;
+            }
+
+            const workbook = XLSX.read(data, { type: 'array' });
+            let formattedText = '';
+            let totalRows = 0;
+
+            workbook.SheetNames.forEach(sheetName => {
+              const worksheet = workbook.Sheets[sheetName];
+              const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+              if (!jsonRows || jsonRows.length === 0) return;
+
+              const cleanSheetName = sanitizeExcelCellString(sheetName);
+              formattedText += '\n--- SHEET: "' + cleanSheetName + '" (' + jsonRows.length + ' Baris) ---\n';
+              totalRows += jsonRows.length;
+
+              const maxDisplayRows = 250;
+              const rowsToProcess = jsonRows.slice(0, maxDisplayRows);
+
+              rowsToProcess.forEach((row, rIdx) => {
+                if (!Array.isArray(row)) return;
+                const cleanCells = row.map(cell => sanitizeExcelCellString(cell));
+                while (cleanCells.length > 0 && !cleanCells[cleanCells.length - 1]) {
+                  cleanCells.pop();
+                }
+                if (cleanCells.length === 0) return;
+                if (rIdx === 0) {
+                  formattedText += '| ' + cleanCells.join(' | ') + ' |\n';
+                  formattedText += '| ' + cleanCells.map(() => '---').join(' | ') + ' |\n';
+                } else {
+                  formattedText += '| ' + cleanCells.join(' | ') + ' |\n';
+                }
+              });
+
+              if (jsonRows.length > maxDisplayRows) {
+                formattedText += '\n*(Menampilkan ' + maxDisplayRows + ' dari ' + jsonRows.length + ' baris sheet ' + cleanSheetName + ')*\n';
+              }
+            });
+
+            if (!formattedText.trim()) {
+              alert('File Excel kosong atau tidak dapat dibaca.');
+              return;
+            }
+
+            currentActiveImageData = null;
+            currentActivePdfData = null;
+            currentActiveExcelData = {
+              name: file.name || 'document.xlsx',
+              sizeStr: formatFileSize(file.size),
+              sheetCount: workbook.SheetNames.length,
+              totalRows: totalRows,
+              formattedText: formattedText
+            };
+
+            updateImagePreviewUI();
+            updateSendButtonsState();
+            showToastNotification('File Excel ' + file.name + ' berhasil dibaca (' +
+              totalRows + ' baris data).');
+          } catch (err) {
+            console.error('[Excel Parsing Error]:', err);
+            alert('Gagal membaca file Excel: ' + err.message);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      function processPdfFile(file) {
+        if (!file) return;
+
+        if (file.size > 25 * 1024 * 1024) {
+          alert('Ukuran file PDF maksimal 25MB.');
+          return;
+        }
+
+        if (typeof pdfjsLib === 'undefined') {
+          alert('Pustaka PDF.js belum dimuat. Harap muat ulang halaman.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const arrayBuffer = e.target.result;
+          const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+
+          loadingTask.promise.then(async function(pdf) {
+            try {
+              const numPages = pdf.numPages;
+              const maxPagesToRead = Math.min(numPages, 50);
+              let fullExtractedText = '';
+              let totalCharCount = 0;
+              const maxChars = 45000;
+
+              for (let pageNum = 1; pageNum <= maxPagesToRead; pageNum++) {
+                if (totalCharCount >= maxChars) {
+                  fullExtractedText += '\n[Catatan: Ekstraksi dipotong karena melebihi batas ' +
+                    maxChars + ' karakter]\n';
+                  break;
+                }
+
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                let pageStr = '';
+                let lastY = null;
+
+                textContent.items.forEach(item => {
+                  if (!item || !item.str) return;
+                  const itemStr = item.str.trim();
+                  if (!itemStr) return;
+
+                  if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+                    pageStr += '\n' + itemStr;
+                  } else {
+                    pageStr += (pageStr.length > 0 && !pageStr.endsWith('\n') ? ' ' : '') + itemStr;
+                  }
+                  lastY = item.transform[5];
+                });
+
+                const cleanPageStr = removeLoneSurrogates(pageStr).trim();
+                if (cleanPageStr) {
+                  fullExtractedText += '\n--- HALAMAN ' + pageNum + ' ---\n' + cleanPageStr + '\n';
+                  totalCharCount += cleanPageStr.length;
+                }
+              }
+
+              if (!fullExtractedText.trim()) {
+                alert('Dokumen PDF tidak memiliki teks yang dapat diekstrak ' +
+                  '(kemungkinan hasil scan gambar).');
+                return;
+              }
+
+              currentActiveImageData = null;
+              currentActiveExcelData = null;
+              currentActivePdfData = {
+                name: file.name || 'document.pdf',
+                sizeStr: formatFileSize(file.size),
+                pageCount: numPages,
+                totalChars: totalCharCount,
+                extractedText: fullExtractedText
+              };
+
+              updateImagePreviewUI();
+              updateSendButtonsState();
+              showToastNotification('Dokumen PDF ' + file.name + ' berhasil dibaca (' +
+                numPages + ' halaman).');
+            } catch (pageErr) {
+              console.error('[PDF Extraction Error]:', pageErr);
+              alert('Gagal mengekstrak teks PDF: ' + pageErr.message);
+            }
+          }).catch(function(pdfErr) {
+            console.error('[PDF Load Error]:', pdfErr);
+            alert('Gagal membuka file PDF: ' + pdfErr.message);
+          });
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
+      function processSelectedFile(file, customName) {
+        if (!file) return;
+        const fname = (file.name || '').toLowerCase();
+        const ftype = (file.type || '').toLowerCase();
+
+        if (ftype.startsWith('image/') || /\.(png|jpe?g|webp|gif)$/.test(fname)) {
+          processImageFile(file, customName);
+        } else if (/\.(xlsx|xls|csv)$/.test(fname) ||
+                   ftype.includes('spreadsheet') ||
+                   ftype.includes('excel') ||
+                   ftype.includes('csv')) {
+          processExcelFile(file);
+        } else if (/\.pdf$/.test(fname) || ftype === 'application/pdf') {
+          processPdfFile(file);
+        } else {
+          alert('Format file tidak didukung. Harap pilih gambar (JPG, PNG, WEBP), ' +
+            'file Excel (XLSX, XLS, CSV), atau dokumen PDF (PDF).');
+        }
+      }
+
+      function handleImageFileInputChange(event) {
+        const file = event.target.files && event.target.files[0];
+        if (file) processSelectedFile(file);
+      }
+
+      // ----------------------------------------------------
+      // DRAG & DROP & COPY-PASTE (CLIPBOARD) LISTENERS
+      // ----------------------------------------------------
+      function initDragAndDropListeners() {
+        const heroZone = document.getElementById('hero-drop-zone');
+        const heroOverlay = document.getElementById('hero-drag-overlay');
+        const threadZone = document.getElementById('thread-drop-zone');
+        const threadOverlay = document.getElementById('thread-drag-overlay');
+
+        function setupZone(zone, overlay) {
+          if (!zone) return;
+          let dragCounter = 0;
+
+          zone.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter++;
+            if (overlay) overlay.classList.remove('hidden');
+          });
+
+          zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (overlay) overlay.classList.remove('hidden');
+          });
+
+          zone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter--;
+            if (dragCounter <= 0) {
+              dragCounter = 0;
+              if (overlay) overlay.classList.add('hidden');
+            }
+          });
+
+          zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter = 0;
+            if (overlay) overlay.classList.add('hidden');
+
+            const files = e.dataTransfer && e.dataTransfer.files;
+            if (files && files.length > 0) {
+              const file = files[0];
+              processSelectedFile(file);
+            }
+          });
+        }
+
+        setupZone(heroZone, heroOverlay);
+        setupZone(threadZone, threadOverlay);
+
+        window.addEventListener('dragover', (e) => e.preventDefault());
+        window.addEventListener('drop', (e) => e.preventDefault());
+      }
+
+      function initPasteListener() {
+        window.addEventListener('paste', (e) => {
+          const clipboardData = e.clipboardData || window.clipboardData;
+          if (!clipboardData || !clipboardData.items) return;
+
+          for (let i = 0; i < clipboardData.items.length; i++) {
+            const item = clipboardData.items[i];
+            if (item.type && item.type.indexOf('image') !== -1) {
+              const file = item.getAsFile();
+              if (file) {
+                e.preventDefault();
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') +
+                  now.getMinutes().toString().padStart(2, '0') +
+                  now.getSeconds().toString().padStart(2, '0');
+                const customName = 'screenshot-' + timeStr + '.png';
+                processImageFile(file, customName);
+                showToastNotification('Foto berhasil ditempel dari clipboard.');
+                break;
+              }
+            }
+          }
+        });
+      }
+
+      // ----------------------------------------------------
+      // TOAST NOTIFICATION & DELETE SESSION MODAL HANDLERS
+      // ----------------------------------------------------
+      function showToastNotification(message, type) {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        const isError = type === 'error';
+        toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 ' +
+          'rounded-2xl border shadow-lg backdrop-blur-md text-xs font-semibold ' +
+          'transition-all duration-300 transform translate-y-2 opacity-0 ' +
+          (isError
+            ? 'bg-rose-50/95 border-rose-200 text-rose-800'
+            : 'bg-emerald-50/95 border-emerald-200 text-emerald-800');
+
+        const icon = isError ? 'fa-circle-exclamation text-rose-600' : 'fa-circle-check text-emerald-600';
+        toast.innerHTML = `<i class="fas ${icon} text-sm"></i><span>${escapeHtml(message)}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+          toast.classList.add('translate-y-0', 'opacity-100');
+        }, 10);
+
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-2', 'opacity-0');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      let sessionToDeleteId = null;
+
+      function promptDeleteSession(chatId, sessionTitle) {
+        sessionToDeleteId = chatId;
+        const modal = document.getElementById('delete-session-modal');
+        const titleEl = document.getElementById('delete-modal-title');
+        if (titleEl) {
+          titleEl.textContent = sessionTitle ? `"${sessionTitle}"` : 'ini';
+        }
+        if (modal) {
+          modal.classList.remove('hidden');
+        }
+      }
+
+      function closeDeleteModal() {
+        sessionToDeleteId = null;
+        const modal = document.getElementById('delete-session-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+        }
+      }
+
+      function executeDeleteSession() {
+        if (!sessionToDeleteId) return;
+        const sId = sessionToDeleteId;
+        closeDeleteModal();
+
+        allHistorySessions = allHistorySessions.filter(s => s.chat_id !== sId);
+        const countEl = document.getElementById('history-count');
+        if (countEl) countEl.textContent = allHistorySessions.length;
+        filterAndRenderHistory();
+
+        if (currentChatId === sId) {
+          resetToHome();
+        }
+
+        const formData = new FormData();
+        formData.append('OnInputProcessing', 'DELETE_CHAT_SESSION');
+        formData.append('CHAT_ID', sId);
+
+        fetch(window.location.href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            showToastNotification('Riwayat percakapan berhasil dihapus.');
+          })
+          .catch(err => {
+            console.warn('[Delete Session Warning]:', err);
+            showToastNotification('Riwayat percakapan berhasil dihapus.');
+          });
+      }
+
+      function updateImagePreviewUI() {
+        const heroBox = document.getElementById('hero-image-preview-box');
+        const heroThumb = document.getElementById('hero-preview-thumb');
+        const heroExcelIcon = document.getElementById('hero-preview-excel-icon');
+        const heroPdfIcon = document.getElementById('hero-preview-pdf-icon');
+        const heroName = document.getElementById('hero-preview-name');
+        const heroSize = document.getElementById('hero-preview-size');
+
+        const threadBox = document.getElementById('thread-image-preview-box');
+        const threadThumb = document.getElementById('thread-preview-thumb');
+        const threadExcelIcon = document.getElementById('thread-preview-excel-icon');
+        const threadPdfIcon = document.getElementById('thread-preview-pdf-icon');
+        const threadName = document.getElementById('thread-preview-name');
+        const threadSize = document.getElementById('thread-preview-size');
+
+        if (currentActiveImageData) {
+          if (heroBox && heroThumb && heroName && heroSize) {
+            heroThumb.src = currentActiveImageData.dataUrl;
+            heroThumb.classList.remove('hidden');
+            if (heroExcelIcon) heroExcelIcon.classList.add('hidden');
+            if (heroPdfIcon) heroPdfIcon.classList.add('hidden');
+            heroName.textContent = currentActiveImageData.name;
+            heroSize.textContent = currentActiveImageData.sizeStr;
+            heroBox.classList.remove('hidden');
+          }
+          if (threadBox && threadThumb && threadName && threadSize) {
+            threadThumb.src = currentActiveImageData.dataUrl;
+            threadThumb.classList.remove('hidden');
+            if (threadExcelIcon) threadExcelIcon.classList.add('hidden');
+            if (threadPdfIcon) threadPdfIcon.classList.add('hidden');
+            threadName.textContent = currentActiveImageData.name;
+            threadSize.textContent = currentActiveImageData.sizeStr;
+            threadBox.classList.remove('hidden');
+          }
+        } else if (currentActiveExcelData) {
+          if (heroBox && heroName && heroSize) {
+            if (heroThumb) heroThumb.classList.add('hidden');
+            if (heroPdfIcon) heroPdfIcon.classList.add('hidden');
+            if (heroExcelIcon) heroExcelIcon.classList.remove('hidden');
+            heroName.textContent = currentActiveExcelData.name;
+            heroSize.textContent = currentActiveExcelData.sheetCount + ' Sheet • ' +
+              currentActiveExcelData.totalRows + ' Baris • ' + currentActiveExcelData.sizeStr;
+            heroBox.classList.remove('hidden');
+          }
+          if (threadBox && threadName && threadSize) {
+            if (threadThumb) threadThumb.classList.add('hidden');
+            if (threadPdfIcon) threadPdfIcon.classList.add('hidden');
+            if (threadExcelIcon) threadExcelIcon.classList.remove('hidden');
+            threadName.textContent = currentActiveExcelData.name;
+            threadSize.textContent = currentActiveExcelData.sheetCount + ' Sheet • ' +
+              currentActiveExcelData.totalRows + ' Baris • ' + currentActiveExcelData.sizeStr;
+            threadBox.classList.remove('hidden');
+          }
+        } else if (currentActivePdfData) {
+          if (heroBox && heroName && heroSize) {
+            if (heroThumb) heroThumb.classList.add('hidden');
+            if (heroExcelIcon) heroExcelIcon.classList.add('hidden');
+            if (heroPdfIcon) heroPdfIcon.classList.remove('hidden');
+            heroName.textContent = currentActivePdfData.name;
+            heroSize.textContent = currentActivePdfData.pageCount + ' Halaman • ' +
+              currentActivePdfData.sizeStr;
+            heroBox.classList.remove('hidden');
+          }
+          if (threadBox && threadName && threadSize) {
+            if (threadThumb) threadThumb.classList.add('hidden');
+            if (threadExcelIcon) threadExcelIcon.classList.add('hidden');
+            if (threadPdfIcon) threadPdfIcon.classList.remove('hidden');
+            threadName.textContent = currentActivePdfData.name;
+            threadSize.textContent = currentActivePdfData.pageCount + ' Halaman • ' +
+              currentActivePdfData.sizeStr;
+            threadBox.classList.remove('hidden');
+          }
+        } else {
+          if (heroBox) heroBox.classList.add('hidden');
+          if (threadBox) threadBox.classList.add('hidden');
+        }
+      }
+
+      function removeSelectedImage() {
+        currentActiveImageData = null;
+        currentActiveExcelData = null;
+        currentActivePdfData = null;
+        const fileInput = document.getElementById('chat-image-file-input');
+        if (fileInput) fileInput.value = '';
+        updateImagePreviewUI();
+        updateSendButtonsState();
+      }
+
+      function updateSendButtonsState() {
+        const heroInput = document.getElementById('chat-search-input');
+        if (heroInput) handleInputContentChange(heroInput, false);
+        const threadInput = document.getElementById('chat-search-input-thread');
+        if (threadInput) handleInputContentChange(threadInput, true);
+      }
+
+      function handleInputContentChange(elem, isThread) {
+        if (!elem) return;
+        autoResizeTextarea(elem);
+        const hasText = !!elem.value.trim();
+        const canSend = hasText || !!currentActiveImageData ||
+          !!currentActiveExcelData || !!currentActivePdfData;
+
+        if (isThread) {
+          const btnClear = document.getElementById('btn-clear-thread');
+          if (btnClear) {
+            if (hasText) btnClear.classList.remove('hidden');
+            else btnClear.classList.add('hidden');
+          }
+
+          const btnSend = document.getElementById('btn-send-thread');
+          if (btnSend && !isRequestInProgress) {
+            if (canSend) {
+              btnSend.disabled = false;
+              btnSend.className = 'py-2 px-4 sm:py-2.5 sm:px-6 rounded-full font-bold ' +
+                'transition shrink-0 text-xs flex items-center gap-1.5 min-h-[38px] ' +
+                'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 ' +
+                'text-white shadow-md shadow-emerald-500/20 active:scale-95 cursor-pointer';
+            } else {
+              btnSend.disabled = true;
+              btnSend.className = 'py-2 px-4 sm:py-2.5 sm:px-6 rounded-full font-bold ' +
+                'transition shrink-0 text-xs flex items-center gap-1.5 min-h-[38px] ' +
+                'opacity-40 bg-slate-200 text-slate-400 cursor-not-allowed';
+            }
+          }
+        } else {
+          const btnClear = document.getElementById('btn-clear-hero');
+          if (btnClear) {
+            if (hasText) btnClear.classList.remove('hidden');
+            else btnClear.classList.add('hidden');
+          }
+
+          const btnSend = document.getElementById('btn-send-hero');
+          if (btnSend && !isRequestInProgress) {
+            if (canSend) {
+              btnSend.disabled = false;
+              btnSend.className = 'py-2 px-6 rounded-full font-bold transition text-xs ' +
+                'flex items-center gap-2 ml-auto bg-gradient-to-r from-emerald-500 ' +
+                'to-emerald-600 hover:from-emerald-600 text-white shadow-md ' +
+                'shadow-emerald-500/20 active:scale-95 cursor-pointer';
+            } else {
+              btnSend.disabled = true;
+              btnSend.className = 'py-2 px-6 rounded-full font-bold transition text-xs ' +
+                'flex items-center gap-2 ml-auto opacity-40 bg-slate-200 text-slate-400 ' +
+                'cursor-not-allowed';
+            }
+          }
+        }
+      }
+
+      function clearHeroInput() {
+        const inp = document.getElementById('chat-search-input');
+        if (inp) {
+          inp.value = '';
+          handleInputContentChange(inp, false);
+          inp.focus();
+        }
+      }
+
+      function clearThreadInput() {
+        const inp = document.getElementById('chat-search-input-thread');
+        if (inp) {
+          inp.value = '';
+          handleInputContentChange(inp, true);
+          inp.focus();
+        }
+      }
+
+      // ----------------------------------------------------
+      // DYNAMIC TIME GREETING & SAP USER NAME FORMATTING
+      // ----------------------------------------------------
+      function getGreetingByTime() {
+        const now = new Date();
+        const totalMinutes = now.getHours() * 60 + now.getMinutes();
+
+        if (totalMinutes >= 270 && totalMinutes < 660) {
+          // 04:30 - 11:00
+          return 'Selamat Pagi';
+        } else if (totalMinutes >= 660 && totalMinutes < 930) {
+          // 11:00 - 15:30
+          return 'Selamat Siang';
+        } else if (totalMinutes >= 930 && totalMinutes < 1110) {
+          // 15:30 - 18:30
+          return 'Selamat Sore';
+        } else if (totalMinutes >= 1110) {
+          // 18:30 - 24:00
+          return 'Selamat Malam';
+        } else {
+          // 00:00 - 04:30
+          return 'Selamat Dini Hari';
+        }
+      }
+
+      function formatFirstName(raw) {
+        if (!raw) return '';
+        let name = raw.trim().split(/\s+/)[0];
+        if (name.length > 1 && name === name.toUpperCase()) {
+          name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        }
+        return name;
+      }
+
+      function applyDynamicGreeting() {
+        const greetingEl = document.getElementById('greeting-text');
+        const userEl = document.getElementById('user-display-name');
+        const navUserEl = document.getElementById('nav-user-name');
+
+        if (greetingEl) {
+          greetingEl.textContent = getGreetingByTime();
+        }
+
+        if (userEl) {
+          let nameText = userEl.textContent.trim();
+          if (!nameText || nameText.charAt(0) === '<') {
+            nameText = 'Daniel';
+          }
+          const formatted = formatFirstName(nameText);
+          userEl.textContent = formatted;
+          if (navUserEl) {
+            navUserEl.textContent = formatted;
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        applyDynamicGreeting();
+        checkAiServerHealth();
+        fetchSessionListFromSap();
+        fetchLiveODataData();
+        initDragAndDropListeners();
+        initPasteListener();
+        const inpHero = document.getElementById('chat-search-input');
+        if (inpHero) inpHero.focus();
+      });
+
+      function resetToHome() {
+        toggleSidebar(false);
+        currentChatId = "";
+        activeSessionMessages = [];
+        setSendLoadingState(false);
+        removeSelectedImage();
+        applyDynamicGreeting();
+        filterAndRenderHistory();
+        document.getElementById('hero-section').classList.remove('hidden');
+        document.getElementById('thread-input-bar').classList.add('hidden');
+        const thread = document.getElementById('chat-thread');
+        thread.classList.add('hidden');
+        thread.innerHTML = '';
+
+        const inp1 = document.getElementById('chat-search-input');
+        const inp2 = document.getElementById('chat-search-input-thread');
+        if (inp1) { inp1.value = ''; handleInputContentChange(inp1, false); inp1.focus(); }
+        if (inp2) { inp2.value = ''; handleInputContentChange(inp2, true); }
+      }
+
+      function autoResizeTextarea(elem) {
+        if (!elem) return;
+        elem.style.height = 'auto';
+        const h = Math.min(elem.scrollHeight, 144);
+        elem.style.height = (h > 0 ? h : 36) + 'px';
+      }
+
+      function handleTextareaKeyDown(e, isThread) {
+        if (e.isComposing) return;
+        if (e.key === 'Enter') {
+          // Shift + Enter atau Ctrl + Enter untuk baris baru
+          if (e.shiftKey || e.ctrlKey) {
+            setTimeout(() => {
+              autoResizeTextarea(e.target);
+              handleInputContentChange(e.target, isThread);
+            }, 0);
+            return;
+          }
+
+          // Enter saja untuk mengirim pesan
+          e.preventDefault();
+          if (isRequestInProgress) return;
+          const queryVal = (e.target.value || '').trim();
+          if (!queryVal && !currentActiveImageData &&
+              !currentActiveExcelData && !currentActivePdfData) return;
+
+          if (isThread) executeSearchFromThreadInput();
+          else executeSearchFromInput();
+        }
+      }
+
+      function triggerFilter(searchTerm) {
+        if (isRequestInProgress) return;
+        const input = document.getElementById('chat-search-input');
+        if (input) {
+          input.value = searchTerm;
+          handleInputContentChange(input, false);
+        }
+        executeSearchFromInput();
+      }
+
+      function triggerPrompt(promptText) {
+        if (isRequestInProgress || !promptText) return;
+        processClaudeAgentRequest(promptText);
+      }
+
+      const SAP_MATERIAL_ODATA_URL =
+        'http://kmiprd.kmi.com:8001/sap/opu/odata/sap/' +
+        'ZMDG_MATERIAL_SRV_MDG_SRV/MaterialSet?$format=json&$top=100';
+
+      const SAP_CHATLOG_ODATA_URL =
+        'http://kmiprd.kmi.com:8001/sap/opu/odata/sap/' +
+        'ZMDG_MATERIAL_SRV_MDG_SRV/ChatLogSet?$format=json';
+
+      const SAP_STAGING_ODATA_URL =
+        'http://kmiprd.kmi.com:8001/sap/opu/odata/sap/' +
+        'ZMDG_MATERIAL_SRV_MDG_SRV/StagingMaterialSet?$format=json';
+
+      function deduplicateStagingItems(items) {
+        if (!Array.isArray(items)) return [];
+        const seen = new Set();
+        const unique = [];
+        items.forEach(it => {
+          const reqNo = String(it.ReqNo || it.REQ_NO || '').trim();
+          const itemNo = String(it.ItemNo || it.ITEM_NO || '').trim();
+          const key = `${reqNo}_${itemNo}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(it);
+          }
+        });
+        return unique;
+      }
+
+      // ----------------------------------------------------
+      // SERVER ENDPOINT CONFIGURATION (DEBIAN AI SERVER)
+      // ----------------------------------------------------
+      const AI_BASE_URL = 'http://192.168.254.167:3005';
+      const AI_CLAUDE_ENDPOINT = 'http://192.168.254.167:3005/api/claude';
+      const AI_HEALTH_ENDPOINT = 'http://192.168.254.167:3005/';
+
+      function getMiddlewareBaseUrl() {
+        return AI_BASE_URL;
+      }
+
+      async function checkAiServerHealth() {
+        const dot = document.getElementById('ai-server-status-dot');
+        const text = document.getElementById('ai-server-status-text');
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 6000);
+          const response = await fetch(AI_HEALTH_ENDPOINT, {
+            method: 'GET',
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (response.ok) {
+            if (dot) {
+              dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+            }
+            if (text) {
+              text.textContent = 'AI Server Online';
+            }
+            return true;
+          } else {
+            throw new Error('Status: ' + response.status);
+          }
+        } catch (err) {
+          console.warn('[Health Check AI Server]:', err.message);
+          if (dot) {
+            dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+          }
+          if (text) {
+            text.textContent = 'AI Server Offline';
+          }
+          return false;
+        }
+      }
+
+      function fetchLiveODataData() {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+        // Fetch MaterialSet dari SAP OData
+        fetch(SAP_MATERIAL_ODATA_URL, {
+          signal: controller.signal,
+          credentials: 'include',
+          mode: 'cors',
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(res => res.json())
+          .then(data => {
+            clearTimeout(timeoutId);
+            if (data && data.d && data.d.results) {
+              liveODataMaterials = data.d.results;
+              console.log("[SAP MaterialSet Loaded Direct]:", liveODataMaterials.length, "items");
+            }
+          })
+          .catch(err => {
+            clearTimeout(timeoutId);
+            console.warn("[SAP MaterialSet Direct Fetch Warning, trying Proxy]:", err.message);
+            fetch(getMiddlewareBaseUrl() + "/api/odata?$top=100", {
+              headers: { 'Accept': 'application/json' }
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data && data.d && data.d.results) {
+                  liveODataMaterials = data.d.results;
+                  console.log("[SAP MaterialSet Loaded via Proxy]:", liveODataMaterials.length, "items");
+                }
+              })
+              .catch(proxyErr => {
+                console.warn("[Proxy Material Fetch Warning]:", proxyErr.message);
+              });
+          });
+
+        // Fetch ChatLogSet dari SAP OData
+        fetch(SAP_CHATLOG_ODATA_URL, {
+          credentials: 'include',
+          mode: 'cors',
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.d && data.d.results) {
+              liveODataChatLogs = data.d.results;
+              console.log("[SAP ChatLogSet Loaded Direct]:", liveODataChatLogs.length, "logs");
+            }
+          })
+          .catch(err => {
+            fetch(getMiddlewareBaseUrl() + "/api/odata/chatlog", {
+              headers: { 'Accept': 'application/json' }
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data && data.d && data.d.results) {
+                  liveODataChatLogs = data.d.results;
+                  console.log("[SAP ChatLogSet Loaded via Proxy]:", liveODataChatLogs.length, "logs");
+                }
+              })
+              .catch(proxyErr => {
+                console.warn("[Proxy ChatLog Fetch Warning]:", proxyErr.message);
+              });
+          });
+
+        // Fetch StagingMaterialSet dari SAP OData
+        fetch(SAP_STAGING_ODATA_URL, {
+          credentials: 'include',
+          mode: 'cors',
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.d && data.d.results) {
+              liveODataStagingMaterials = deduplicateStagingItems(data.d.results);
+              console.log(
+                "[SAP StagingMaterialSet Loaded Direct]:",
+                liveODataStagingMaterials.length,
+                "items"
+              );
+            }
+          })
+          .catch(err => {
+            console.warn(
+              "[SAP Staging Direct Fetch Warning, trying Proxy]:",
+              err.message
+            );
+            fetch(getMiddlewareBaseUrl() + "/api/odata/staging", {
+              headers: { 'Accept': 'application/json' }
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data && data.d && data.d.results) {
+                  liveODataStagingMaterials = deduplicateStagingItems(data.d.results);
+                  console.log(
+                    "[SAP StagingMaterialSet Loaded via Proxy]:",
+                    liveODataStagingMaterials.length,
+                    "items"
+                  );
+                }
+              })
+              .catch(proxyErr => {
+                console.warn("[Proxy Staging Fetch Warning]:", proxyErr.message);
+              });
+          });
+      }
+
+      function executeSearchFromInput() {
+        if (isRequestInProgress) return;
+        const queryInput = document.getElementById('chat-search-input');
+        const rawQuery = (queryInput ? queryInput.value : '').trim();
+        if (!rawQuery && !currentActiveImageData &&
+            !currentActiveExcelData && !currentActivePdfData) return;
+        const promptToSend = rawQuery ||
+          (currentActivePdfData
+            ? 'Tolong analisis isi dokumen PDF \'' + currentActivePdfData.name + '\' terlampir.'
+            : currentActiveExcelData
+              ? 'Tolong analisis isi file Excel \'' + currentActiveExcelData.name + '\' terlampir.'
+              : 'Tolong analisis foto/gambar terlampir untuk Master Data Governance SAP.');
+        processClaudeAgentRequest(promptToSend);
+      }
+
+      function executeSearchFromThreadInput() {
+        if (isRequestInProgress) return;
+        const queryInput = document.getElementById('chat-search-input-thread');
+        const rawQuery = (queryInput ? queryInput.value : '').trim();
+        if (!rawQuery && !currentActiveImageData &&
+            !currentActiveExcelData && !currentActivePdfData) return;
+        const promptToSend = rawQuery ||
+          (currentActivePdfData
+            ? 'Tolong analisis isi dokumen PDF \'' + currentActivePdfData.name + '\' terlampir.'
+            : currentActiveExcelData
+              ? 'Tolong analisis isi file Excel \'' + currentActiveExcelData.name + '\' terlampir.'
+              : 'Tolong analisis foto/gambar terlampir untuk Master Data Governance SAP.');
+        processClaudeAgentRequest(promptToSend);
+        if (queryInput) {
+          queryInput.value = '';
+          handleInputContentChange(queryInput, true);
+        }
+      }
+
+      // ----------------------------------------------------
+      // SAVE CHAT TO SE11 ZMDG_AI_CHAT_LOG VIA BSP
+      // ----------------------------------------------------
+      function saveChatToSapDatabase(promptText, responseText, statusVal, usageObj) {
+        const formData = new FormData();
+        formData.append('OnInputProcessing', 'SAVE_CHAT_LOG');
+        formData.append('CHAT_ID', currentChatId || '');
+        formData.append('PROMPT_TEXT', safeTruncate(promptText || '', 255));
+        formData.append('RESPONSE_TEXT', safeTruncate(responseText || '', 255));
+        formData.append('STATUS', safeTruncate(statusVal || 'SUCCESS', 10));
+        formData.append('MODEL_NAME', 'Claude Haiku 4.5');
+
+        if (usageObj) {
+          formData.append('INPUT_TOKENS', usageObj.input_tokens || 0);
+          formData.append('OUTPUT_TOKENS', usageObj.output_tokens || 0);
+          formData.append('TOTAL_TOKENS', (usageObj.input_tokens || 0) + (usageObj.output_tokens || 0));
+        } else {
+          formData.append('INPUT_TOKENS', 0);
+          formData.append('OUTPUT_TOKENS', 0);
+          formData.append('TOTAL_TOKENS', 0);
+        }
+
+        fetch(window.location.href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.chat_id) {
+              currentChatId = data.chat_id;
+              fetchSessionListFromSap();
+            }
+          })
+          .catch(err => console.warn("[DB Save Warning]:", err));
+      }
+
+      // ----------------------------------------------------
+      // SIDEBAR & HISTORY MANAGEMENT (APPLE DESIGN & SEARCH)
+      // ----------------------------------------------------
+      function toggleSidebar(forceState) {
+        const sidebar = document.getElementById('history-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (!sidebar) return;
+
+        if (typeof forceState === 'boolean') {
+          isSidebarOpen = forceState;
+        } else {
+          isSidebarOpen = !isSidebarOpen;
+        }
+
+        if (isSidebarOpen) {
+          sidebar.classList.remove('-translate-x-full');
+          sidebar.classList.add('translate-x-0');
+          if (backdrop) backdrop.classList.remove('hidden');
+        } else {
+          sidebar.classList.remove('translate-x-0');
+          sidebar.classList.add('-translate-x-full');
+          if (backdrop) backdrop.classList.add('hidden');
+        }
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isSidebarOpen) {
+          toggleSidebar(false);
+        }
+      });
+
+      function handleHistorySearch(val) {
+        currentSearchQuery = (val || '').trim();
+        const btnClear = document.getElementById('btn-clear-history-search');
+        if (btnClear) {
+          if (currentSearchQuery) {
+            btnClear.classList.remove('hidden');
+          } else {
+            btnClear.classList.add('hidden');
+          }
+        }
+        filterAndRenderHistory();
+      }
+
+      function clearHistorySearch() {
+        const inp = document.getElementById('history-search-input');
+        if (inp) inp.value = '';
+        handleHistorySearch('');
+        if (inp) inp.focus();
+      }
+
+      function filterAndRenderHistory() {
+        if (!currentSearchQuery) {
+          renderHistoryList(allHistorySessions, false);
+          return;
+        }
+        const q = currentSearchQuery.toLowerCase();
+        const mNames = ['januari','februari','maret','april','mei','juni',
+                        'juli','agustus','september','oktober','november','desember'];
+        const filtered = allHistorySessions.filter(item => {
+          const title = (item.title || '').toLowerCase();
+          const d = (item.chat_date || '').toLowerCase();
+          const t = (item.chat_time || '').toLowerCase();
+          const id = (item.chat_id || '').toLowerCase();
+          const formattedDt = formatSessionDateTime(item.chat_date, item.chat_time).toLowerCase();
+          let indoDateStr = '';
+          if (/^\d{8}$/.test(item.chat_date || '')) {
+            const y = item.chat_date.substring(0, 4);
+            const mIdx = parseInt(item.chat_date.substring(4, 6), 10) - 1;
+            const dNum = parseInt(item.chat_date.substring(6, 8), 10);
+            indoDateStr = `${dNum} ${mNames[mIdx] || ''} ${y}`.toLowerCase();
+          }
+          return title.includes(q) || d.includes(q) || t.includes(q) || id.includes(q) ||
+                 formattedDt.includes(q) || indoDateStr.includes(q);
+        });
+        renderHistoryList(filtered, true);
+      }
+
+      function formatSessionDateTime(dateStr, timeStr) {
+        let datePart = dateStr || '';
+        let timePart = timeStr || '';
+        if (/^\d{8}$/.test(datePart)) {
+          datePart = datePart.substring(6, 8) + '/' +
+                     datePart.substring(4, 6) + '/' +
+                     datePart.substring(0, 4);
+        }
+        if (/^\d{6}$/.test(timePart)) {
+          timePart = timePart.substring(0, 2) + ':' +
+                     timePart.substring(2, 4);
+        }
+        if (datePart && timePart) {
+          return datePart + ' ' + timePart;
+        }
+        return datePart || timePart || '-';
+      }
+
+      function renderHistoryList(sessions, isFiltered) {
+        const container = document.getElementById('history-list');
+        if (!container) return;
+
+        if (!Array.isArray(sessions) || sessions.length === 0) {
+          if (isFiltered) {
+            container.innerHTML = `
+              <div class="py-10 px-4 text-center space-y-2 select-none">
+                <div class="w-9 h-9 mx-auto rounded-full bg-slate-100 ` +
+                  `flex items-center justify-center text-slate-400">
+                  <i class="fas fa-magnifying-glass text-xs"></i>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">
+                  Tidak ditemukan
+                </div>
+                <div class="text-[11px] text-slate-400 leading-snug">
+                  Tidak ada riwayat yang cocok dengan kata kunci.
+                </div>
+                <button type="button" onclick="clearHistorySearch()"
+                  class="mt-1 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 ` +
+                  `text-[11px] text-slate-700 font-semibold transition cursor-pointer">
+                  Hapus Filter
+                </button>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="py-10 px-4 text-center space-y-2 select-none">
+                <div class="w-9 h-9 mx-auto rounded-full bg-slate-100 ` +
+                  `flex items-center justify-center text-slate-400">
+                  <i class="far fa-comments text-xs"></i>
+                </div>
+                <div class="text-xs font-semibold text-slate-700">
+                  Belum ada riwayat
+                </div>
+                <div class="text-[11px] text-slate-400 leading-snug">
+                  Percakapan Anda akan tersimpan otomatis di sini.
+                </div>
+              </div>
+            `;
+          }
+          return;
+        }
+
+        let htmlStr = '<div class="space-y-1.5">';
+        sessions.forEach(item => {
+          const sId = item.chat_id || '';
+          const isActive = currentChatId && currentChatId === sId;
+          const displayTitle = item.title || 'Percakapan Tanpa Judul';
+          const dateTimeStr = formatSessionDateTime(item.chat_date, item.chat_time);
+          const msgCount = Number(item.msg_count) || 1;
+
+          const baseCardClasses = isActive
+            ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-950 font-semibold shadow-xs ring-1 ring-emerald-500/20'
+            : 'bg-white hover:bg-slate-100/80 border-slate-200/70 text-slate-700 hover:text-slate-900 shadow-2xs';
+
+          const iconColor = isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600';
+          const activeDot = isActive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 mt-1"></span>' : '';
+
+          htmlStr += `
+            <div onclick="loadConversationSession('${escapeHtml(sId)}')"
+                 class="group p-2.5 rounded-xl border transition-all duration-150 ` +
+                   `cursor-pointer text-left select-none ${baseCardClasses}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0 flex-1">
+                  <i class="fas fa-message text-[11px] ${iconColor} shrink-0 mt-0.5"></i>
+                  <span class="text-xs font-semibold truncate leading-tight">
+                    ${escapeHtml(displayTitle)}
+                  </span>
+                </div>
+                <div class="flex items-center gap-1 shrink-0">
+                  <button type="button"
+                    data-chat-id="${escapeHtml(sId)}"
+                    data-title="${escapeHtml(displayTitle)}"
+                    onclick="event.stopPropagation(); promptDeleteSession(this.getAttribute('data-chat-id'), this.getAttribute('data-title'));"
+                    title="Hapus riwayat sesi ini"
+                    class="opacity-60 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-slate-400 ` +
+                      `hover:text-rose-600 hover:bg-rose-50 rounded-lg transition active:scale-95 cursor-pointer">
+                    <i class="far fa-trash-can text-[11px]"></i>
+                  </button>
+                  ${activeDot}
+                </div>
+              </div>
+              <div class="mt-1.5 flex items-center justify-between text-[10px] text-slate-400 pl-4.5">
+                <span>${escapeHtml(dateTimeStr)}</span>
+                <span class="px-1.5 py-0.2 rounded-md bg-slate-100 border border-slate-200/60 font-medium text-slate-500">
+                  ${msgCount} pesan
+                </span>
+              </div>
+            </div>
+          `;
+        });
+        htmlStr += '</div>';
+        container.innerHTML = htmlStr;
+      }
+
+      function fetchSessionListFromSap() {
+        const container = document.getElementById('history-list');
+        if (!allHistorySessions || allHistorySessions.length === 0) {
+          if (container) {
+            container.innerHTML = `
+              <div class="flex items-center justify-center gap-2 py-8 text-xs text-slate-400">
+                <i class="fas fa-circle-notch fa-spin text-xs"></i>
+                <span>Memuat riwayat...</span>
+              </div>
+            `;
+          }
+        }
+
+        const formData = new FormData();
+        formData.append('OnInputProcessing', 'GET_SESSION_LIST');
+
+        fetch(window.location.href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            allHistorySessions = Array.isArray(data) ? data : [];
+            const countEl = document.getElementById('history-count');
+            if (countEl) {
+              countEl.textContent = allHistorySessions.length;
+            }
+            filterAndRenderHistory();
+          })
+          .catch(err => {
+            console.warn("[Session List Error]:", err);
+            if (container && (!allHistorySessions || allHistorySessions.length === 0)) {
+              container.innerHTML = `
+                <div class="py-6 px-3 text-center space-y-2 select-none">
+                  <i class="fas fa-triangle-exclamation text-amber-500 text-sm"></i>
+                  <p class="text-xs text-slate-600">Gagal memuat riwayat.</p>
+                  <button type="button" onclick="fetchSessionListFromSap()"
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 ` +
+                    `text-[11px] font-semibold text-slate-700 cursor-pointer">
+                    Coba Lagi
+                  </button>
+                </div>
+              `;
+            }
+          });
+      }
+
+      function loadConversationSession(sessionId) {
+        if (!sessionId) return;
+        toggleSidebar(false);
+
+        currentChatId = sessionId;
+        activeSessionMessages = [];
+        filterAndRenderHistory();
+
+        document.getElementById('hero-section').classList.add('hidden');
+        document.getElementById('thread-input-bar').classList.remove('hidden');
+        const thread = document.getElementById('chat-thread');
+        thread.classList.remove('hidden');
+        thread.innerHTML = `
+          <div class="flex items-center justify-center gap-2 text-slate-400 text-xs py-8">
+            <i class="fas fa-circle-notch fa-spin text-xs"></i>
+            <span>Memuat isi percakapan...</span>
+          </div>
+        `;
+
+        const formData = new FormData();
+        formData.append('OnInputProcessing', 'GET_SESSION_MESSAGES');
+        formData.append('CHAT_ID', sessionId);
+
+        fetch(window.location.href, {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(messages => {
+            thread.innerHTML = '';
+            if (Array.isArray(messages) && messages.length > 0) {
+              messages.forEach(msg => {
+                const pText = msg.prompt_text || '';
+                const rText = msg.response_text || '';
+
+                if (pText) appendUserMessage(pText);
+
+                let usageObj = null;
+                if (msg.input_tokens || msg.output_tokens) {
+                  usageObj = {
+                    input_tokens: msg.input_tokens || 0,
+                    output_tokens: msg.output_tokens || 0
+                  };
+                }
+                if (rText) renderMarkdownAgentMessage(rText, usageObj);
+
+                activeSessionMessages.push({
+                  prompt: pText,
+                  response: rText
+                });
+              });
+
+              const scrollArea = document.getElementById('main-scroll-area');
+              if (scrollArea) {
+                scrollArea.scrollTop = scrollArea.scrollHeight;
+              }
+            } else {
+              thread.innerHTML = '<div class="text-center text-slate-400 text-xs py-8 select-none">Sesi percakapan kosong.</div>';
+            }
+          })
+          .catch(err => {
+            thread.innerHTML = `
+              <div class="text-center text-amber-600 text-xs py-8 select-none">
+                Gagal memuat sesi: ${escapeHtml(err.message)}
+              </div>
+            `;
+          });
+      }
+
+      // ----------------------------------------------------
+      // CLAUDE AGENTIC ENGINE WITH DIRECT PROMPT & MULTI-TURN
+      // ----------------------------------------------------
+      function processClaudeAgentRequest(userQuery) {
+        let queryText = (userQuery || '').trim();
+        if (!queryText && !currentActiveImageData &&
+            !currentActiveExcelData && !currentActivePdfData) return;
+        if (!queryText && currentActiveImageData) {
+          queryText = 'Tolong analisis foto/gambar terlampir untuk spesifikasi ' +
+            'dan kebutuhan Master Data Governance (SAP S/4HANA).';
+        } else if (!queryText && currentActiveExcelData) {
+          queryText = 'Tolong analisis file Excel \'' + currentActiveExcelData.name +
+            '\' terlampir untuk spesifikasi dan kebutuhan Master Data Governance (SAP S/4HANA).';
+        } else if (!queryText && currentActivePdfData) {
+          queryText = 'Tolong analisis dokumen PDF \'' + currentActivePdfData.name +
+            '\' terlampir untuk spesifikasi dan kebutuhan Master Data Governance (SAP S/4HANA).';
+        }
+
+        // Ambil data lampiran aktif sebelum preview dibersihkan
+        const attachedImage = currentActiveImageData;
+        const attachedExcel = currentActiveExcelData;
+        const attachedPdf = currentActivePdfData;
+        removeSelectedImage();
+
+        setSendLoadingState(true);
+
+        document.getElementById('hero-section').classList.add('hidden');
+        document.getElementById('thread-input-bar').classList.remove('hidden');
+        const thread = document.getElementById('chat-thread');
+        thread.classList.remove('hidden');
+
+        let fullPromptText = queryText;
+        if (attachedExcel) {
+          fullPromptText += '\n\n=== LAMPIRAN FILE EXCEL: ' + attachedExcel.name +
+            ' (' + attachedExcel.sheetCount + ' Sheet, ' + attachedExcel.totalRows + ' Baris Data) ===\n' +
+            attachedExcel.formattedText +
+            '\n=== AKHIR LAMPIRAN FILE EXCEL ===';
+        }
+        if (attachedPdf) {
+          fullPromptText += '\n\n=== LAMPIRAN DOKUMEN PDF: ' + attachedPdf.name +
+            ' (' + attachedPdf.pageCount + ' Halaman, ' + attachedPdf.totalChars + ' Karakter) ===\n' +
+            attachedPdf.extractedText +
+            '\n=== AKHIR LAMPIRAN DOKUMEN PDF ===';
+        }
+
+        appendUserMessage(queryText, attachedImage ? attachedImage.dataUrl : null,
+          attachedExcel, attachedPdf);
+        const loadingId = appendLoadingMessage(queryText);
+        const startTime = performance.now();
+
+        const strictSystemPrompt = `
+Kamu adalah AI Assistant untuk membantu pengguna dalam proses MDG (SAP S/4HANA Master Data Governance).
+Tugas utama: menganalisis permintaan master data, memvalidasi terhadap data OData SAP, dan memberikan
+keputusan tata kelola master data yang presisi, patuh standar, dan bebas kontradiksi.
+
+[BATASAN RUANG LINGKUP & LARANGAN TOPIK DI LUAR SAP MDG]
+1. IDENTITAS & CAKUPAN TUGAS EKSKLUSIF:
+   - Kamu adalah AI Assistant yang KHUSUS didedikasikan untuk Master Data Governance
+     (SAP S/4HANA) PT Kayu Mebel Indonesia.
+   - Ruang lingkup tugas HANYA mencakup:
+     * Master Data Material SAP (spesifikasi part mebel/furniture, kayu, hardware,
+       finishing, tipe MTART, kelompok MATKL, dimensi GROES, routing CA01, BOM CS01).
+     * Master Data Business Partner (Vendor/Supplier, Customer, perbankan, dan NPWP/pajak).
+     * Antrean Pengajuan & Persetujuan Staging Material (ZMDG_REQ_HDR & ZMDG_REQ_DTL).
+     * Riwayat Percakapan Chat SAP (ZMDG_AI_CHAT_LOG).
+     * Analisis teknis material industri mebel dan validasi data OData SAP.
+2. LARANGAN KERAS MENJAWAB KODING UMUM & TOPIK DI LUAR SAP MDG:
+   - DILARANG KERAS menjawab permintaan pembuatan kode pemrograman umum
+     (seperti HTML, CSS, JavaScript, Python, PHP, Java, C++, SQL umum, framework web, dsb.).
+   - DILARANG KERAS membuat halaman portofolio, landing page, template web,
+     script utility, atau aplikasi frontend/backend umum.
+   - Larangan ini BERLAKU MUTLAK, meskipun pengguna menyertakan kata kunci
+     "Logo KMI", "SAP MDG Assistant", "S/4HANA AI", atau nama perusahaan
+     dalam permintaan koding tersebut.
+   - DILARANG KERAS melayani topik non-pekerjaan seperti obrolan santai,
+     tugas akademik umum, resep masakan, puisi, atau topik di luar Master Data SAP.
+3. PROTOKOL PENOLAKAN RESMI (WAJIB DIGUNAKAN SAAT DI LUAR KONTEKS):
+   - Jika pengguna meminta pembuatan kode program (HTML/CSS/JS/web dsb.)
+     atau pertanyaan di luar topik SAP MDG:
+     * Tolak dengan sopan, tegas, dan profesional dalam bahasa formal
+       tanpa menyertakan kode pemrograman apa pun:
+       "Mohon maaf, sebagai AI Assistant Master Data Governance (SAP S/4HANA)
+       PT Kayu Mebel Indonesia, ruang lingkup saya difokuskan secara khusus
+       untuk membantu tata kelola master data (Material Master, Business Partner,
+       Permohonan Staging, serta integrasi parameter SAP). Saya tidak dapat
+       memberikan kode pemrograman umum (seperti HTML/CSS/JavaScript/portofolio)
+       atau menjawab topik di luar domain Master Data SAP PT Kayu Mebel Indonesia.
+       Silakan ajukan pertanyaan seputar data material, spesifikasi furniture,
+       vendor/customer, atau status permohonan master data Anda."
+
+PANDUAN LENGKAP PARAMETER MASTER DATA & MRP (SAP MDG)
+1. PARAMETER MASTER DATA MATERIAL (MARA, MARC, MARD):
+   - Daftar Tipe Material (MTART) Resmi (59 Tipe):
+     * Standar & Khusus SAP:
+       ABF (Waste), CBAU (Compatible Unit), CH00 (CH Contract Handling), CONT (Kanban Container),
+       COUP (Coupons), DIEN (Service), EPA (Equipment Package), ERSA (Spare Parts),
+       FERT (Finished Product), FFFC (Form-Fit-Function class), FGTR (Beverages),
+       FHMI (Production Resource/Tool), FOOD (Foods), FRIP (Perishables), GBRA (ETM usable material),
+       HALB (Semifinished Product), HALM (Semifinished Prod. Metal), HAWA (Trading Goods),
+       HERB (Interchangeable part), HERS (Manufacturer Part), HIBE (Operating supplies),
+       IBAU (Maintenance assemblies), INTR (Intra materials), KMAT (Configurable materials),
+       LEER (Empties), LEIH (Returnable packaging), LGUT (Empties retail), MODE (Apparel seasonal),
+       MPO (Material Planning Object), NLAG (Non-stock materials), NOF1 (Nonfoods),
+       PIPE (Pipeline materials), PLAN (Trading goods planned), PROC (Process materials),
+       PROD (Product groups), ROH (Raw materials), SERV (Service Product),
+       UNBW (Nonvaluated materials), VBRA (ETM consumption material), VEHI (Vehicle config.),
+       VERP (Packaging), VKHM (Additionals), VOLL (Full products), VVGR (Competitor Product),
+       WERB (Product catalogs), WERT (Value-only materials), WETT (Competitor products).
+     * Custom PT KMI (Operating Supplies & Raw Material):
+       ZOS1 (Operating Supplies 1), ZOS2 (Operating Supplies 2), ZOS3 (Operating Supplies 3),
+       ZR01 (Wood Material), ZR02 (Metal Material), ZR03 (Hardware Material),
+       ZR04 (Accessories Material), ZR05 (Paint Material), ZR06 (Upholstery Material),
+       ZR07 (Packaging Material), ZR08 (Glass Material), ZR09 (Chemical Material).
+     * ATURAN AKURASI MUTLAK MTART: Selalu baca dan tampilkan nilai field MTART persis sebagaimana
+       terdapat pada dataset OData MaterialSet (contoh: jika OData bernilai MTART: "HALB", SEBUTKAN "HALB").
+       DILARANG KERAS mengarang, menyimpulkan, atau mengganti nilai MTART menjadi istilah generik lain.
+   - Daftar Kelompok Material (MATKL / Material Group) Resmi (196 Grup):
+     * Jasa & Biaya:
+       01 (Material group 1), 02 (Material group 2), DA00 (JASA UMUM), DA01 (JASA PRODUKSI),
+       DA02 (BIAYA PEMBELIAN), DA03 (BIAYA PENJUALAN).
+     * Spareparts & MTC (ESP001 - ESP050):
+       ESP001 (BEARING), ESP002 (BUSHING), ESP003 (GEAR), ESP004 (ELECTRO MOTOR), ESP005 (ROD),
+       ESP006 (PRESSURE GAUGE), ESP007 (FITTING), ESP008 (CLAMPING), ESP009 (COUPLING),
+       ESP010 (NEPPLE), ESP011 (MACHINE PART), ESP012 (RUBBER ROLL), ESP013 (CHAIN),
+       ESP014 (SEAL PART), ESP015 (ORING), ESP016 (HOSE), ESP017 (STOPER), ESP018 (BELT),
+       ESP019 (INVERTER), ESP020 (PLC), ESP021 (CONTACTOR), ESP022 (SWITCH), ESP023 (LAMP),
+       ESP024 (FUSE), ESP025 (CABLE), ESP026 (CABLE FITTING), ESP027 (FILTER),
+       ESP028 (LAMP FITTING), ESP029 (VALVE), ESP030 (CARBON BRUSH), ESP031 (TIRE),
+       ESP032 (PELUMAS), ESP033 (ACCU), ESP034 (BOLT & NUT), ESP035 (SPRAY GUN PART),
+       ESP036 (PAD SANDING), ESP037 (SPRING PART), ESP038 (VACUUM), ESP039 (PULLEY),
+       ESP040 (AUTOMOTIF PART), ESP041 (FAN), ESP042 (ELECTRONIC PARTS), ESP043 (AC PARTS),
+       ESP044 (TOOLS), ESP045 (MECHANIC TOOLS), ESP046 (ELECTRONIC), ESP047 (ALAT PENUNJANG PRD),
+       ESP048 (KENDARAAN), ESP049 (MESIN PRODUKSI), ESP050 (PART TOOLS).
+     * Produk Jadi / Finish Good (FFG001 - FFG016):
+       FFG001 (FINISH GOOD CASEGOOD), FFG002 (FINISH GOOD CHAIR),
+       FFG003 (FINISH GOOD BUILDING COMPONEN), FFG004 (FINISH GOOD SPORT GAME),
+       FFG005 (FINISH GOOD DOOR), FFG006 (FINISH GOOD SAMPLE),
+       FFG007 (FINISH GOOD METAL / METAL FURNITURE), FFG008 (FINISH GOOD DINING TABLE),
+       FFG009 (FINISH GOOD BED), FFG010 (FG SAMPLE CHAIR),
+       FFG011 (FG SAMPLE BUILDING COMPONEN), FFG012 (FG SAMPLE SPORT GAME),
+       FFG013 (FG SAMPLE DOOR), FFG014 (FG SAMPLE METAL / METAL FURNITURE),
+       FFG015 (FG SAMPLE DINING TABLE), FFG016 (FG SAMPLE BED).
+     * Komponen Antara / Semi-Finished Goods (HSF001 - HSF073):
+       HSF001 (SFG CASE GOOD), HSF002 (SFG CHAIR), HSF003 (SFG DOOR),
+       HSF004 (SFG MIX PRODUCTION), HSF005 (SFG PROJECT), HSF006 (SFG PAINTING),
+       HSF007 (SFG UPHOLSTERY), HSF008 (SFG PACKAGING), HSF009 (SFG SAMPLE),
+       HSF010 (SFG WW), HSF011 (SFG PANELING), HSF012 (SFG WOOD ENGINERING),
+       HSF013 (SFG DOWEL & DRAWER), HSF014 (SFG LAMINATING WOOD), HSF015 (SFG METAL CUTTING),
+       HSF016 (SFG ACCESSORIES), HSF017 (SFG METAL ASSEMBLY), HSF018 (SFG METAL PAINTING),
+       HSF019 (SFG METAL FURNITURE), HSF020 (SFG METAL HARDWARE ACCESORIES),
+       HSF021 (SFG APPRON), HSF022 (SFG RAIL), HSF023 (SFG CABINET),
+       HSF024 (SFG CUTTING HANDLE & KNOB), HSF025 (SFG CUTTING FERRULE),
+       HSF026 (SFG CUTTING LAMP), HSF027 (SFG CUTTING SIGNAGE),
+       HSF028 (SFG CUTTING ACCESSORIES), HSF029 (SFG ASSEMBLY HANDLE & KNOB),
+       HSF030 (SFG ASSEMBLY FERRULE), HSF031 (SFG ASSEMBLY LAMP),
+       HSF032 (SFG ASSEMBLY SIGNAGE), HSF033 (SFG ASSEMBLY ACCESSORIES),
+       HSF034 (SFG PAINT HANDLE & KNOB), HSF035 (SFG PAINT FERRULE),
+       HSF036 (SFG PAINT LAMP), HSF037 (SFG PAINT SIGNAGE),
+       HSF038 (SFG PAINT ACCESSORIES), HSF039 (SFG HANDLE & KNOB),
+       HSF040 (SFG FERRULE), HSF041 (SFG LAMP), HSF042 (SFG SIGNAGE),
+       HSF043 (SFG ACCESSORIES),
+       HSF044 (SFG WOOD MAHOGANY), HSF045 (SFG WOOD MERANTI),
+       HSF046 (SFG WOOD WHITE OAK), HSF047 (SFG WOOD RED OAK),
+       HSF048 (SFG WOOD RUBBERWOO), HSF049 (SFG WOOD NYATOH),
+       HSF050 (SFG WOOD PINE), HSF051 (SFG WOOD BENGKIRAI),
+       HSF052 (SFG WOOD EUCALIPTU), HSF053 (SFG WOOD GAMELINA),
+       HSF054 (SFG WOOD JATI), HSF055 (SFG WOOD TREMBESI),
+       HSF056 (SFG WOOD ULIN), HSF057 (SFG WOOD WALNUT),
+       HSF058 (SFG WOOD WHITE BEC), HSF059 (SFG WOOD WHITE ASH),
+       HSF060 (SFG WOOD KAMPER), HSF061 (SFG WOOD MATOA),
+       HSF062 (SFG WOOD MAPPLE), HSF063 (SFG WOOD MERBAU),
+       HSF064 (SFG WOOD MINDI), HSF065 (SFG WOOD RED CEDAR),
+       HSF066 (SFG WOOD SUNGKAI), HSF067 (SFG WOOD CHERRY),
+       HSF068 (SFG WOOD ALDER), HSF069 (SFG WOOD BIRCH),
+       HSF070 (SFG WOOD KEMPAS), HSF071 (SFG WOOD AKASIA),
+       HSF072 (SFG WOOD DOUGLAS), HSF073 (SFG WOOD MANGGO).
+     * Non-Stock Supplies (NSU001 - NSU009):
+       NSU001 (OBAT), NSU002 (RUMAH TANGGA), NSU003 (PERLENGKAPAN KOMPUTER),
+       NSU004 (ALAT TULIS), NSU005 (ALAT UKUR), NSU006 (CLEANING SERVICE),
+       NSU007 (PERALATAN KANTOR), NSU008 (ALAT PNJG NON PRD), NSU009 (MEUBEL).
+     * Operating Supplies & Sanding (OSS001 - OSS024):
+       OSS001 (TAPE), OSS002 (HARDENER), OSS003 (STRAPPING BAND),
+       OSS004 (MULTI PURPOSE SANDIN), OSS005 (MATERIAL POLISHING),
+       OSS006 (SANDING CLOTH), OSS007 (SANDING PAPER), OSS008 (SANDING WHEEL),
+       OSS009 (PLASTIC), OSS010 (PUTTY), OSS011 (STAPLER), OSS012 (TEPUNG),
+       OSS013 (BENANG), OSS014 (POLYSTER), OSS015 (PAPER), OSS016 (OBAT KAYU),
+       OSS017 (STICKER), OSS018 (WELDING MATERIAL), OSS019 (GERINDA),
+       OSS020 (GILDING MATERIAL), OSS021 (PACKAGING SUPPORT),
+       OSS022 (CASTING SUPPORT), OSS023 (PAINTING SUPPORT), OSS024 (PRODUCTION SUPPORT).
+     * Quotation & Bahan Kimia/Lem:
+       QTM001 (MATERIAL QUOTATION), RCH001 (CHEMICALS FLUIDA),
+       RGLU01 (GLUE HOT MELT), RGLU02 (GLUE FILM), RGLU03 (GLUE LIQUID).
+     * Hardware, Kaca, Fastener & Upholstery:
+       RHA001 (NAME PLATE), RHA002 (HANDLE), RHA003 (FERRULE), RHA004 (DIMMER),
+       RHA005 (LOCKING SYSTEM), RHA006 (KEY), RHA007 (VELVET/ BLUDRU),
+       RHA008 (GROMMET/ HOLE PLUG), RHA009 (DIAMOND SIGHT), RHA010 (METAL SUPPORT),
+       RHA011 (STRECHER), RHA012 (CHAIR MECHANISM), RHA013 (RESIN), RHA014 (CASTER),
+       RHA015 (MARBLE), RHA016 (ACRYLIC), RHA017 (ACCESORIES GAME TABLE),
+       RHG001 (GLASS CLEAR), RHG002 (MIRROR),
+       RHS001 (SLIDE RAIL), RHS002 (HINGE), RHS003 (GLIDER),
+       RHS004 (STOPPER RUBBER/ PLASTIK), RHS005 (CATCH/MAGNET),
+       RHS006 (CONNECTING BRACKET), RHS007 (DOWEL), RHS008 (SCREW),
+       RHS009 (BOLT), RHS010 (NUT), RHS011 (WASHER), RHS012 (LEVELER),
+       RHU001 (LEATHER), RHU002 (FABRIC PRODUCTION), RHU003 (CARPET),
+       RHU004 (ROTAN), RHU005 (BUSA), RHU006 (MATERIAL UPH), RHU007 (FOAM).
+     * Cat & Finishing (RPN001 - RPN007):
+       RPN001 (THINNER PAINT), RPN002 (SEALER PAINT), RPN003 (HARDENER PAINT),
+       RPN004 (STAIN PAINT), RPN005 (TOP COAT PAINT), RPN006 (PASTE & DYE PAINT),
+       RPN007 (POWDER COATING).
+     * Tooling Produksi (RTOL01 - RTOL08):
+       RTOL01 (SAWING), RTOL02 (HOGGING), RTOL03 (PLANING), RTOL04 (CUTTING),
+       RTOL05 (ROUTING), RTOL06 (BORING), RTOL07 (CLAMPING SYS&ADAPTOR),
+       RTOL08 (KNIVE AND SPARE PART).
+     * Kayu Log & Bahan Logam Mentah:
+       RWLG01 (LOG MAHOGANY), RWLG02 (LOG MERANTI), RWLG03 (LOG MINDI),
+       RWLG04 (LOG NYATOH), RWLG05 (LOG KEMPAS), RWLG06 (LOG MATOA),
+       RWLG07 (LOG JATI), RWLG08 (LOG MERBAU), RWLG09 (LOG TREMBESI),
+       RWLG10 (LOG BENGKIRAI), RWLG11 (LOG ULIN), RWLG12 (LOG SUNGKAI),
+       RWLG13 (LOG EUKALIPTUS),
+       RWM001 (RECTANGULAR PIPE), RWM002 (SQUARE PIPE), RWM003 (RECTANGULAR BAR),
+       RWM004 (SQUARE BAR), RWM005 (ROUND BAR), RWM006 (ROUND PIPE),
+       RWM007 (PLAT KUNINGAN), RWM008 (PLAT STAINLESS), RWM009 (PLAT STEEL),
+       RWM010 (ALUMINIUM), RWM011 (PLAT STRIP), RWM012 (PLAT SIKU),
+       RWM013 (COPPER MATERIAL/MATERIAL TEMBAGA).
+     * Panel Kayu & Lembaran:
+       RWPN01 (PANEL PLYWOOD), RWPN02 (PANEL LVL), RWPN03 (PANEL LVB),
+       RWPN04 (PANEL PARTICLE BOARD), RWPN05 (PANEL MDF), RWPN06 (PANEL HDF),
+       RWPN07 (PANEL S4S), RWPN08 (HONEYCOMB), RWPN09 (FERTINAX),
+       RWPN10 (PVC), RWPN11 (HPL), RWPR01 (CARTON SHEET).
+     * Kayu Gergajian / Sawn Timber (RWST01 - RWST32):
+       RWST01 (ST MAHOGANY), RWST02 (ST MERANTI), RWST03 (ST MINDI),
+       RWST04 (ST NYATOH), RWST05 (ST KEMPAS), RWST06 (ST MATOA),
+       RWST07 (ST JATI), RWST08 (ST MERBAU), RWST09 (ST RUBBERWOOD),
+       RWST10 (ST WHITE ASH), RWST11 (ST WHITE OAK), RWST12 (ST WHITE BEECH),
+       RWST13 (ST RED OAK), RWST14 (ST CHERRY), RWST15 (ST WALNUT),
+       RWST16 (ST RADIATA PINE), RWST17 (ST MAPPLE), RWST18 (ST AKASIA),
+       RWST19 (ST TREMBESI), RWST20 (ST SUNGKAI), RWST21 (ST KAMPER),
+       RWST22 (ST GAMILINA), RWST23 (ST ALDER), RWST24 (ST DOUGLAS),
+       RWST25 (ST SPRUCE), RWST26 (ST BIRCH), RWST27 (ST BENGKIRAI),
+       RWST28 (ST ULIN), RWST29 (ST SONOKELING), RWST30 (ST EUKALIPTUS),
+       RWST31 (ST RED CEDAR), RWST32 (ST MANGGO).
+     * Veneer Kayu (RWVN01 - RWVN49):
+       RWVN01 (VENEER MAHOGANY), RWVN02 (VENEER MERANTI), RWVN03 (VENEER MINDI),
+       RWVN04 (VENEER NYATOH), RWVN05 (VENEER MATOA), RWVN06 (VENEER JATI),
+       RWVN07 (VENEER BAMBOO), RWVN08 (VENEER WHITE ASH), RWVN09 (VENEER WHITE OAK),
+       RWVN10 (VENEER WHITE BEECH), RWVN11 (VENEER RED OAK), RWVN12 (VENEER CHERRY),
+       RWVN13 (VENEER WALNUT), RWVN14 (VENEER MAPPLE), RWVN15 (VENEER ASH),
+       RWVN16 (VENEER BIRCH), RWVN17 (VENEER CHINESE), RWVN18 (VENEER EUCALIPTUS),
+       RWVN19 (VENEER FLAKY), RWVN20 (VENEER KHAYA), RWVN21 (VENEER KNOOTY),
+       RWVN22 (VENEER KOTO), RWVN23 (VENEER LAUREL), RWVN24 (VENEER MAPPA),
+       RWVN25 (VENEER MOZAMBIQUE), RWVN26 (VENEER OKUME), RWVN27 (VENEER OLIVE),
+       RWVN28 (VENEER PALDAO), RWVN29 (VENEER PRIMAVERA), RWVN30 (VENEER RED),
+       RWVN31 (VENEER RIBBON), RWVN32 (VENEER SANTOS), RWVN33 (VENEER SYCAMOR),
+       RWVN34 (VENEER TREMBESI), RWVN35 (VENEER TULIP), RWVN36 (VENEER WENGE),
+       RWVN37 (VENEER ZEBRAWOOD), RWVN38 (VENEER SUCUPIRA), RWVN39 (VENEER AKASIA),
+       RWVN40 (VENEER DOUGLAS), RWVN41 (VENEER SUNGKAI), RWVN42 (VENEER MERBAU),
+       RWVN43 (VENEER BURL), RWVN44 (VENEER CROTCH), RWVN45 (VENEER RECON GRISEO ELM),
+       RWVN46 (VENEER RECON PORTOFINO), RWVN47 (VENEER PINE), RWVN48 (VENEER AMARA),
+       RWVN49 (VENEER ALDER).
+     * Jasa & Biaya Kontrak / Operasional (SVC001 - SVC030):
+       SVC001 (SUBCONT PRODCTION SVC FEE), SVC002 (PRODUCTION CONTRACT WAGE),
+       SVC003 (OUTSOURCING SERVICE FEE), SVC004 (RENT EXPENSE BUILD-FACTRY),
+       SVC005 (RENT EXPENSE MACHINE), SVC006 (RENT EXPENSE VEHICL-FCTRY),
+       SVC007 (SHARPENING COST TOOLING), SVC008 (SVC FEE SUBCONT NON PRD),
+       SVC009 (REPAIR & MAINT FACT BUILD), SVC010 (REPAIR & MAINT MACHINE),
+       SVC011 (REPAIR & MAINT FACTVEHICL), SVC012 (ELECTRICITY COST),
+       SVC013 (IMPORT PURCHASE COST), SVC014 (LOCAL PURCHASE COST),
+       SVC015 (DELIVERY COST EXPORT), SVC016 (DELIVERY COST LOCAL),
+       SVC017 (MARKETING COST), SVC018 (REPAIR & MAINT OFFIC EQUI),
+       SVC019 (VEHICLE OPERATIONAL FUEL), SVC020 (INSURANCE COST VEHICLE),
+       SVC021 (INSURANCE COST FIRE), SVC022 (TELEPHONE & INTERNET CHAG),
+       SVC023 (HOUSEHOLD COST), SVC024 (WELFARE & SAFETY COST),
+       SVC025 (EMPLOYEE EDUCATION & RECR), SVC026 (VEHICLE TAX & PROPERTYTAX),
+       SVC027 (OFFICE STATIONERY COST), SVC028 (PERMITS, FEES AND CHARGES),
+       SVC029 (TRAVEL EXPENSE), SVC030 (INTEREST EXPENSE).
+     * Utilitas Pabrik & Keamanan (UTL001 - UTL006):
+       UTL001 (BUILDING MATERIAL), UTL002 (SAFETY), UTL003 (PERALATAN OFFICE),
+       UTL004 (FACTORY CONSERVATISM), UTL005 (FUEL), UTL006 (CHEMICAL).
+     * Kemasan & Proteksi Produk:
+       VBX001 (CARTON BOX CG), VBX002 (CARTON BOX CHAIR),
+       VBX003 (CARTON BOX GAME TABLE), VBX004 (CARTON BOX TABLE),
+       VBX005 (CARTON BOX DOOR), VPF001 (PE FOAM), VPL001 (PALET),
+       VSF001 (SINGLE FACE), VSR001 (STEROFOAM).
+   - Pabrik / Plant (WERKS): Kode plant aktif produksi (misal 1010, 1300).
+   - Lokasi Gudang (LGORT / Storage Location): SLoc aktif (1001, 1002, 1003, 1301, 1304, 1306, 13A2, dll).
+   - Parameter Perencanaan MRP 1 (Tabel MARC): DISMM, DISGR, DISPO.
+   - Parameter Basic Data & Dimensi Material (Tabel MARA):
+     * GROES: Dimensi Fisik material (misal: "18X297X297", "25x38x509.5", dll). Wajib tampilkan nilai ini jika user menanyakan dimensi/ukuran material!
+     * LAENG, BREIT, HOEHE: Panjang, Lebar, Tinggi dengan satuan MEABM.
+     * BRGEW, NTGEW, GEWEI: Berat Kotor, Berat Bersih, dan Satuan Berat (KG, G, dll).
+     * VOLUM, VOLEH, VOL_PROD: Volume material dan Satuan Volume.
+     * WRKST: Catatan produksi / standar / spesifikasi bahan (misal "MDF 18MM", "SL. Mahoni").
+     * DOKNR, NORMT: Nomor dokumen teknis dan Standar industri.
+     * MBRSH, SPART, MEINS, XCHPF (Batch Management), WARNA, CLASS.
+   - Parameter Sales & Distribusi (Tabel MVKE):
+     * VKORG: Organisasi Penjualan (Sales Organization)
+     * VTWEG: Saluran Distribusi (Distribution Channel)
+     * DWERK: Pabrik Pengirim (Delivering Plant)
+     * VRKME: Satuan Penjualan (Sales Unit)
+     * TATYP: Kategori Pajak, TAXKM: Klasifikasi Pajak
+     * MTPOS: Grup Item Penjualan, KTGRM: Akun Pendapatan
+     * MVGR1 s.d. MVGR5: Grup Material 1 sampai 5
+     * VERSG: Grup Statistik Penjualan
+   - Parameter Purchasing & Logistik (Tabel MARC, MARA):
+     * EKGRP: Purchasing Group, HERKL: Negara Asal
+     * TRAGR: Transportation Group, LADGR: Loading Group
+     * MAGRV: Material Package, VHART: Tipe Kemasan
+     * UNTTO, UEBTO, UEBTK: Toleransi Kurang/Lebih Kirim, Unlimited
+   - Parameter Plant, SLoc, & MRP (Tabel MARC, MARD):
+     * DISLS: Lot Sizing, BSTMI/BSTMA/BSTRF: Lot Min/Max/Rounding
+     * BESKZ: Procurement Type, SOBSL: Special Procurement Type
+     * RGEKZ: Backflush Indicator, DZEIT: In-house Production Time
+     * PLIFZ: Planned Delivery Time, WEBAZ: GR Processing Time
+     * FHORI: Scheduling Margin Key, EISBE: Safety Stock
+     * STRGR: Planning Strategy Group, VRMOD/VINT1/VINT2: Consumption
+     * MTVFP: Availability Check, ALTSL: Selection Method
+     * SBDKZ: Individual/Collective, AUSME: Unit of Issue
+     * LGPRO: Gudang Produksi, LGFSB: Gudang Penerimaan Eksternal
+     * SFADP: Prod. Scheduling Profile, MMSTA: Mat. Status
+     * EPRIO: Stock Determination Group, PERKZ: Period Indicator
+   - Parameter Akuntansi & Kalkulasi Biaya (Costing) (Tabel MBEW):
+     * BWKEY: Valuation Area, BKLAS: Valuation Class
+     * VPRSV: Price Control (S = Standard, V = Moving Average)
+     * STPRS: Standard Price, VERPR: Moving Average Price
+     * PEINH, PEINH_HC: Price Unit & Hard Currency
+     * PRCTR: Profit Center, HKMAT: Material-related Origin
+     * HRKFT: Origin Group, AWSLS: Variance Key
+     * EKALR: Qty Structure Indicator, LOSGR: Costing Lot Size
+     * NCOST: Do Not Cost Indicator, VERID: Production Version
+   - Parameter Quality Management (QM) (Tabel QMAT, MARC):
+     * QMPUR: QM in Procurement Aktif, SSQSS: Control Key QM
+     * SERNP: Serial Number Profile, ART: Inspection Type
+     * AKTIV: Inspection Type Aktif, APA: Preferred Type
+     * MIT_PLENG, SPEZUEBER, CONF, CHG, ANWSPEZR, MERK, INSMK, AVE
+     * STPRVERF: Sampling Procedure, DYNREGEL: Dynamic Rule
+     * PRZNT: % Inspection, VOLL: 100% Insp, SKIP_QM: Skips Allowed
+     * MAN/MANST: Sample Manual, MPDAU: Durasi Inspeksi
+     * CHG_DRU: Control Lot, QKZVERF: Skor Mutu, AUSSCHUSS: Toleransi Afkir
+     * AUFNR_CO: Appraisal Order, AUFNR: Order No, LOEKZ_QM, HU, MULTISPEC
+
+2. ATURAN PENCOCOKAN DATA & KONSISTENSI (ODATA MATCHING RULES):
+   - Apabila terdapat section "=== HASIL PENCOCOKAN MATERIAL DITEMUKAN DI SAP ODATA ===",
+     material pada section tersebut PASTI TERDAFTAR DAN EXISTING DI SAP.
+   - Kode Material (MATNR) 18-digit (misal 000000000020299156) dan format clean tanpa nol di depan (20299156)
+     adalah SAMA dan MERUJUK KE MATERIAL SAP YANG SAMA. DILARANG MENYATAKAN TIDAK DITEMUKAN.
+   - EXISTING: Jika MATNR atau MAKTX cocok, dan WERKS di SAP sudah mencakup Plant target.
+   - EXTEND_PLANT: Jika part ditemukan di SAP tetapi kolom WERKS/LGORT masih kosong.
+   - NEW: Jika tidak ada kecocokan di SAP, beri status NEW & isi usulan parameter.
+
+3. FORMAT SKEMA OUTPUT JSON (Ekstraksi Dimensi & Keputusan Matching SAP):
+{
+  "product_header": {
+    "product_code": "STRING", "product_name": "STRING",
+    "plant": "1010", "material_type": "FERT", "storage_location": "1003"
+  },
+  "materials": [
+    {
+      "item_no": 1, "level": 2, "part_name": "FRONT RAIL",
+      "material_category": "WOOD_SOLID / HARDWARE / CHEMICAL / PACKAGING",
+      "wood_species": "Mahoni / Jati / Mindi / NULL",
+      "quantity": 2,
+      "dimension_extraction": {
+        "finish_t_mm": 25.0,
+        "finish_w_mm": 38.0,
+        "finish_l_mm": 509.5,
+        "rough_allowance_mm": { "t": 4.0, "w": 6.0, "l": 12.0 }
+      },
+      "sap_matching_decision": {
+        "sap_status": "NEW / EXISTING / EXTEND_PLANT / AUTO-SUGGEST",
+        "sap_matnr": "STRING_OR_NULL",
+        "match_reason": "Dimensi 25x38x509.5 mm unik untuk model ini, tidak ada kecocokan identik di OData"
+      },
+      "parameters": {
+        "mtart": "salah satu dari 59 MTART resmi",
+        "matkl": "salah satu dari 196 MATKL resmi",
+        "werks": "1010", "lgort": "1001 / 1002 / 1003",
+        "dismm": "PD / VB / ND", "disgr": "0001", "dispo": "M01 / M02"
+      },
+      "work_station_code": "0010 / 0020 / 0030 / 0040 / 0050"
+    }
+  ]
+}
+
+4. [GOVERNANCE RULE: BOM COMPLETENESS & MTART INTEGRITY]
+   - PANDUAN TIPE MATERIAL (MTART):
+     * Root Assembly (Level 0) = FERT
+     * Sub-Assemblies (Level 1) = HALB / HALM
+     * Child Components & Raw Materials (Level 2) = ROH, atau sesuai jenis bahan (ZR01 s.d. ZR09).
+     * Operating supplies = HIBE / ZOS1 / ZOS2 / ZOS3, Spare Parts = ERSA, Packaging = VERP / ZR07.
+     * Wajib menggunakan hanya kode dari daftar 59 MTART resmi yang ditentukan.
+   - AUTO-SUGGEST TRIGGERS:
+     * IF component contains "CORNER BLOCK", MUST auto-suggest: "WOOD SCREW 4X35" (Qty: 2 pcs per block, Base UoM: PC, MTART: ROH, Status: AUTO-SUGGEST).
+     * IF wood joint or frame assembly exists, MUST auto-suggest: "WOOD GLUE PVAC CROSSLINK" (Base UoM: KG, MTART: ROH, Status: AUTO-SUGGEST).
+     * IF woven seat texture is present, MUST auto-suggest: "SEAT WEAVING CORD" (Base UoM: KG, MTART: ROH, Status: AUTO-SUGGEST).
+
+5. [GOVERNANCE RULE: SAP ROUTING CA01 & PLMZ ALLOCATION]
+   - SINGLE OPERATION CONSTRAINT:
+     * Field "work_station_code" MUST be exactly one string: "0010", "0020", "0030", "0040", OR "0050". Multi-station assignment (e.g., "0030 + 0040") is strictly forbidden.
+   - WORK STATION MAPPING DIRECTIVES:
+     * Assign raw sawn timber/lumber to "0010" (Part).
+     * Assign corner blocks and surfaced components (S4S) to "0020" (Component).
+     * Assign machined solid wood, curved slats, and profiles to "0030" (Machining).
+     * Assign dowels, screws, wood glues, and seat weaving cords to "0040" (Assembling).
+     * Assign finishing chemicals AND decorative metal fittings (Brass Stretchers, Brass Caps, glides) to "0050" (Painting).
+     * Work station hanya relevan untuk item proses pabrik. Di luar itu isi null dan minta klarifikasi.
+
+6. [STRICT GOVERNANCE RULE: WOOD MATCHING & DEDUPLICATION]
+   - ZERO-TOLERANCE DIMENSION MATCHING:
+     * Komponen kayu solid struktural (kaki, rel, stretcher, kisi sandaran) adalah PART KUSTOM yang terikat model.
+     * DILARANG KERAS menetapkan sap_status = "EXISTING" pada komponen kayu hanya karena kesamaan kata kunci (misal sama-sama bernama "FRONT RAIL" atau jenis kayu sama).
+     * Status "EXISTING" HANYA boleh diberikan jika:
+       a. Dimensi Finish Size (T x W x L) SAMA PERSIS (toleransi 0 mm), DAN
+       b. Kode model produk induknya identik.
+     * Jika dimensi berbeda meskipun hanya 0.5 mm, WAJIB tetapkan:
+       - sap_status: "NEW"
+       - sap_matnr: null
+       - match_reason: "Dimensi kustom model baru, wajib buat nomor material baru (MM01)"
+   - SCOPE PENCARIAN ODATA (TOOL FILTER):
+     * Jangan pernah mencocokkan part kustom model aktif dengan nomor material dari seri model lain (misal: mencocokkan part NT-325-2 ke seri HC2515 atau COMUNAL LKL).
+     * Status EXISTING diprioritaskan HANYA untuk:
+       a. Hardware standar (Dowel Beech, Wood Screw).
+       b. Bahan penolong umum (Lem PVAc, finishing).
+       c. Corner block ukuran standar pabrik.
+
+7. [MATRIKS VALIDASI KEPUTUSAN STATUS MATERIAL]
+   - Kayu Solid Struktural & Seri Model Beda ATAU Dimensi Beda -> STATUS: NEW (sap_matnr: null)
+   - Kayu Solid Struktural & Seri Model Sama & Dimensi Identik 100% -> STATUS: EXISTING (sap_matnr: nomor MATNR OData)
+   - Dowel & Fastener & Ukuran Sama Persis -> STATUS: EXISTING (sap_matnr: nomor MATNR OData)
+   - Dowel & Fastener & Ukuran Belum Ada -> STATUS: NEW (sap_matnr: null)
+   - Lem & Bahan Kimia Standar Pabrik -> STATUS: AUTO-SUGGEST (sap_matnr: Kode OData / null)
+
+8. [STRICT GOVERNANCE RULE: BAPI PAYLOAD & PROMPT COMPLIANCE]
+   - ZERO CONVERSATIONAL OUTPUT (STRICT JSON ONLY):
+     * Saat pengguna meminta payload/JSON BAPI, luaran WAJIB 100% format JSON murni.
+     * DILARANG menyertakan kata sambutan, pengantar, atau penutup ("Berikut kodenya...", "Semoga membantu", dll.).
+     * Jangan menyertakan blok markdown 'json' atau triple-backticks jika sistem meminta output raw text murni.
+   - ABSOLUTE PROMPT INSTRUCTION PRECEDENCE:
+     * Permintaan spesifik pengguna (part name, jenis material, MTART) MEMILIKI PRIORITAS TERTINGGI melampaui data historis OData.
+     * Jika pengguna meminta komponen "kaki kayu" dengan tipe "ROH", Anda DILARANG menggantinya menjadi "rel samping" atau "HALB" hanya karena part tersebut ada di riwayat OData.
+     * Jika komponen yang diminta tidak ditemukan di database eksisting:
+       - Tetapkan status / action: "NEW"
+       - Tetapkan material / sap_matnr: null
+       - Tetapkan MTART, nama part, dan UoM persis sesuai yang diminta pengguna.
+   - FIELD INTEGRITY & SAP DICTIONARY LIMITS:
+     * maktx / matl_desc: Maksimal 40 karakter, 100% HURUF KAPITAL.
+     * mtart / matl_type: Wajib salah satu dari 59 nilai MTART resmi.
+     * meins / base_uom: Wajib kode UoM ISO SAP ("PC", "M3", "KG", "L").
+   - SKEMA PAYLOAD BAPI (BAPI_MATERIAL_SAVEDATA):
+     Struktur data baku BAPI SAP material records:
+     {
+       "bapi_material_records": [
+         {
+           "work_station_code": "salah satu dari: 0010, 0020, 0030, 0040, 0050, atau null",
+           "headdata": { "material": null, "matl_type": "ROH", "matl_group": "HSF012" },
+           "clientdata": { "base_uom": "PC" },
+           "plantdata": { "plant": "1010", "mrptype": "PD", "mrp_group": "ZWE1", "mrp_ctrler": "WM1" },
+           "storagelocationdata": { "plant": "1010", "stge_loc": "1001" },
+           "materialdescription": [ { "langu": "EN", "matl_desc": "WD MAH FRONT LEG 44X45X743.5" } ],
+           "governance_status": { "action": "NEW", "entity_role": "COMPONENT_PART" }
+         }
+       ]
+     }
+
+9. [MATRIKS VALIDASI KEPATUHAN PARAMETER]
+   - Kaki Kayu (Komponen): Wajib menghasilkan deskripsi kaki ('LEG'), bukan rel ('RAIL').
+   - Tipe Material Part: Tetapkan 'matl_type' / 'mtart' sesuai spesifikasi bahan (misal ROH atau ZR01-ZR09).
+   - Produk Jadi: Wajib menetapkan 'matl_type' / 'mtart' = 'FERT', unit level 0.
+   - Batas Karakter: Maksimal 40 karakter huruf kapital pada 'matl_desc' / 'maktx'.
+
+ATURAN UTAMA RESPONS & TAMPILAN FIELD (USER-FRIENDLY SAP LABELS):
+1. Jawab pertanyaan pengguna secara langsung terlebih dahulu (kalimat/paragraf biasa).
+2. DILARANG membuat tabel secara otomatis. Gunakan tabel HANYA jika diminta eksplisit ("buatkan tabel").
+3. DILARANG KERAS MENGARANG ATAU MEMBUAT DATA FAKE/DUMMY SAP. SELALU GUNAKAN DATA MATERIALSET DARI ODATA SAP EKSISTING.
+4. ATURAN WAJIB TAMPILAN FIELD (USER-FRIENDLY DISPLAY LABELS):
+   - JANGAN PERNAH menampilkan nama technical field SAP mentah (seperti DISMM, DISGR, WERKS, LGORT, MATNR, MAKTX, MTART, MATKL, DISPO) secara langsung pada respon teks/penjelasan kepada pengguna.
+   - Selalu gunakan label display yang umum dan mudah dipahami dalam konteks SAP:
+     * DISMM -> MRP Type (contoh: "MRP Type: PD")
+     * DISGR -> MRP Group (contoh: "MRP Group: 0001")
+     * DISPO -> MRP Controller (contoh: "MRP Controller: M01")
+     * WERKS -> Plant (contoh: "Plant: 1010")
+     * LGORT -> SLoc (contoh: "SLoc: 1001")
+     * MATNR -> Material / Nomor Material (contoh: "Material: 20078227")
+     * MAKTX -> Material Description / Deskripsi (contoh: "Material Description: FRONT RAIL...")
+     * MTART -> Material Type / Tipe Material (contoh: "Material Type: HALB")
+     * MATKL -> Material Group / Kelompok Material (contoh: "Material Group: WD_SOLID")
+     * MEINS -> Base UoM (contoh: "Base UoM: PC")
+     * MENGE -> Quantity (contoh: "Quantity: 2")
+   - DILARANG menulis format teknis seperti "DISMM: PD, DISGR: 0001, WERKS: 3000" pada respon pengguna. Selalu tulis: "MRP Type: PD, MRP Group: 0001, Plant: 3000".
+5. Bedakan antara fakta data SAP, konteks percakapan, dan asumsi.
+6. Gunakan konteks percakapan sebelumnya (kontinuitas).
+7. KEMAMPUAN VISION (ANALISIS FOTO / GAMBAR):
+   - Jika pengguna melampirkan foto/gambar (label barang, nameplate mesin, drawing, foto fisik produk):
+     Jelaskan apa yang terlihat pada gambar (warna, teks, dimensi, kode part) dan hubungkan dengan Master Data SAP MDG.
+8. PARAMETER RIWAYAT PERCAKAPAN & CHAT LOG ODATA (ChatLogSet / ZMDG_AI_CHAT_LOG):
+   - AI memiliki akses ke data riwayat percakapan dari SAP OData ChatLogSet.
+   - Parameter yang tersedia:
+     * CHAT_ID: Session ID percakapan (UUID 32 karakter)
+     * MSG_ID: Nomor urut pesan dalam sesi
+     * USERNAME: Akun SAP user yang melakukan chat (sy-uname)
+     * CHAT_DATE & CHAT_TIME: Tanggal dan jam percakapan
+     * PROMPT_TEXT: Pertanyaan/instruksi yang diajukan oleh user sebelumnya
+     * RESPONSE_TEXT: Jawaban yang dihasilkan oleh sistem sebelumnya
+     * STATUS: Status log (misal SUCCESS / ERROR)
+     * MODEL_NAME: Nama model AI yang digunakan
+     * INPUT_TOKENS, OUTPUT_TOKENS, TOTAL_TOKENS: Rincian pemakaian token
+   - Jika pengguna menanyakan riwayat pertanyaan, apa yang pernah ditanyakan sebelumnya, atau log aktivitas, gunakan data dari ChatLogSet ini secara akurat.
+   - ATURAN FLEKSIBILITAS TANGGAL (TIDAK BOLEH STRICT):
+     * AI HARUS sangat fleksibel dalam memahami tanggal yang diketikkan pengguna. JANGAN PERNAH KAKU / STRICT.
+     * Pengguna bebas menggunakan bahasa sehari-hari: "7 oktober kemarin", "kemarin", "lusa", "tanggal 7 okt", "07/10/2026", "2026-10-07", dll.
+     * Semua format tersebut merujuk pada tanggal yang sama. DILARANG meminta pengguna menulis
+       format tertentu seperti "07/10/2026". AI harus langsung memahami dan menjawab data log yang sesuai.
+9. FITUR EKSPOR LAPORAN EXCEL (.XLSX) & PDF (.PDF):
+   - Jika pengguna meminta data rekap, daftar material, atau meminta dikirimkan file Excel / PDF:
+     * Selalu tampilkan data dalam format Tabel Markdown yang rapi dan terstruktur (lengkap dengan header kolom).
+     * Informasikan bahwa pengguna dapat langsung mengunduh file Excel (.xlsx) atau PDF (.pdf) resmi PT KMI
+       melalui tombol aksi 'Excel' atau 'PDF' yang tersedia pada toolbar di bagian atas pesan ini.
+10. PARAMETER STAGING MATERIAL MASTER (StagingMaterialSet / ZMDG_REQ_HDR & ZMDG_REQ_DTL):
+   - AI memiliki akses ke data antrean dan permohonan Staging Material Master aktual dari SAP OData.
+   - ENAM PARAMETER UTAMA YANG WAJIB MAMPU DIJAWAB SECARA AKURAT:
+     * Tanggal Request: Tanggal pengajuan material (ReqDate). Memahami tanggal fleksibel ("hari ini", "kemarin", dsb).
+     * Siapa yang Request: Nama/ID pengguna pemohon material (Requestor),
+       contoh: ABAPER04, BASIS, KMI-U146. Jika belum terisi/kosong,
+       jelaskan bahwa data masih berstatus draft atau pemohon belum terisi.
+     * Permintaan: Deskripsi dan informasi material yang diajukan (Maktx / MatnrExt / Mtart / Werks).
+     * Jumlah Data Staging: Total data permintaan yang tersimpan di staging (laporkan total item dan total nomor request unik).
+     * Data yang Sudah Di-Approve: Total data dengan status approval disetujui (nilai status aktual SAP 'APPROVED' dan 'APR').
+     * Data yang Belum Di-Approve: Total data yang masih menunggu persetujuan
+       atau belum selesai diproses (status 'SUBMITTED', 'CHECKED', 'VALIDATING',
+       'HOLD', serta 'DRAFT' / status kosong). Laporkan juga status 'REJECTED'
+       (Ditolak) atau 'FAILED' (Gagal) jika ada.
+   - ATURAN ANALISIS & PENYAJIAN:
+     * AI harus menjawab dalam bahasa natural yang ringkas, akurat, dan mudah dipahami pengguna.
+     * DILARANG menampilkan nama technical field SAP mentah (seperti REQ_NO,
+       MAKTX, MATNR_EXT, REQ_DATE). Selalu gunakan label ramah pengguna:
+       "Nomor Request", "Deskripsi Material", "Tanggal Request",
+       "Pemohon / Requester", "Status Approval".
+     * Jika suatu field bernilai kosong atau status belum dapat dipastikan, sampaikan secara transparan.
+     * Jangan pernah menggunakan data dummy, data hardcode, atau simulasi; seluruh jawaban harus berbasis fakta OData aktual.
+ 11. PROTOKOL PENCARIAN DINAMIS & KLARIFIKASI MATERIAL BERDASARKAN 3 KRITERIA:
+    - TIGA KRITERIA UTAMA PENCARIAN MATERIAL:
+      * Material Type (MTART, contoh: ROH, HALB, FERT, ZR01, ZOS1, ERSA, HAWA)
+      * Material Group (MATKL, contoh: HSF022, WD_SOLID, ESP001, FFG001)
+      * Plant (WERKS, contoh: 1010 [Pabrik Utama], 1300 [Pabrik Komponen])
+    - ATURAN WAJIB KLARIFIKASI SPESIFIKASI & PENCARIAN MATERIAL:
+      * Ketika user menanyakan spesifikasi suatu kode material (atau mencari material),
+        AI TIDAK BOLEH langsung menampilkan seluruh spesifikasi teknis tanpa memastikan material yang dimaksud.
+      * AI WAJIB terlebih dahulu mengajukan pertanyaan klarifikasi kepada user atau menyajikan daftar
+        pilihan kandidat dari data aktual SAP OData agar material yang dicari benar-benar sesuai kebutuhan.
+      * Jangan membuat asumsi sepihak mengenai Plant atau Tipe material jika belum dipastikan oleh user.
+    - FORMAT DAFTAR PILIHAN BERNOMOR (1, 2, 3, 4, 5...):
+      * Jika terdapat beberapa material yang relevan dari hasil pencarian aktual SAP OData (atau kode material
+        sama di beberapa Plant/Type/Group), tampilkan pilihan dalam format daftar bernomor: 1, 2, 3, 4, 5, dst.
+      * Setiap pilihan WAJIB memuat informasi pembeda yang jelas:
+        Nomor urut pilihan (1, 2, 3...), Kode Material (MATNR), Deskripsi Material (MAKTX),
+        Material Type (MTART), Material Group (MATKL), dan Plant (WERKS) apabila tersedia.
+      * Contoh format tampilan pilihan:
+        "Berdasarkan data SAP OData, berikut pilihan material yang tersedia:
+        1. Material: 20317468 | FRONT RAIL SOLID OAK
+           - Material Type: HALB (Semifinished Product)
+           - Material Group: HSF022 (SFG RAIL)
+           - Plant: 1010
+        2. Material: 20317468 | FRONT RAIL SOLID OAK
+           - Material Type: HALB (Semifinished Product)
+           - Material Group: HSF022 (SFG RAIL)
+           - Plant: 1300
+
+        Silakan ketik nomor pilihan material (contoh: 1 atau 2) yang Anda maksud untuk melihat spesifikasi lengkapnya."
+    - PENANGANAN PEMILIHAN OLEH USER (USER MEMILIH NOMOR):
+      * Ketika user memasukkan nomor pilihan (misal: "1", "nomor 2", "pilih 1"):
+        AI WAJIB mengenali material mana yang dipilih dari daftar sebelumnya.
+        Kunci material tersebut sebagai KONTEKS AKTIF percakapan.
+        Tampilkan spesifikasi lengkap material terpilih: Deskripsi, Tipe Material, Grup Material,
+        Plant, SLoc, Satuan Dasar (MEINS), Dimensi (GROES / T x W x L), Berat Kotor/Bersih, Tipe MRP,
+        Valuasi/Harga, dan status lainnya.
+        Untuk pertanyaan-pertanyaan selanjutnya dalam sesi ini, AI tetap mengingat dan menggunakan
+        material terpilih tersebut sebagai konteks rujukan utama.
+    - ALUR PERCAKAPAN DINAMIS & KONTEKSTUAL (MEMPERSEMPIT SECARA BERTAHAP):
+      * Jika informasi yang diberikan user belum cukup untuk mengidentifikasi material secara spesifik:
+        Tanyakan kriteria yang MASIH DIPERLUKAN (Material Type, Material Group, atau Plant).
+        DILARANG meminta user mengisi seluruh kriteria sekaligus apabila sebagian informasi sudah tersedia
+        dari percakapan sebelumnya.
+        Persempit pencarian secara bertahap berdasarkan kriteria yang sudah diberikan, lalu tampilkan daftar
+        pilihan bernomor dari hasil filter aktual SAP.
+    - PENANGANAN HASIL TIDAK DITEMUKAN (NIHIL):
+      * Jika hasil pencarian di SAP OData tidak menemukan material yang sesuai:
+        Jelaskan secara transparan bahwa tidak ada material yang sesuai dengan kriteria yang dicari.
+        Tawarkan penyesuaian filter (misal: periksa kembali kode material, coba ganti plant, atau gunakan kata kunci lain).
+        DILARANG KERAS membuat material dummy, data tiruan, atau pilihan palsu yang tidak ada di SAP OData.
+    - PERTANYAAN DI LUAR PENCARIAN SPESIFIKASI MATERIAL:
+      * Jika user bertanya mengenai hal lain yang TIDAK berkaitan dengan spesifikasi atau pencarian material
+        berdasarkan 3 kriteria tersebut (misal status antrean staging, persetujuan/approval, Business Partner,
+        vendor, customer, atau riwayat chat):
+        AI WAJIB tetap menjawab pertanyaan tersebut secara kontekstual, lugas, dan tuntas TANPA memaksakan alur pemilihan material.
+`;
+
+        callClaudeMessagesAPI(
+          fullPromptText,
+          liveODataMaterials,
+          strictSystemPrompt,
+          activeSessionMessages,
+          attachedImage
+        )
+          .then(agentResponse => {
+            const elapsedTime = ((performance.now() - startTime) / 1000).toFixed(1);
+            removeLoadingMessage(loadingId);
+            setSendLoadingState(false);
+            renderClaudeAgentResponse(queryText, agentResponse, elapsedTime);
+          })
+          .catch(err => {
+            const elapsedTime = ((performance.now() - startTime) / 1000).toFixed(1);
+            console.warn("Middleware API call error, running local MDG engine:", err);
+            removeLoadingMessage(loadingId);
+            setSendLoadingState(false);
+            runLocalMdgGovernanceEngine(queryText, elapsedTime, err ? err.message : "Middleware Error");
+          });
+
+        const scrollArea = document.getElementById('main-scroll-area');
+        scrollArea.scrollTop = scrollArea.scrollHeight;
+      }
+
+      async function callClaudeMessagesAPI(
+        query,
+        materialsList,
+        customSystemPrompt,
+        historyArr,
+        attachedImage
+      ) {
+        // Jika data material besar (>100 item), gunakan cache backend untuk menghemat bandwidth
+        const materialsToSend = (materialsList && materialsList.length > 100)
+          ? []
+          : (materialsList || []);
+
+        const chatLogsToSend = (liveODataChatLogs && liveODataChatLogs.length > 100)
+          ? []
+          : (liveODataChatLogs || []);
+
+        const stagingToSend = (liveODataStagingMaterials &&
+          liveODataStagingMaterials.length > 250)
+          ? []
+          : (liveODataStagingMaterials || []);
+
+        const payloadObj = {
+          prompt: query,
+          temperature: 0.2,
+          materials: materialsToSend,
+          chatLogs: chatLogsToSend,
+          stagingMaterials: stagingToSend,
+          systemPrompt: customSystemPrompt,
+          history: historyArr || []
+        };
+
+        if (attachedImage && attachedImage.base64) {
+          payloadObj.image = {
+            media_type: attachedImage.media_type,
+            data: attachedImage.base64
+          };
+        }
+
+        const payload = JSON.stringify(payloadObj);
+        const targetUrl = AI_CLAUDE_ENDPOINT;
+
+        const controller = new AbortController();
+        // Timeout 60 detik jika request memakan waktu lebih dari 60 detik
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+        try {
+          const response = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: payload,
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+
+          if (!response.ok) {
+            let errDetail = "HTTP status " + response.status;
+            try {
+              const errJson = await response.json();
+              if (errJson && errJson.message) {
+                if (typeof errJson.message === "string") {
+                  errDetail = errJson.message;
+                } else if (errJson.message.error && errJson.message.error.message) {
+                  errDetail = errJson.message.error.message;
+                } else {
+                  errDetail = JSON.stringify(errJson.message);
+                }
+              }
+            } catch (_) {}
+
+            const fullErrMsg = "Gagal memproses permintaan AI (" + errDetail + ").";
+            if (typeof showToastNotification === 'function') {
+              showToastNotification(fullErrMsg, 'error');
+            }
+
+            const httpErr = new Error(fullErrMsg);
+            httpErr.isServerResponse = true;
+            throw httpErr;
+          }
+
+          return await response.json();
+        } catch (error) {
+          clearTimeout(timeoutId);
+          let displayMsg = error.name === 'AbortError'
+            ? 'Request ke server AI melebihi batas waktu (timeout 60 detik).'
+            : (error.message || 'Gagal menghubungi server AI Debian.');
+
+          if (typeof showToastNotification === 'function' && !error.isServerResponse) {
+            showToastNotification(displayMsg, 'error');
+          }
+          console.error("[Error calling AI Debian Middleware]:", error);
+          throw error;
+        }
+      }
+
+      function getMatField(item, fieldName) {
+        if (!item) return '';
+        const upper = fieldName.toUpperCase();
+        const pascal = fieldName.charAt(0).toUpperCase() + fieldName.slice(1).toLowerCase();
+        return (item[fieldName] !== undefined) ? item[fieldName]
+             : (item[upper] !== undefined) ? item[upper]
+             : (item[pascal] !== undefined) ? item[pascal]
+             : '';
+      }
+
+      function getStagingField(item, fieldName) {
+        if (!item) return '';
+        const upper = fieldName.toUpperCase();
+        const pascal = fieldName.charAt(0).toUpperCase() + fieldName.slice(1).toLowerCase();
+        return (item[fieldName] !== undefined) ? item[fieldName]
+             : (item[upper] !== undefined) ? item[upper]
+             : (item[pascal] !== undefined) ? item[pascal]
+             : '';
+      }
+
+      function formatStagingDate(val) {
+        if (!val) return 'Belum terisi';
+        if (typeof val === 'string') {
+          const m = val.match(/\/Date\((\d+)(?:[+-]\d+)?\)\//);
+          if (m) {
+            const d = new Date(parseInt(m[1], 10));
+            return d.toLocaleDateString('id-ID', {
+              day: '2-digit', month: 'long', year: 'numeric'
+            });
+          }
+          if (val.length === 8 && /^\d{8}$/.test(val)) {
+            return `${val.substring(6, 8)}/${val.substring(4, 6)}/${val.substring(0, 4)}`;
+          }
+          if (val.includes('T') || val.includes('-')) {
+            const d = new Date(val);
+            if (!isNaN(d.getTime())) {
+              return d.toLocaleDateString('id-ID', {
+                day: '2-digit', month: 'long', year: 'numeric'
+              });
+            }
+          }
+        }
+        return String(val);
+      }
+
+      function isStagingDateToday(val) {
+        if (!val) return false;
+        let d = null;
+        if (typeof val === 'string') {
+          const m = val.match(/\/Date\((\d+)(?:[+-]\d+)?\)\//);
+          if (m) d = new Date(parseInt(m[1], 10));
+          else if (val.includes('-')) d = new Date(val);
+        }
+        if (!d || isNaN(d.getTime())) return false;
+        const now = new Date();
+        return d.getFullYear() === now.getFullYear() &&
+               d.getMonth() === now.getMonth() &&
+               d.getDate() === now.getDate();
+      }
+
+      function runLocalMdgGovernanceEngine(queryText, elapsedTime = null, debugErrorMsg = null) {
+        const rawQuery = (queryText || '').toUpperCase().trim();
+
+        // Cek apakah query merujuk pada Staging Material Master
+        const isStagingIntent =
+          rawQuery.includes('STAGING') ||
+          rawQuery.includes('STAGE') ||
+          rawQuery.includes('ANTREAN') ||
+          rawQuery.includes('APPROV') ||
+          rawQuery.includes('PERMINTAAN') ||
+          rawQuery.includes('PENGAJUAN') ||
+          rawQuery.includes('REQUESTOR') ||
+          rawQuery.includes('PEMOHON') ||
+          rawQuery.includes('SIAPA YANG REQUEST') ||
+          rawQuery.includes('TANGGAL REQUEST') ||
+          rawQuery.includes('MENUNGGU APPROVAL') ||
+          rawQuery.includes('BELUM DI-APPROVE') ||
+          rawQuery.includes('SUDAH DI-APPROVE') ||
+          rawQuery.includes('TOTAL STAGING') ||
+          rawQuery.includes('JUMLAH STAGING') ||
+          rawQuery.includes('JUMLAH DATA STAGING');
+
+        if (isStagingIntent && liveODataStagingMaterials && liveODataStagingMaterials.length > 0) {
+          const totalStaging = liveODataStagingMaterials.length;
+          const reqSet = new Set(
+            liveODataStagingMaterials
+              .map(it => String(getStagingField(it, 'ReqNo')).trim())
+              .filter(Boolean)
+          );
+          const totalUniqueReq = reqSet.size;
+
+          const approvedList = liveODataStagingMaterials.filter(it => {
+            const st = String(getStagingField(it, 'Status')).toUpperCase().trim();
+            return st === 'APPROVED' || st === 'APR';
+          });
+
+          const pendingList = liveODataStagingMaterials.filter(it => {
+            const st = String(getStagingField(it, 'Status')).toUpperCase().trim();
+            return st === 'SUBMITTED' || st === 'CHECKED' ||
+                   st === 'VALIDATING' || st === 'HOLD' ||
+                   st === 'DRAFT' || st === '';
+          });
+
+          const rejectedList = liveODataStagingMaterials.filter(it => {
+            const st = String(getStagingField(it, 'Status')).toUpperCase().trim();
+            return st === 'REJECTED' || st === 'FAILED';
+          });
+
+          let stagingAnswer = '';
+
+          // 1. Pertanyaan: Siapa saja yang request hari ini?
+          if (rawQuery.includes('HARI INI') || rawQuery.includes('TODAY')) {
+            const todayItems = liveODataStagingMaterials.filter(it => {
+              const dt = getStagingField(it, 'ReqDate');
+              return isStagingDateToday(dt);
+            });
+
+            if (todayItems.length > 0) {
+              const reqGroup = {};
+              todayItems.forEach(it => {
+                const reqor = getStagingField(it, 'Requestor') || 'Draft / Belum Ditentukan';
+                if (!reqGroup[reqor]) reqGroup[reqor] = [];
+                reqGroup[reqor].push(it);
+              });
+
+              stagingAnswer = `Terdapat **${todayItems.length} item** pengajuan staging pada hari ini:\n\n`;
+              stagingAnswer += `**Daftar Pengaju (Requester):**\n`;
+              Object.keys(reqGroup).forEach(u => {
+                const items = reqGroup[u];
+                const sampleReqNo = getStagingField(items[0], 'ReqNo');
+                const sampleMaktx = getStagingField(items[0], 'Maktx') ||
+                  getStagingField(items[0], 'Remarks') || 'Permintaan Material';
+                const sampleSt = getStagingField(items[0], 'Status') || 'DRAFT';
+                stagingAnswer += `- **${u}**: ${items.length} item ` +
+                  `(Nomor Request: **${sampleReqNo}**, Permintaan: **${sampleMaktx}**, ` +
+                  `Status Approval: **${sampleSt}**)\n`;
+              });
+            } else {
+              stagingAnswer = `Tidak ditemukan pengajuan staging baru untuk tanggal hari ini di SAP OData. ` +
+                `Total data staging keseluruhan saat ini adalah **${totalStaging} item**.`;
+            }
+
+          // 2. Pertanyaan: Data yang sudah di-approve
+          } else if (rawQuery.includes('SUDAH DI-APPROVE') ||
+                     (rawQuery.includes('APPROV') && !rawQuery.includes('BELUM') && !rawQuery.includes('MENUNGGU'))) {
+            stagingAnswer = `Total data staging material yang telah **disetujui (Approved)** adalah ` +
+              `**${approvedList.length} item** dari total **${totalStaging} item** di SAP MDG ` +
+              `(mencakup status SAP **APPROVED**: ` +
+              `${approvedList.filter(i => getStagingField(i, 'Status') === 'APPROVED').length} item ` +
+              `dan status **APR**: ` +
+              `${approvedList.filter(i => getStagingField(i, 'Status') === 'APR').length} item).\n\n` +
+              `**Contoh Permintaan yang Telah Disetujui:**\n`;
+            approvedList.slice(0, 5).forEach(it => {
+              const rNo = getStagingField(it, 'ReqNo');
+              const reqor = getStagingField(it, 'Requestor') || '-';
+              const maktx = getStagingField(it, 'Maktx') || getStagingField(it, 'MatnrExt') || '-';
+              const dt = formatStagingDate(getStagingField(it, 'ReqDate'));
+              stagingAnswer += `- Nomor Request **${rNo}**: '${maktx}' (Pemohon: ${reqor}, Tanggal: ${dt})\n`;
+            });
+
+          // 3. Pertanyaan: Data yang belum di-approve / menunggu approval
+          } else if (rawQuery.includes('BELUM DI-APPROVE') ||
+                     rawQuery.includes('MENUNGGU') ||
+                     rawQuery.includes('PENDING')) {
+            const subCount = pendingList.filter(i => getStagingField(i, 'Status') === 'SUBMITTED').length;
+            const chkCount = pendingList.filter(i => getStagingField(i, 'Status') === 'CHECKED').length;
+            const valCount = pendingList.filter(i => getStagingField(i, 'Status') === 'VALIDATING').length;
+            const hldCount = pendingList.filter(i => getStagingField(i, 'Status') === 'HOLD').length;
+            const dftCount = pendingList.filter(i => {
+              const s = getStagingField(i, 'Status');
+              return s === 'DRAFT' || !s;
+            }).length;
+
+            stagingAnswer = `Total data staging material yang **belum disetujui (menunggu proses)** adalah ` +
+              `**${pendingList.length} item**.\n\n` +
+              `**Rincian Status Approval Aktual:**\n` +
+              `- **Diajukan (Submitted)**: ${subCount} item\n` +
+              `- **Diperiksa (Checked)**: ${chkCount} item\n` +
+              `- **Dalam Validasi (Validating)**: ${valCount} item\n` +
+              `- **Ditahan (Hold)**: ${hldCount} item\n` +
+              `- **Konsep (Draft / Belum Diajukan)**: ${dftCount} item\n\n` +
+              `**Contoh Permintaan Menunggu:**\n`;
+            pendingList.slice(0, 5).forEach(it => {
+              const rNo = getStagingField(it, 'ReqNo');
+              const reqor = getStagingField(it, 'Requestor') || 'Belum Terisi';
+              const maktx = getStagingField(it, 'Maktx') || getStagingField(it, 'Remarks') || '-';
+              const st = getStagingField(it, 'Status') || 'DRAFT';
+              const dt = formatStagingDate(getStagingField(it, 'ReqDate'));
+              stagingAnswer += `- Nomor Request **${rNo}**: '${maktx}' (Pemohon: ${reqor}, Status: **${st}**, Tanggal: ${dt})\n`;
+            });
+
+          // 4. Default: Total data staging dan ringkasan 6 parameter
+          } else {
+            stagingAnswer = `Total data permintaan material yang tersimpan pada staging SAP MDG saat ini adalah ` +
+              `**${totalStaging} item** (mencakup **${totalUniqueReq} nomor request unik**).\n\n` +
+              `**Ringkasan Status Approval Aktual (SAP):**\n` +
+              `- **Sudah Di-Approve**: **${approvedList.length} item** (status 'APPROVED' dan 'APR')\n` +
+              `- **Belum Di-Approve / Menunggu**: **${pendingList.length} item** (status 'SUBMITTED', 'CHECKED', 'VALIDATING', 'HOLD', 'DRAFT')\n` +
+              `- **Ditolak / Gagal**: **${rejectedList.length} item** (status 'REJECTED' dan 'FAILED')\n\n` +
+              `**Enam Parameter Informasi Staging yang Tersedia:**\n` +
+              `1. **Tanggal Request**: Tanggal pengajuan permohonan material\n` +
+              `2. **Siapa yang Request**: Nama / ID pengguna pemohon (Requestor)\n` +
+              `3. **Permintaan**: Deskripsi material, nomor eksternal, dan tipe material\n` +
+              `4. **Jumlah Data Staging**: Total antrean data tersimpan (${totalStaging} item)\n` +
+              `5. **Data yang Sudah Di-Approve**: Jumlah disetujui (${approvedList.length} item)\n` +
+              `6. **Data yang Belum Di-Approve**: Jumlah menunggu proses (${pendingList.length} item)\n\n` +
+              `Silakan ajukan pertanyaan lebih spesifik terkait nama requester, tanggal request, atau nomor permohonan tertentu.`;
+          }
+
+          renderMarkdownAgentMessage(stagingAnswer, null, elapsedTime);
+          activeSessionMessages.push({ prompt: queryText, response: stagingAnswer });
+          saveChatToSapDatabase(queryText, stagingAnswer, 'SUCCESS', null);
+          return;
+        }
+
+        const stopWords = new Set([
+          'CARIKAN', 'SAYA', 'MATERIAL', 'YANG', 'DESKRIPSINYA', 'DESKRIPSI',
+          'HANYA', 'ADA', 'KODE', 'PADA', 'BULAN', 'BERAPA', 'SAMA', 'TAMPILKAN',
+          'CEK', 'DATA', 'TOLONG', 'LIST', 'SHOW', 'FIND', 'SEARCH', 'GET',
+          'SELECT', 'WHERE', 'ISI', 'STATUS', 'DENGAN', 'UNTUK', 'DAN', 'ATAU',
+          'DI', 'KE', 'DARI', 'INI', 'ITU'
+        ]);
+
+        const numbersFound = rawQuery.match(/\b\d{4,}\b/g) || rawQuery.match(/\b\d+\b/g) || [];
+        const wordsFound = rawQuery
+          .split(/[\s,.;:?!'"]+/)
+          .filter(w => w.length >= 2 && !stopWords.has(w) && !/^\d+$/.test(w));
+
+        let matchedLiveItems = [];
+
+        if (numbersFound.length > 0) {
+          const targetNum = numbersFound[0];
+          const cleanTargetNum = targetNum.replace(/^0+/, '');
+          matchedLiveItems = liveODataMaterials.filter(item => {
+            const rawMatnr = String(getMatField(item, 'Matnr')).toUpperCase();
+            if (!rawMatnr) return false;
+            const cleanMatnr = rawMatnr.replace(/^0+/, '');
+            return rawMatnr.includes(targetNum) || cleanMatnr.includes(cleanTargetNum);
+          });
+        } else if (wordsFound.length > 0) {
+          matchedLiveItems = liveODataMaterials.filter(item => {
+            const maktx = String(getMatField(item, 'Maktx')).toUpperCase();
+            const matnr = String(getMatField(item, 'Matnr')).toUpperCase();
+            const mtart = String(getMatField(item, 'Mtart')).toUpperCase();
+            const matkl = String(getMatField(item, 'Matkl')).toUpperCase();
+            const werks = String(getMatField(item, 'Werks')).toUpperCase();
+            const lgort = String(getMatField(item, 'Lgort')).toUpperCase();
+            const combined = `${matnr} ${maktx} ${mtart} ${matkl} ${werks} ${lgort}`;
+            return wordsFound.every(word => combined.includes(word));
+          });
+
+          if (matchedLiveItems.length === 0) {
+            matchedLiveItems = liveODataMaterials.filter(item => {
+              const maktx = String(getMatField(item, 'Maktx')).toUpperCase();
+              const matnr = String(getMatField(item, 'Matnr')).toUpperCase();
+              const mtart = String(getMatField(item, 'Mtart')).toUpperCase();
+              const matkl = String(getMatField(item, 'Matkl')).toUpperCase();
+              const werks = String(getMatField(item, 'Werks')).toUpperCase();
+              const lgort = String(getMatField(item, 'Lgort')).toUpperCase();
+              const combined = `${matnr} ${maktx} ${mtart} ${matkl} ${werks} ${lgort}`;
+              return wordsFound.some(word => combined.includes(word));
+            });
+          }
+        } else {
+          matchedLiveItems = liveODataMaterials.slice(0, 10);
+        }
+
+        const uniqueItems = [];
+        const seenKeys = new Set();
+        matchedLiveItems.forEach(item => {
+          const matnr = getMatField(item, 'Matnr');
+          const maktx = getMatField(item, 'Maktx');
+          const key = `${matnr}_${maktx}`;
+          if (!seenKeys.has(key)) {
+            seenKeys.add(key);
+            uniqueItems.push(item);
+          }
+        });
+        matchedLiveItems = uniqueItems;
+
+        const isSuccess = matchedLiveItems.length > 0;
+        let directAnswerText = "";
+
+        if (isSuccess) {
+          if (matchedLiveItems.length === 1) {
+            const item = matchedLiveItems[0];
+            const matnr = getMatField(item, 'Matnr');
+            const maktx = getMatField(item, 'Maktx');
+            const mtart = getMatField(item, 'Mtart');
+            const matkl = getMatField(item, 'Matkl');
+            const werks = getMatField(item, 'Werks');
+            const lgort = getMatField(item, 'Lgort');
+            const dismm = getMatField(item, 'Dismm');
+            const disgr = getMatField(item, 'Disgr');
+            const dispo = getMatField(item, 'Dispo');
+
+            const groes = getMatField(item, 'Groes');
+            const laeng = getMatField(item, 'Laeng');
+            const breit = getMatField(item, 'Breit');
+            const hoehe = getMatField(item, 'Hoehe');
+            const meabm = getMatField(item, 'Meabm');
+            const brgew = getMatField(item, 'Brgew');
+            const ntgew = getMatField(item, 'Ntgew');
+            const gewei = getMatField(item, 'Gewei');
+            const volum = getMatField(item, 'Volum');
+            const wrkst = getMatField(item, 'Wrkst');
+            const doknr = getMatField(item, 'Doknr');
+            const bismt = getMatField(item, 'Bismt');
+            const meins = getMatField(item, 'Meins');
+            const warna = getMatField(item, 'Warna');
+
+            // Sales & Distribusi
+            const vkorg = getMatField(item, 'Vkorg');
+            const vtweg = getMatField(item, 'Vtweg');
+            const dwerk = getMatField(item, 'Dwerk');
+            const vrkme = getMatField(item, 'Vrkme');
+
+            // Purchasing & Logistik
+            const ekgrp = getMatField(item, 'Ekgrp');
+            const herkl = getMatField(item, 'Herkl');
+            const tragr = getMatField(item, 'Tragr');
+            const ladgr = getMatField(item, 'Ladgr');
+
+            // Plant & MRP
+            const disls = getMatField(item, 'Disls');
+            const beskz = getMatField(item, 'Beskz');
+            const plifz = getMatField(item, 'Plifz');
+            const dzeit = getMatField(item, 'Dzeit');
+            const eisbe = getMatField(item, 'Eisbe');
+
+            // Costing & Akuntansi
+            const bklas = getMatField(item, 'Bklas');
+            const vprsv = getMatField(item, 'Vprsv');
+            const stprs = getMatField(item, 'Stprs');
+            const verpr = getMatField(item, 'Verpr');
+            const prctr = getMatField(item, 'Prctr');
+
+            // Quality Management
+            const qmpur = getMatField(item, 'Qmpur');
+            const art = getMatField(item, 'Art');
+
+            directAnswerText = `Material **${matnr}** ditemukan di SAP OData dengan ` +
+              `deskripsi **'${maktx}'**.\n\n` +
+              `**Detail Parameter SAP MDG:**\n` +
+              `- **${getSapDisplayLabel('MATNR')}**: ${matnr}\n` +
+              `- **${getSapDisplayLabel('MAKTX')}**: ${maktx}\n` +
+              (mtart ? `- **${getSapDisplayLabel('MTART')}**: ${mtart}\n` : '') +
+              (matkl ? `- **${getSapDisplayLabel('MATKL')}**: ${matkl}\n` : '') +
+              (meins ? `- **${getSapDisplayLabel('MEINS')}**: ${meins}\n` : '') +
+              (groes ? `- **${getSapDisplayLabel('GROES')}**: ${groes}\n` : '') +
+              (laeng && laeng !== '0.000' ? `- **${getSapDisplayLabel('LAENG')}**: ${laeng} ${meabm}\n` : '') +
+              (breit && breit !== '0.000' ? `- **${getSapDisplayLabel('BREIT')}**: ${breit} ${meabm}\n` : '') +
+              (hoehe && hoehe !== '0.000' ? `- **${getSapDisplayLabel('HOEHE')}**: ${hoehe} ${meabm}\n` : '') +
+              (ntgew && ntgew !== '0.000' ? `- **${getSapDisplayLabel('NTGEW')}**: ${ntgew} ${gewei}\n` : '') +
+              (brgew && brgew !== '0.000' ? `- **${getSapDisplayLabel('BRGEW')}**: ${brgew} ${gewei}\n` : '') +
+              (volum && volum !== '0.000' ? `- **${getSapDisplayLabel('VOLUM')}**: ${volum}\n` : '') +
+              (wrkst ? `- **${getSapDisplayLabel('WRKST')}**: ${wrkst}\n` : '') +
+              (doknr ? `- **${getSapDisplayLabel('DOKNR')}**: ${doknr}\n` : '') +
+              (bismt ? `- **${getSapDisplayLabel('BISMT')}**: ${bismt}\n` : '') +
+              (warna ? `- **${getSapDisplayLabel('WARNA')}**: ${warna}\n` : '') +
+              (werks ? `- **${getSapDisplayLabel('WERKS')}**: ${werks}\n` : '') +
+              (lgort ? `- **${getSapDisplayLabel('LGORT')}**: ${lgort}\n` : '') +
+              (dismm ? `- **${getSapDisplayLabel('DISMM')}**: ${dismm}\n` : '') +
+              (disgr ? `- **${getSapDisplayLabel('DISGR')}**: ${disgr}\n` : '') +
+              (dispo ? `- **${getSapDisplayLabel('DISPO')}**: ${dispo}\n` : '') +
+              (disls ? `- **${getSapDisplayLabel('DISLS')}**: ${disls}\n` : '') +
+              (beskz ? `- **${getSapDisplayLabel('BESKZ')}**: ${beskz}\n` : '') +
+              (plifz && plifz !== '0' ? `- **${getSapDisplayLabel('PLIFZ')}**: ${plifz} hari\n` : '') +
+              (dzeit && dzeit !== '0' ? `- **${getSapDisplayLabel('DZEIT')}**: ${dzeit} hari\n` : '') +
+              (eisbe && eisbe !== '0.000' && eisbe !== '0' ? `- **${getSapDisplayLabel('EISBE')}**: ${eisbe}\n` : '') +
+              (vkorg ? `- **${getSapDisplayLabel('VKORG')}**: ${vkorg}\n` : '') +
+              (vtweg ? `- **${getSapDisplayLabel('VTWEG')}**: ${vtweg}\n` : '') +
+              (dwerk ? `- **${getSapDisplayLabel('DWERK')}**: ${dwerk}\n` : '') +
+              (vrkme ? `- **${getSapDisplayLabel('VRKME')}**: ${vrkme}\n` : '') +
+              (ekgrp ? `- **${getSapDisplayLabel('EKGRP')}**: ${ekgrp}\n` : '') +
+              (herkl ? `- **${getSapDisplayLabel('HERKL')}**: ${herkl}\n` : '') +
+              (tragr ? `- **${getSapDisplayLabel('TRAGR')}**: ${tragr}\n` : '') +
+              (ladgr ? `- **${getSapDisplayLabel('LADGR')}**: ${ladgr}\n` : '') +
+              (bklas ? `- **${getSapDisplayLabel('BKLAS')}**: ${bklas}\n` : '') +
+              (vprsv ? `- **${getSapDisplayLabel('VPRSV')}**: ${vprsv}\n` : '') +
+              (stprs && stprs !== '0.00' && stprs !== '0' ? `- **${getSapDisplayLabel('STPRS')}**: Rp ${stprs}\n` : '') +
+              (verpr && verpr !== '0.00' && verpr !== '0' ? `- **${getSapDisplayLabel('VERPR')}**: Rp ${verpr}\n` : '') +
+              (prctr ? `- **${getSapDisplayLabel('PRCTR')}**: ${prctr}\n` : '') +
+              (qmpur ? `- **${getSapDisplayLabel('QMPUR')}**: ${qmpur}\n` : '') +
+              (art ? `- **${getSapDisplayLabel('ART')}**: ${art}\n` : '');
+          } else {
+            const itemStrings = matchedLiveItems.slice(0, 5).map((m, idx) => {
+              const matnr = getMatField(m, 'Matnr');
+              const maktx = getMatField(m, 'Maktx');
+              const mtart = getMatField(m, 'Mtart') || 'N/A';
+              const matkl = getMatField(m, 'Matkl') || 'N/A';
+              const werks = getMatField(m, 'Werks') || 'N/A';
+              return `**${idx + 1}. Material: ${matnr} | ${maktx}**\n` +
+                `   - Material Type: ${mtart}\n` +
+                `   - Material Group: ${matkl}\n` +
+                `   - Plant: ${werks}`;
+            }).join('\n\n');
+
+            directAnswerText = `Berdasarkan data SAP OData, berikut pilihan material yang ditemukan:\n\n` +
+              `${itemStrings}\n\n` +
+              `Silakan ketik nomor pilihan material (contoh: 1 atau 2) yang Anda maksud untuk melihat spesifikasi lengkapnya.`;
+          }
+        } else {
+          directAnswerText = `Data material untuk kata kunci '${queryText}' belum tersedia di database SAP OData.`;
+        }
+
+        renderMarkdownAgentMessage(directAnswerText, null, elapsedTime);
+        activeSessionMessages.push({ prompt: queryText, response: directAnswerText });
+        saveChatToSapDatabase(queryText, directAnswerText, isSuccess ? 'SUCCESS' : 'FAILED', null);
+      }
+
+      function renderClaudeAgentResponse(queryText, apiData, elapsedTime = null) {
+        if (apiData && apiData.content && apiData.content.length > 0) {
+          const textBlock = apiData.content.find(block => block.type === 'text');
+          const textContent = textBlock ? textBlock.text : "";
+          const usage = apiData.usage || null;
+
+          renderMarkdownAgentMessage(textContent, usage, elapsedTime);
+          activeSessionMessages.push({ prompt: queryText, response: textContent });
+          saveChatToSapDatabase(queryText, textContent, 'SUCCESS', usage);
+
+          if (apiData.tool_executed) {
+            console.log("[Client Agentic]: Tool approval dieksekusi, memperbarui data staging OData...");
+            setTimeout(fetchLiveODataData, 1200);
+          }
+        } else {
+          renderSimpleAgentMessage("Tidak ada respon dari Claude MDG Assistant.");
+        }
+      }
+
+      function renderMarkdownAgentMessage(text, usage, elapsedTime = null) {
+        const thread = document.getElementById('chat-thread');
+        const div = document.createElement('div');
+        div.className = "flex justify-start w-full";
+
+        const formattedHtml = typeof marked !== 'undefined'
+          ? marked.parse(text)
+          : escapeHtml(text).replace(/\n/g, '<br>');
+
+        let metaParts = [];
+        if (usage && usage.output_tokens && usage.output_tokens > 0) {
+          const outTok = Number(usage.output_tokens).toLocaleString();
+          metaParts.push(`Output: ${outTok} tokens`);
+        }
+        if (elapsedTime) {
+          metaParts.push(`${elapsedTime}s`);
+        }
+
+        let tokenUsageHtml = '';
+        if (metaParts.length > 0) {
+          tokenUsageHtml = `
+          <div class="text-[11px] text-slate-400 font-mono tracking-tight opacity-75">
+            ${metaParts.join(' &bull; ')}
+          </div>
+        `;
+        }
+
+        div.innerHTML = `
+        <div class="chat-agent-bubble bg-white/95 backdrop-blur-md border border-slate-200/80 ` +
+          `rounded-2xl rounded-tl-none p-4 sm:p-5 shadow-2xs space-y-3 w-full ` +
+          `text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
+          <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <img src="ENJOYSAP_LOGO.png" alt="Logo KMI" ` +
+                `class="h-6 w-auto object-contain shrink-0" ` +
+                `onerror="this.style.display='none'">
+              <span class="font-bold text-slate-800 text-xs">SAP MDG Assistant</span>
+              <span class="text-[10px] text-emerald-600 bg-emerald-50 border border-emerald-100/80 ` +
+                `px-1.5 py-0.5 rounded-full font-semibold">
+                S/4HANA AI
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="copyMessageText(this)" title="Salin respon ke clipboard" ` +
+                `class="px-2 py-1 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200/60 ` +
+                `text-slate-600 hover:text-emerald-700 text-[11px] font-semibold transition ` +
+                `flex items-center gap-1.5 cursor-pointer active:scale-95">
+                <i class="far fa-copy text-xs"></i>
+                <span>Salin</span>
+              </button>
+            </div>
+          </div>
+          <div class="markdown-content font-medium leading-relaxed text-slate-800">
+            ${formattedHtml}
+          </div>
+          ${tokenUsageHtml ? `<div class="pt-2 border-t border-slate-100/80 flex items-center justify-end">${tokenUsageHtml}</div>` : ''}
+        </div>
+      `;
+
+        thread.appendChild(div);
+      }
+
+      function appendUserMessage(text, imageSrc, excelMeta, pdfMeta) {
+        const thread = document.getElementById('chat-thread');
+        const div = document.createElement('div');
+        div.className = "flex flex-col items-end w-full";
+
+        let imageHtml = '';
+        if (imageSrc) {
+          imageHtml = '<div class="mb-2 max-w-[85%] sm:max-w-[75%] flex justify-end">' +
+            '<img src="' + imageSrc + '" alt="Foto Lampiran" ' +
+            'class="max-h-60 max-w-full rounded-2xl border border-slate-200/80 ' +
+            'object-contain bg-slate-50 shadow-sm cursor-pointer hover:opacity-95 transition" ' +
+            'onclick="window.open(this.src)">' +
+            '</div>';
+        }
+
+        let excelHtml = '';
+        if (excelMeta) {
+          excelHtml = '<div class="mb-2 max-w-[85%] sm:max-w-[75%] flex justify-end">' +
+            '<div class="px-3.5 py-2.5 rounded-2xl bg-white/95 border border-emerald-200 ' +
+            'shadow-xs flex items-center gap-3 text-slate-800 text-xs select-none">' +
+            '<div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">' +
+            '<i class="fas fa-file-excel text-lg"></i>' +
+            '</div>' +
+            '<div class="min-w-0 text-left">' +
+            '<p class="font-bold text-slate-900 truncate text-xs">' + escapeHtml(excelMeta.name) + '</p>' +
+            '<p class="text-[10px] text-slate-500 font-medium">' +
+            excelMeta.sheetCount + ' Sheet &bull; ' + excelMeta.totalRows + ' Baris &bull; ' + excelMeta.sizeStr +
+            '</p>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        }
+
+        let pdfHtml = '';
+        if (pdfMeta) {
+          pdfHtml = '<div class="mb-2 max-w-[85%] sm:max-w-[75%] flex justify-end">' +
+            '<div class="px-3.5 py-2.5 rounded-2xl bg-white/95 border border-rose-200 ' +
+            'shadow-xs flex items-center gap-3 text-slate-800 text-xs select-none">' +
+            '<div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">' +
+            '<i class="fas fa-file-pdf text-lg"></i>' +
+            '</div>' +
+            '<div class="min-w-0 text-left">' +
+            '<p class="font-bold text-slate-900 truncate text-xs">' + escapeHtml(pdfMeta.name) + '</p>' +
+            '<p class="text-[10px] text-slate-500 font-medium">' +
+            pdfMeta.pageCount + ' Halaman &bull; ' + pdfMeta.sizeStr +
+            '</p>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        }
+
+        div.innerHTML = `
+        <div class="flex items-center gap-1.5 mb-1 pr-1 text-[11px] font-semibold text-slate-400 select-none">
+          <span>Anda</span>
+          <i class="fas fa-user-circle text-slate-400 text-xs"></i>
+        </div>
+        ${imageHtml}
+        ${excelHtml}
+        ${pdfHtml}
+        <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white ` +
+          `rounded-2xl rounded-tr-none px-4 py-2.5 sm:px-4.5 sm:py-3 max-w-[85%] ` +
+          `sm:max-w-[75%] shadow-2xs text-xs sm:text-sm font-medium leading-relaxed ` +
+          `break-words whitespace-pre-wrap">${escapeHtml(text)}</div>
+      `;
+        thread.appendChild(div);
+      }
+
+      function downloadAgentResponseAsExcel(btn) {
+        const bubble = btn.closest('.chat-agent-bubble');
+        if (!bubble) return;
+        const mdContent = bubble.querySelector('.markdown-content');
+        if (!mdContent) return;
+
+        if (typeof XLSX === 'undefined') {
+          alert('Pustaka SheetJS belum dimuat. Harap muat ulang halaman.');
+          return;
+        }
+
+        try {
+          const wb = XLSX.utils.book_new();
+          const tables = mdContent.querySelectorAll('table');
+          let sheetAdded = false;
+
+          const now = new Date();
+          const pad = n => String(n).padStart(2, '0');
+          const timeStr = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_` +
+            `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+
+          if (tables.length > 0) {
+            tables.forEach((tbl, idx) => {
+              const sheetName = tables.length === 1
+                ? 'Data MDG'
+                : 'Tabel ' + (idx + 1);
+              const ws = XLSX.utils.table_to_sheet(tbl);
+              XLSX.utils.book_append_sheet(wb, ws, sheetName);
+              sheetAdded = true;
+            });
+          }
+
+          if (!sheetAdded) {
+            const rawText = mdContent.innerText || '';
+            const lines = rawText.split('\n').filter(l => l.trim().length > 0);
+            const dataRows = [
+              ['NO', 'PARAMETER / DESKRIPSI', 'NILAI / DETAIL']
+            ];
+
+            lines.forEach((line, lIdx) => {
+              const trimmed = line.trim().replace(/^[-*•]\s*/, '');
+              if (trimmed.includes(':')) {
+                const colonIdx = trimmed.indexOf(':');
+                const keyPart = trimmed.substring(0, colonIdx).trim();
+                const valPart = trimmed.substring(colonIdx + 1).trim();
+                dataRows.push([lIdx + 1, keyPart, valPart]);
+              } else {
+                dataRows.push([lIdx + 1, 'Keterangan', trimmed]);
+              }
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(dataRows);
+            XLSX.utils.book_append_sheet(wb, ws, 'Laporan MDG');
+          }
+
+          const userName = document.getElementById('user-display-name')
+            ? document.getElementById('user-display-name').textContent.trim()
+            : 'Daniel';
+
+          const infoRows = [
+            ['SISTEM', 'SAP S/4HANA Master Data Governance'],
+            ['PERUSAHAAN', 'PT Kayu Mebel Indonesia'],
+            ['TANGGAL CETAK', new Date().toLocaleString('id-ID')],
+            ['STATUS DOKUMEN', 'Ekspor Resmi SAP MDG Assistant'],
+            ['PENGGUNA SAP', userName]
+          ];
+          const infoWs = XLSX.utils.aoa_to_sheet(infoRows);
+          XLSX.utils.book_append_sheet(wb, infoWs, 'Info Dokumen');
+
+          const fileName = 'SAP_MDG_Data_' + timeStr + '.xlsx';
+          XLSX.writeFile(wb, fileName);
+          showToastNotification('File Excel ' + fileName + ' berhasil diunduh.');
+        } catch (excelErr) {
+          console.error('[Excel Export Error]:', excelErr);
+          alert('Gagal mengekspor file Excel: ' + excelErr.message);
+        }
+      }
+
+      function downloadAgentResponseAsPdf(btn) {
+        const bubble = btn.closest('.chat-agent-bubble');
+        if (!bubble) return;
+        const mdContent = bubble.querySelector('.markdown-content');
+        if (!mdContent) return;
+
+        if (typeof window.jspdf === 'undefined') {
+          alert('Pustaka jsPDF belum dimuat. Harap muat ulang halaman.');
+          return;
+        }
+
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+          });
+
+          const now = new Date();
+          const pad = n => String(n).padStart(2, '0');
+          const timeStr = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_` +
+            `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+          const dateStr = now.toLocaleString('id-ID', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          });
+
+          const userName = document.getElementById('user-display-name')
+            ? document.getElementById('user-display-name').textContent.trim()
+            : 'Daniel';
+
+          // Header Perusahaan PT Kayu Mebel Indonesia
+          doc.setFillColor(24, 68, 52);
+          doc.rect(0, 0, 210, 24, 'F');
+
+          doc.setTextColor(255, 255, 255);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(13);
+          doc.text('PT KAYU MEBEL INDONESIA', 14, 10);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.5);
+          doc.text('SAP S/4HANA Master Data Governance Assistant Report', 14, 16);
+
+          doc.setFontSize(8);
+          doc.text('Tanggal: ' + dateStr + ' | Pengguna: ' + userName, 196, 16, { align: 'right' });
+
+          let startY = 32;
+          const tables = mdContent.querySelectorAll('table');
+
+          if (tables.length > 0 && typeof doc.autoTable === 'function') {
+            const rawText = mdContent.innerText || '';
+            const previewText = rawText.split('\n')[0] || '';
+            if (previewText && !previewText.startsWith('|')) {
+              doc.setTextColor(51, 65, 85);
+              doc.setFontSize(9);
+              doc.setFont('helvetica', 'normal');
+              const splitIntro = doc.splitTextToSize(previewText, 182);
+              doc.text(splitIntro, 14, startY);
+              startY += (splitIntro.length * 5) + 4;
+            }
+
+            tables.forEach(tbl => {
+              doc.autoTable({
+                html: tbl,
+                startY: startY,
+                theme: 'striped',
+                headStyles: {
+                  fillColor: [24, 68, 52],
+                  textColor: [255, 255, 255],
+                  fontStyle: 'bold',
+                  fontSize: 8.5
+                },
+                bodyStyles: {
+                  fontSize: 8,
+                  textColor: [30, 41, 59]
+                },
+                alternateRowStyles: {
+                  fillColor: [248, 250, 252]
+                },
+                margin: { left: 14, right: 14 },
+                didDrawPage: function(data) {
+                  doc.setFontSize(7.5);
+                  doc.setTextColor(148, 163, 184);
+                  doc.text(
+                    'Halaman ' + data.pageNumber +
+                    ' • Dokumen Rahasia Internal PT KMI • SAP MDG',
+                    105,
+                    290,
+                    { align: 'center' }
+                  );
+                }
+              });
+
+              if (doc.lastAutoTable) {
+                startY = doc.lastAutoTable.finalY + 8;
+              }
+            });
+          } else {
+            const rawText = mdContent.innerText || '';
+            const lines = rawText.split('\n');
+
+            doc.setTextColor(30, 41, 59);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+
+            let currentY = startY;
+            const pageHeight = doc.internal.pageSize.height;
+
+            lines.forEach(line => {
+              const trimmed = line.trim();
+              if (!trimmed) {
+                currentY += 3;
+                return;
+              }
+
+              if (currentY > pageHeight - 20) {
+                doc.addPage();
+                currentY = 20;
+              }
+
+              if (trimmed.startsWith('#') ||
+                  (trimmed.toUpperCase() === trimmed && trimmed.length < 40)) {
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(24, 68, 52);
+              } else if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 65, 85);
+              } else {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(30, 41, 59);
+              }
+
+              const wrapped = doc.splitTextToSize(trimmed, 182);
+              doc.text(wrapped, 14, currentY);
+              currentY += (wrapped.length * 4.5);
+            });
+
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+              doc.setPage(i);
+              doc.setFontSize(7.5);
+              doc.setTextColor(148, 163, 184);
+              doc.text(
+                'Halaman ' + i + ' dari ' + totalPages +
+                ' • Dokumen Rahasia Internal PT KMI • SAP MDG',
+                105,
+                290,
+                { align: 'center' }
+              );
+            }
+          }
+
+          const fileName = 'SAP_MDG_Report_' + timeStr + '.pdf';
+          doc.save(fileName);
+          showToastNotification('File PDF ' + fileName + ' berhasil diunduh.');
+        } catch (pdfErr) {
+          console.error('[PDF Generation Error]:', pdfErr);
+          alert('Gagal membuat file PDF: ' + pdfErr.message);
+        }
+      }
+
+      function copyMessageText(btn) {
+        const card = btn.closest('.chat-agent-bubble');
+        if (!card) return;
+        const mdElem = card.querySelector('.markdown-content');
+        const rawText = mdElem ? mdElem.innerText : '';
+        if (!rawText) return;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(rawText)
+            .then(() => showCopiedFeedback(btn))
+            .catch(() => fallbackCopyText(btn, rawText));
+        } else {
+          fallbackCopyText(btn, rawText);
+        }
+      }
+
+      function fallbackCopyText(btn, rawText) {
+        const textArea = document.createElement('textarea');
+        textArea.value = rawText;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showCopiedFeedback(btn);
+        } catch (e) {
+          console.warn('Copy failed', e);
+        }
+        document.body.removeChild(textArea);
+      }
+
+      function showCopiedFeedback(btn) {
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check text-emerald-600"></i>' +
+          '<span class="text-emerald-700 font-bold">Tersalin!</span>';
+        btn.classList.add('bg-emerald-50', 'border-emerald-200');
+        setTimeout(() => {
+          btn.innerHTML = origHtml;
+          btn.classList.remove('bg-emerald-50', 'border-emerald-200');
+        }, 2000);
+      }
+
+      let currentLoadingTimerId = null;
+
+      function getLoadingStatusText(sec, queryText = "") {
+        const q = (queryText || "").toUpperCase();
+        const isSapQuery = /MATNR|MATERIAL|PLANT|SAP|MDG|VENDOR|CUSTOMER|BP|BOM|CARI|FIND|SEARCH|STATUS|APPROVAL|LIST/.test(q);
+        const isValidation = /CEK|VALIDASI|CHECK|ATURAN|RULE|VALIDATE/.test(q);
+
+        if (isValidation) {
+          if (sec < 10) return "Sedang memvalidasi data...";
+          if (sec < 20) return "Sedang memeriksa data MDG...";
+          if (sec < 30) return "Agent sedang memvalidasi data, harap menunggu...";
+          if (sec < 60) return "Agent masih bekerja pada permintaan Anda...";
+          return "Proses membutuhkan sedikit waktu lebih lama...";
+        }
+
+        if (isSapQuery) {
+          if (sec < 10) return "Sedang mencari data di SAP...";
+          if (sec < 20) return "Sedang memeriksa data MDG...";
+          if (sec < 30) return "Agent sedang mencari data, harap menunggu...";
+          if (sec < 60) return "Sedang memproses data SAP...";
+          return "Proses membutuhkan sedikit waktu lebih lama...";
+        }
+
+        if (sec < 10) return "Sedang memahami permintaan Anda...";
+        if (sec < 20) return "Sedang menyiapkan jawaban...";
+        if (sec < 30) return "Sedang mencari data yang relevan...";
+        if (sec < 60) return "Agent masih bekerja pada permintaan Anda...";
+        return "Proses membutuhkan sedikit waktu lebih lama...";
+      }
+
+      function appendLoadingMessage(userQuery = "") {
+        const thread = document.getElementById('chat-thread');
+        const loadingId = 'loading-' + Date.now();
+        const div = document.createElement('div');
+        div.id = loadingId;
+        div.className = "flex justify-start w-full";
+        div.innerHTML = `
+        <div class="bg-white/90 backdrop-blur-md border border-slate-200/80 ` +
+          `rounded-2xl rounded-tl-xs px-4 py-2.5 shadow-2xs text-xs text-slate-500 ` +
+          `w-fit flex items-center gap-2.5">
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse delay-150"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse delay-300"></span>
+          </div>
+          <span id="${loadingId}-text" class="text-slate-600 font-medium text-xs">
+            ${getLoadingStatusText(0, userQuery)}
+          </span>
+        </div>
+      `;
+        thread.appendChild(div);
+
+        let elapsedSec = 0;
+        if (currentLoadingTimerId) clearInterval(currentLoadingTimerId);
+
+        currentLoadingTimerId = setInterval(() => {
+          elapsedSec++;
+          const textElem = document.getElementById(`${loadingId}-text`);
+          if (textElem) {
+            textElem.innerText = getLoadingStatusText(elapsedSec, userQuery);
+          } else {
+            clearInterval(currentLoadingTimerId);
+          }
+        }, 1000);
+
+        return loadingId;
+      }
+
+      function removeLoadingMessage(loadingId) {
+        if (currentLoadingTimerId) {
+          clearInterval(currentLoadingTimerId);
+          currentLoadingTimerId = null;
+        }
+        const elem = document.getElementById(loadingId);
+        if (elem) elem.remove();
+      }
+
+      function renderSimpleAgentMessage(text) {
+        const thread = document.getElementById('chat-thread');
+        const div = document.createElement('div');
+        div.className = "flex justify-start w-full";
+        div.innerHTML = `
+        <div class="chat-agent-bubble bg-white/95 backdrop-blur-md border border-slate-200/80 ` +
+          `rounded-2xl rounded-tl-none p-4 sm:p-5 shadow-2xs space-y-2.5 w-full ` +
+          `text-xs sm:text-sm font-medium text-slate-800 leading-relaxed">
+          <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <img src="ENJOYSAP_LOGO.png" alt="Logo KMI" ` +
+              `class="h-6 w-auto object-contain shrink-0" ` +
+              `onerror="this.style.display='none'">
+            <span class="font-bold text-slate-800 text-xs">SAP MDG Assistant</span>
+          </div>
+          <div class="text-slate-700">
+            ${escapeHtml(text)}
+          </div>
+        </div>
+      `;
+        thread.appendChild(div);
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+    </script>
+  </body>
+
+  </html>

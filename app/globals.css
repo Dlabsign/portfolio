@@ -1,0 +1,379 @@
+/* ==========================================================================
+   PP NEUE MONTREAL LOCAL FONT & SPACE GROTESK GOOGLE FONT INTEGRATION
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-thin.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-thin.otf') format('opentype');
+  font-weight: 100 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-book.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-italic.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-medium.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-semibolditalic.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-semibolditalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-bold.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-bold.otf') format('opentype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Compatibility alias for 'PP Neue' */
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-thin.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-thin.otf') format('opentype');
+  font-weight: 100 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-book.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-italic.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-medium.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-semibolditalic.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-semibolditalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue';
+  src: url('/fonts/pp-neue-montreal/ppneuemontreal-bold.otf') format('opentype'),
+       url('/pp%20neue/ppneuemontreal-bold.otf') format('opentype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #FAFAFA;
+  --color-graphite: #2d2d2a;
+  --color-graphite-secondary: #6e6e69;
+  --color-graphite-muted: #96958f;
+  --color-scarlet: #e50319;
+  --color-scarlet-hover: #c80215;
+  --color-lime: #bfe100;
+  --color-lime-hover: #aed000;
+  --border-hairline: #E5E4E0;
+  --text-primary: #2d2d2a;
+  --text-secondary: #6e6e69;
+  --text-hover: #2d2d2a;
+
+  /* Typography Design Tokens */
+  --font-family-primary: var(--font-pp-neue-montreal), 'PP Neue Montreal', 'PP Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-headline: var(--font-space-grotesk), 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Typography Scales */
+  --font-size-h1-desktop: 48px;
+  --font-size-h1-mobile: 36px;
+  --font-size-h2-desktop: 36px;
+  --font-size-h2-mobile: 28px;
+  --font-size-h3-desktop: 24px;
+  --font-size-h3-mobile: 22px;
+  --font-size-h4: 20px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-caption: 12px;
+  --font-size-button: 14px;
+
+  /* Font Weights */
+  --font-weight-body: 400;
+  --font-weight-medium: 500;
+  --font-weight-heading: 600;
+  --font-weight-bold: 700;
+
+  /* Line Heights */
+  --line-height-heading: 1.15;
+  --line-height-body: 1.6;
+  --line-height-button: 1.2;
+  --line-height-caption: 1.4;
+
+  /* Letter Spacing */
+  --letter-spacing-heading: -0.03em;
+  --letter-spacing-body: 0;
+  --letter-spacing-caption: 0.05em;
+}
+
+/* ==========================================================================
+   Standardized Typography Classes (Headlines use Space Grotesk with 0 padding)
+   ========================================================================== */
+@layer components {
+  /* H1: 48px desktop, 36px mobile, Space Grotesk, tight padding */
+  .type-h1 {
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-h1-mobile);
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-heading);
+    letter-spacing: var(--letter-spacing-heading);
+    padding: 0;
+    margin-top: 0;
+  }
+  @media (min-width: 768px) {
+    .type-h1 {
+      font-size: var(--font-size-h1-desktop);
+    }
+  }
+
+  /* H2: 36px desktop, 28px mobile, Space Grotesk, tight padding */
+  .type-h2 {
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-h2-mobile);
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-heading);
+    letter-spacing: var(--letter-spacing-heading);
+    padding: 0;
+    margin-top: 0;
+  }
+  @media (min-width: 768px) {
+    .type-h2 {
+      font-size: var(--font-size-h2-desktop);
+    }
+  }
+
+  /* H3: 24px desktop, 22px mobile, Space Grotesk, tight padding */
+  .type-h3 {
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-h3-mobile);
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-heading);
+    letter-spacing: -0.02em;
+    padding: 0;
+    margin-top: 0;
+  }
+  @media (min-width: 768px) {
+    .type-h3 {
+      font-size: var(--font-size-h3-desktop);
+    }
+  }
+
+  /* H4: 20px, Space Grotesk, tight padding */
+  .type-h4 {
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-h4);
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-heading);
+    letter-spacing: -0.015em;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  /* Body: 16px, PP Neue Montreal, weight 400, line-height 1.6 */
+  .type-body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-body);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  /* Small text: 14px, PP Neue Montreal, weight 400, line-height 1.6 */
+  .type-small {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-body);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  /* Caption dan label: 12px, PP Neue Montreal, weight 500, line-height 1.4, tracking-wider */
+  .type-caption {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-caption);
+  }
+
+  /* Button: 14px, PP Neue Montreal, weight 500, line-height 1.2 */
+  .type-button {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-button);
+    line-height: var(--line-height-button);
+    font-weight: var(--font-weight-medium);
+  }
+}
+
+html {
+  scroll-behavior: auto;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-family-primary);
+}
+
+/* Official Lenis integration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: #FAFAFA;
+  color: #2d2d2a;
+  font-family: var(--font-family-primary);
+  overflow-x: hidden;
+}
+
+/* Smooth color transition for all typographic elements */
+h1, h2, h3, h4, h5, h6, p, a, button, span, li, th, td {
+  transition-property: color, border-color, background-color, opacity;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Enforce Space Grotesk on ALL Headlines with 0 padding for precision */
+h1, h2, h3, h4, h5, h6,
+.font-headline,
+.type-h1, .type-h2, .type-h3, .type-h4 {
+  font-family: var(--font-family-headline) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Body and all other elements use primary font */
+p, a, button, input, textarea, select, span, div, li, td, th, label, small, strong, em, b, i, blockquote, caption, figcaption {
+  font-family: var(--font-family-primary);
+}
+
+/* Monospace overrides */
+code, pre, kbd, samp, .font-mono, [class*="font-mono"] {
+  font-family: var(--font-family-primary) !important;
+}
+
+/* Minimalist Hairline Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+::-webkit-scrollbar-thumb {
+  background: #E5E4E0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2d2d2a;
+}
+
+/* High-contrast Lemon Lime selection with Graphite text */
+::selection {
+  background-color: #bfe100;
+  color: #2d2d2a;
+}
+
+/* Strict elimination of default shadows */
+* {
+  box-shadow: none !important;
+}
+
+/* Smooth section anchor offset */
+section[id] {
+  scroll-margin-top: 2.5rem;
+}
+
+/* Custom Cursor: Minimalist, Liquid Glass & Accessible */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+
+  body.custom-cursor-active input,
+  body.custom-cursor-active textarea,
+  body.custom-cursor-active select,
+  body.custom-cursor-active [contenteditable="true"],
+  body.custom-cursor-active input *,
+  body.custom-cursor-active textarea * {
+    cursor: text !important;
+  }
+}

@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejected History Log - Master Data Governance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+       
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        (function() {
+            var origWarn = console.warn;
+            console.warn = function() {
+                if (arguments[0] && typeof arguments[0] === 'string' &&
+                    arguments[0].indexOf('tailwindcss.com should not be used in production') !== -1) {
+                    return;
+                }
+                origWarn.apply(console, arguments);
+            };
+        })();
+    </script>
+    <script>
+        (function() {
+            var origWarn = console.warn;
+            console.warn = function() {
+                if (arguments[0] && typeof arguments[0] === 'string' &&
+                    arguments[0].indexOf('tailwindcss.com should not be used in production') !== -1) {
+                    return;
+                }
+                origWarn.apply(console, arguments);
+            };
+        })();
+    </script>
+    <script>
+        (function() {
+            var origWarn = console.warn;
+            console.warn = function() {
+                if (arguments[0] && typeof arguments[0] === 'string' &&
+                    arguments[0].indexOf('tailwindcss.com should not be used in production') !== -1) {
+                    return;
+                }
+                origWarn.apply(console, arguments);
+            };
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80',
+                            500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #f8fafc;
+            background-image:
+                 radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.05) 0px,
+                  transparent 40%),
+                 radial-gradient(at 90% 15%, rgba(100, 116, 139, 0.05) 0px,
+                  transparent 45%),
+                 radial-gradient(at 50% 85%, rgba(16, 185, 129, 0.03) 0px,
+                  transparent 50%);
+            background-attachment: fixed;
+            color: #0f172a;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+         ::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.6);
+          border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+        .glass-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+             box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px
+              rgba(15, 23, 42, 0.02);
+        }
+        .custom-select {
+             background-image: url("data:image/svg+xml,%3csvg
+              xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20
+              20'%3e%3cpath stroke='%6b7280' stroke-linecap='round'
+              stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4
+              4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em 1.25em;
+            padding-right: 2.25rem;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+    </style>
+  <script src="js/mdg-runtime.js"></script>
+</head>
+<body class="text-[13px] font-sans leading-relaxed m-0 p-0 antialiased min-h-screen">
+    <div class="flex min-h-screen">
+        
+    <!-- Standalone MDG Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 min-h-screen border-r border-slate-800 select-none">
+        <div class="h-16 flex items-center gap-3 px-5 border-b border-slate-800 bg-slate-950/40">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 via-emerald-500 to-teal-400 flex items-center justify-center font-black text-white text-xs shadow-md shadow-sky-900/30">
+                MDG
+            </div>
+            <div>
+                <div class="text-xs font-extrabold tracking-wider text-white uppercase">SAP Governance</div>
+                <div class="text-[10px] text-slate-400 font-medium tracking-tight">PT Kayu Mebel Indonesia</div>
+            </div>
+        </div>
+
+        <div class="p-3 space-y-1.5 flex-1 overflow-y-auto" id="sbNavMenuContainer">
+            <div class="px-3 pt-2 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Navigation Hub</div>
+            <a href="landing_page.html" 
+               class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/70 transition">
+                <span style="font-size:16px;">🏠</span>
+                <span>Landing Page Hub</span>
+            </a>
+
+            <div class="px-3 pt-3 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Approval Queues</div>
+            
+            <a href="mm_approval.html" 
+               class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+                <div class="flex items-center gap-2.5">
+                    <span style="font-size:15px;">📦</span>
+                    <span>Material Master</span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-sky-400">1</span>
+            </a>
+
+            <a href="bp_approval.html" 
+               class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+                <div class="flex items-center gap-2.5">
+                    <span style="font-size:15px;">👥</span>
+                    <span>Business Partner</span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-emerald-400">1</span>
+            </a>
+
+            <a href="ir_approval.html" 
+               class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+                <div class="flex items-center gap-2.5">
+                    <span style="font-size:15px;">💰</span>
+                    <span>Info Record (PIR)</span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-amber-400">1</span>
+            </a>
+
+            <div class="px-3 pt-3 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Data Stewardship</div>
+            <a href="mm_datasteward.html" 
+               class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/70 transition">
+                <span style="font-size:15px;">🔍</span>
+                <span>MM Data Steward</span>
+            </a>
+            <a href="bp_create_vendor.html" 
+               class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/70 transition">
+                <span style="font-size:15px;">📋</span>
+                <span>BP Data Steward</span>
+            </a>
+            <a href="bp_banksteward.html" 
+               class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/70 transition">
+                <span style="font-size:15px;">🏦</span>
+                <span>BP Bank Steward</span>
+            </a>
+
+            <div class="px-3 pt-3 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">History & Archive</div>
+            <a href="history_approved.html" 
+               class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800/70">
+                <div class="flex items-center gap-2.5">
+                    <span style="font-size:15px;">✅</span>
+                    <span>Approved History</span>
+                </div>
+            </a>
+            <a href="history_rejected.html" 
+               class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition bg-rose-600 text-white shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <span style="font-size:15px;">❌</span>
+                    <span>Rejected History</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="p-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-sky-400 shrink-0">
+                    D
+                </div>
+                <div class="truncate">
+                    <div class="text-xs font-bold text-white truncate mdg-user-name">Daniel Siahaan</div>
+                    <div class="text-[10px] text-slate-400 font-medium">SAP MDG Session</div>
+                </div>
+            </div>
+            <button type="button" onclick="window.MDG.auth.logout()" title="Sign Out"
+               class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                🚪
+            </button>
+        </div>
+    </aside>
+  
+        <div class="flex-1 min-w-0 flex flex-col">
+            <header
+               
+                class="bg-white/80 backdrop-blur-xl h-16 border-b border-slate-200/80
+                       sticky top-0 z-50 px-6 lg:px-10 flex items-center
+                       justify-between shadow-2xs">
+                <a
+                   href="landing_page.html"
+                    class="flex items-center gap-3 decoration-none">
+                    <div
+                       
+                        class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-700
+                               via-emerald-600 to-emerald-800 text-white
+                               font-extrabold text-xs flex items-center
+                               justify-center shadow-xs">
+                    KMI</div>
+                    <div class="flex flex-col">
+                        <span
+                           
+                             class="text-sm font-extrabold text-slate-900
+                              leading-none">
+                        PT Kayu Mebel Indonesia</span>
+                        <span
+                           class="text-[11px] font-semibold text-slate-500 mt-0.5">
+                        Wood &amp; Furniture Manufacturing</span>
+                    </div>
+                </a>
+                <div class="flex items-center gap-3">
+                    <div
+                       
+                        class="flex items-center gap-2.5 bg-white border
+                               border-slate-200 px-3 py-1.5 rounded-full shadow-2xs">
+                        <div
+                           
+                            class="w-7 h-7 rounded-full bg-gradient-to-br
+                                   from-emerald-500 to-emerald-700 text-white flex
+                                   items-center justify-center font-extrabold text-xs"
+                            id="userAvatarInitial">
+                        A</div>
+                        <span
+                           class="text-xs font-bold text-slate-800"
+                            id="userNameLabel">
+                        Daniel Siahaan</span>
+                    </div>
+                    <a
+                       href="?action=LOGOUT"
+                        class="text-xs font-semibold text-slate-600
+                               hover:text-rose-700 px-3.5 py-1.5 rounded-full border
+                               border-slate-200 bg-white hover:bg-rose-50/50
+                               transition">
+                    Sign Out</a>
+                </div>
+            </header>
+            <main
+               
+                 class="max-w-[1700px] my-6 mx-auto px-4 sm:px-8 space-y-6 flex-1
+                  w-full">
+                <section
+                   
+                     class="text-center py-2 flex flex-col items-center
+                      justify-center">
+                    <h1
+                       
+                         class="text-3xl sm:text-4xl font-extrabold tracking-tight
+                          text-slate-900">
+                    Master Data Governance</h1>
+                    <p
+                       
+                         class="text-xs font-bold text-rose-600 uppercase
+                          tracking-widest mt-1.5">
+                    Rejected History Log</p>
+                </section>
+                <!-- SUMMARY KPI CARDS SECTION (4 CATEGORIES) -->
+                <div
+                   class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <!-- 1. Customer Card -->
+                    <div id="kpiCardCustomer" onclick="setCategoryFilter('CUSTOMER')"
+                          class="bg-gradient-to-r from-sky-800 via-sky-700
+                           to-blue-800 text-white rounded-2xl px-5 py-3.5 shadow-xs
+                           border border-sky-600/30 transition-all hover:shadow-md
+                           cursor-pointer group">
+                        <div class="flex items-center justify-between">
+                            <span
+                               
+                                 class="text-[11px] font-bold tracking-wide
+                                  text-sky-100 uppercase">
+                            Customer</span>
+                            <span
+                               
+                                class="text-[10px] font-extrabold px-2 py-0.5
+                                       rounded-full bg-white/20 text-white border
+                                       border-white/30">
+                            BP Customer</span>
+                        </div>
+                        <span
+                           
+                             class="text-2xl sm:text-3xl font-extrabold text-white
+                              tracking-tight block mt-0.5"
+                            id="statCustomerCount">
+                        0</span>
+                        <span
+                           
+                             class="text-[10px] font-medium text-sky-100/80 block
+                              mt-0.5">
+                        Rejected Customer Records</span>
+                    </div>
+
+                    <!-- 2. Vendor Card -->
+                    <div id="kpiCardVendor" onclick="setCategoryFilter('VENDOR')"
+                          class="bg-gradient-to-r from-amber-800 via-amber-700
+                           to-orange-800 text-white rounded-2xl px-5 py-3.5 shadow-xs
+                           border border-amber-600/30 transition-all hover:shadow-md
+                           cursor-pointer group">
+                        <div class="flex items-center justify-between">
+                            <span
+                               
+                                 class="text-[11px] font-bold tracking-wide
+                                  text-amber-100 uppercase">
+                            Vendor</span>
+                            <span
+                               
+                                class="text-[10px] font-extrabold px-2 py-0.5
+                                       rounded-full bg-white/20 text-white border
+                                       border-white/30">
+                            BP Vendor</span>
+                        </div>
+                        <span
+                           
+                             class="text-2xl sm:text-3xl font-extrabold text-white
+                              tracking-tight block mt-0.5"
+                            id="statVendorCount">
+                        0</span>
+                        <span
+                           
+                             class="text-[10px] font-medium text-amber-100/80 block
+                              mt-0.5">
+                        Rejected Vendor Records</span>
+                    </div>
+
+                    <!-- 3. Material Master Card -->
+                    <div id="kpiCardMm" onclick="setCategoryFilter('MM')"
+                          class="bg-gradient-to-r from-rose-800 via-rose-700
+                           to-red-800 text-white rounded-2xl px-5 py-3.5 shadow-xs
+                           border border-rose-600/30 transition-all hover:shadow-md
+                           cursor-pointer group">
+                        <div class="flex items-center justify-between">
+                            <span
+                               
+                                 class="text-[11px] font-bold tracking-wide
+                                  text-rose-100 uppercase">
+                            Material Master</span>
+                            <span
+                               
+                                class="text-[10px] font-extrabold px-2 py-0.5
+                                       rounded-full bg-white/20 text-white border
+                                       border-white/30">
+                            Material</span>
+                        </div>
+                        <span
+                           
+                             class="text-2xl sm:text-3xl font-extrabold text-white
+                              tracking-tight block mt-0.5"
+                            id="statMmCount">
+                        0</span>
+                        <span
+                           
+                             class="text-[10px] font-medium text-rose-100/80 block
+                              mt-0.5">
+                        Rejected Material Records</span>
+                    </div>
+
+                    <!-- 4. Info Record Card -->
+                    <div id="kpiCardIr" onclick="setCategoryFilter('IR')"
+                          class="bg-gradient-to-r from-purple-800 via-purple-700
+                           to-indigo-800 text-white rounded-2xl px-5 py-3.5 shadow-xs
+                           border border-purple-600/30 transition-all hover:shadow-md
+                           cursor-pointer group">
+                        <div class="flex items-center justify-between">
+                            <span
+                               
+                                 class="text-[11px] font-bold tracking-wide
+                                  text-purple-100 uppercase">
+                            Info Record</span>
+                            <span
+                               
+                                class="text-[10px] font-extrabold px-2 py-0.5
+                                       rounded-full bg-white/20 text-white border
+                                       border-white/30">
+                            PIR</span>
+                        </div>
+                        <span
+                           
+                             class="text-2xl sm:text-3xl font-extrabold text-white
+                              tracking-tight block mt-0.5"
+                            id="statIrCount">
+                        0</span>
+                        <span
+                           
+                             class="text-[10px] font-medium text-purple-100/80 block
+                              mt-0.5">
+                        Rejected Info Record Records</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-4 transition-all space-y-3.5">
+                    <div
+                       
+                         class="flex flex-col sm:flex-row items-center
+                          justify-between gap-3">
+                        <div
+                           
+                            class="flex items-center gap-1.5 bg-slate-100/80 p-1
+                                   rounded-xl border border-slate-200/80 self-start
+                                   flex-wrap">
+                            <button
+                               type="button" id="tabCatCustomer"
+                                onclick="setCategoryFilter('CUSTOMER')"
+                                class="px-3.5 py-1.5 rounded-lg text-xs font-bold
+                                       transition flex items-center gap-1.5
+                                       cursor-pointer">
+                            Customer</button>
+                            <button
+                               type="button" id="tabCatVendor"
+                                onclick="setCategoryFilter('VENDOR')"
+                                class="px-3.5 py-1.5 rounded-lg text-xs font-bold
+                                       transition flex items-center gap-1.5
+                                       cursor-pointer">
+                            Vendor</button>
+                            <button
+                               type="button" id="tabCatMM"
+                                onclick="setCategoryFilter('MM')"
+                                class="px-3.5 py-1.5 rounded-lg text-xs font-bold
+                                       transition flex items-center gap-1.5
+                                       cursor-pointer">
+                            Material Master</button>
+                            <button
+                               type="button" id="tabCatIR"
+                                onclick="setCategoryFilter('IR')"
+                                class="px-3.5 py-1.5 rounded-lg text-xs font-bold
+                                       transition flex items-center gap-1.5
+                                       cursor-pointer">
+                            Info Record</button>
+                        </div>
+                        <div class="relative flex-1 w-full sm:max-w-md">
+                            <svg
+                               class="w-4 h-4 text-slate-400 absolute left-3 top-3"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24
+                                  24">
+                                <path
+                                   stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                            </svg>
+                            <input
+                               type="text" id="searchInput" onkeyup="applyFilter()"
+                                 placeholder="Cari Request ID, Nama BP, Material,
+                                  Kode, NPWP, PIC..."
+                                class="w-full pl-9 pr-3.5 py-2 border
+                                       border-slate-200 rounded-xl text-xs
+                                       outline-none focus:border-emerald-600
+                                       focus:ring-2 focus:ring-emerald-500/10
+                                       bg-white font-medium text-slate-800
+                                       placeholder:text-slate-400 transition">
+                        </div>
+                        <div
+                           
+                             class="flex items-center gap-3 w-full sm:w-auto
+                              justify-between sm:justify-end">
+                            <select
+                               id="dateSort" onchange="applyFilter()"
+                                class="custom-select px-3 py-2 border
+                                       border-slate-200 rounded-xl text-xs font-bold
+                                       text-slate-700 bg-white outline-none
+                                       focus:border-emerald-600 cursor-pointer">
+                                <option value="DESC">Terbaru &rarr; Terlama</option>
+                                <option value="ASC">Terlama &rarr; Terbaru</option>
+                            </select>
+                            <button
+                               type="button" onclick="loadHistoryList()"
+                                class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200
+                                       text-slate-700 font-extrabold text-xs
+                                       rounded-xl border border-slate-200 transition
+                                       cursor-pointer flex items-center gap-1.5">
+                                <svg
+                                   width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M23 4v6h-6M1 20v-6h6"></path>
+                                    <path
+                                       
+                                         d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1
+                                          14l4.64 4.36A9 9 0 0 0 20.49 15">
+                                    </path>
+                                </svg>
+                                Refresh
+                            </button>
+                            <div
+                               
+                                 class="text-xs font-bold text-slate-500
+                                  whitespace-nowrap"
+                                id="summaryLabel">
+                            Memuat data...</div>
+                        </div>
+                    </div>
+                </div>
+                <section
+                   
+                     class="glass-panel rounded-3xl overflow-hidden mb-8
+                      transition-all duration-300">
+                    <div class="overflow-x-auto min-h-[350px]">
+                        <table class="w-full min-w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                   
+                                    class="bg-slate-100/80 border-b
+                                           border-slate-200/80 text-[10px] font-black
+                                           text-slate-600 uppercase tracking-wider
+                                           backdrop-blur-xs">
+                                    <th
+                                        class="p-3.5 text-center" style="width:
+                                         55px;">
+                                    Detail</th>
+                                    <th
+                                       class="p-3.5">
+                                    Modul &amp; Informasi Permintaan</th>
+                                    <th
+                                       class="p-3.5 text-center"
+                                        style="width: 140px;">
+                                    Request Date</th>
+                                    <th
+                                       class="p-3.5 text-center"
+                                        style="width: 140px;">
+                                    PIC / Requestor</th>
+                                    <th
+                                       class="p-3.5 text-center"
+                                        style="width: 120px;">
+                                    Status</th>
+                                    <th
+                                       class="p-3.5 text-center"
+                                        style="width: 120px;">
+                                    Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody
+                               id="stagingTableBody"
+                                class="divide-y divide-slate-100 text-xs">
+                                 <tr><td colspan="6" class="p-8 text-center
+                                  text-slate-400 font-medium">Memuat histori
+                                  log...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+        var fullHistoryData = (window.MDG && window.MDG.storage) ? (window.MDG.storage.get("staging_material") || []).filter(r => r.status === "04") : [];
+        var currentCategoryFilter = "ALL";
+        var loadedBatchDetails = {};
+
+        function getItemCategory(item) {
+            if (!item) return "MM";
+            var mod = (item.module_type || "").toUpperCase();
+            if (mod === "CUSTOMER") return "CUSTOMER";
+            if (mod === "VENDOR") return "VENDOR";
+            if (mod === "IR" || mod === "PIR") return "IR";
+            if (mod === "MM") return "MM";
+
+            var role = (item.bp_role || "").toUpperCase();
+            if (role.indexOf("FLCU") !== -1 || role.indexOf("CRM") !== -1 ||
+                role.indexOf("CUSTOMER") !== -1) return "CUSTOMER";
+            if (role.indexOf("FLVN") !== -1 || role.indexOf("VENDOR") !== -1)
+                return "VENDOR";
+
+            var sub = (item.sub_reason || "").toUpperCase();
+            if (sub.indexOf("CUSTOMER:") !== -1) return "CUSTOMER";
+            if (sub.indexOf("VENDOR:") !== -1) return "VENDOR";
+            if (sub.indexOf("INFO RECORD:") !== -1) return "IR";
+
+            return "MM";
+        }
+
+        function setCategoryFilter(cat) {
+            if (currentCategoryFilter === cat) {
+                currentCategoryFilter = "ALL";
+            } else {
+                currentCategoryFilter = cat;
+            }
+            syncCategoryFilterButtons();
+            applyFilter();
+        }
+
+        function syncCategoryFilterButtons() {
+            var tabs = [
+                {
+                    id: "tabCatCustomer",
+                    cat: "CUSTOMER",
+                    cardId: "kpiCardCustomer",
+                    activeClass: "bg-sky-600 text-white shadow-xs",
+                    inactiveClass: "text-slate-600 hover:text-sky-700 hover:bg-sky-50"
+                },
+                {
+                    id: "tabCatVendor",
+                    cat: "VENDOR",
+                    cardId: "kpiCardVendor",
+                    activeClass: "bg-amber-600 text-white shadow-xs",
+                    inactiveClass: "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
+                },
+                {
+                    id: "tabCatMM",
+                    cat: "MM",
+                    cardId: "kpiCardMm",
+                    activeClass: "bg-rose-600 text-white shadow-xs",
+                    inactiveClass: "text-slate-600 hover:text-rose-700 hover:bg-rose-50"
+                },
+                {
+                    id: "tabCatIR",
+                    cat: "IR",
+                    cardId: "kpiCardIr",
+                    activeClass: "bg-purple-600 text-white shadow-xs",
+                    inactiveClass: "text-slate-600 hover:text-purple-700 hover:bg-purple-50"
+                }
+            ];
+
+            tabs.forEach(function(t) {
+                var el = document.getElementById(t.id);
+                var card = document.getElementById(t.cardId);
+                var isSelected = (currentCategoryFilter === t.cat);
+
+                if (el) {
+                    if (isSelected) {
+                        el.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer " + t.activeClass;
+                    } else {
+                        el.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer " + t.inactiveClass;
+                    }
+                }
+                if (card) {
+                    if (isSelected) {
+                        card.classList.add("ring-2", "ring-rose-400", "ring-offset-2");
+                    } else {
+                        card.classList.remove("ring-2", "ring-rose-400", "ring-offset-2");
+                    }
+                }
+            });
+        }
+
+        function updateStatCardsFromData(data) {
+            var counts = { CUSTOMER: 0, VENDOR: 0, MM: 0, IR: 0 };
+            if (data && data.length) {
+                data.forEach(function(item) {
+                    var cat = getItemCategory(item);
+                    if (counts[cat] !== undefined) {
+                        counts[cat]++;
+                    }
+                });
+            }
+            var elCust = document.getElementById("statCustomerCount");
+            var elVend = document.getElementById("statVendorCount");
+            var elMm = document.getElementById("statMmCount");
+            var elIr = document.getElementById("statIrCount");
+
+            if (elCust) elCust.innerText = counts.CUSTOMER;
+            if (elVend) elVend.innerText = counts.VENDOR;
+            if (elMm) elMm.innerText = counts.MM;
+            if (elIr) elIr.innerText = counts.IR;
+        }
+
+        function loadSidebarCounters() {
+            fetch("?OnInputProcessing=GET_COUNTERS&action=GET_COUNTERS", { method: "POST" })
+                .then(function(res) {
+                    var ct = res.headers.get("content-type") || "";
+                    if (ct.indexOf("application/json") !== -1) {
+                        return res.json();
+                    }
+                    return res.text().then(function(t) {
+                        try { return JSON.parse(t); } catch(e) { return null; }
+                    });
+                })
+                .then(function(cnts) {
+                    if (!cnts) return;
+                    var pMat = document.getElementById("sbBadgeMatPending");
+                    var pBp = document.getElementById("sbBadgeBpPending");
+                    var pIr = document.getElementById("sbBadgeIrPending") ||
+                              document.getElementById("badgeInfoCount");
+                    var p = document.getElementById("sbBadgePending");
+                    var a = document.getElementById("sbBadgeApproved");
+                    var r = document.getElementById("sbBadgeRejected");
+
+                    if (pMat) {
+                        if (cnts.mat_pending !== undefined) pMat.innerText = cnts.mat_pending;
+                        else if (cnts.pending !== undefined) pMat.innerText = cnts.pending;
+                    }
+                    if (pBp && cnts.bp_pending !== undefined) pBp.innerText = cnts.bp_pending;
+                    if (pIr && cnts.ir_pending !== undefined) pIr.innerText = cnts.ir_pending;
+                    if (p && cnts.pending !== undefined) p.innerText = cnts.pending;
+                    if (a && cnts.approved !== undefined) a.innerText = cnts.approved;
+                    if (r && cnts.rejected !== undefined) r.innerText = cnts.rejected;
+                })
+                .catch(function(e) {
+                    console.warn("Failed loading sidebar counters:", e);
+                });
+        }
+
+        function loadHistoryList() {
+            var tbody = document.getElementById("stagingTableBody");
+            if (tbody && (!fullHistoryData || fullHistoryData.length === 0)) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400 italic">Memuat histori log ditolak...</td></tr>';
+            }
+
+            fetch("?action=GET_REJECTED_LIST", { method: "POST" })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    var data = [];
+                    if (Array.isArray(res)) {
+                        data = res;
+                    } else if (res && res.DATA && Array.isArray(res.DATA)) {
+                        data = res.DATA;
+                    }
+                    fullHistoryData = data;
+                    updateStatCardsFromData(fullHistoryData);
+                    syncCategoryFilterButtons();
+                    applyFilter();
+                })
+                .catch(function(e) {
+                    console.warn("Failed loading history list:", e);
+                    if (tbody && (!fullHistoryData || fullHistoryData.length === 0)) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-rose-500 font-bold italic">Gagal memuat histori log.</td></tr>';
+                    }
+                });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        
+            function formatUserFullName(name) {
+                if (!name) return '-';
+                var clean = String(name).trim();
+                return clean || '-';
+            }
+
+        function formatMaterialCode(code) {
+            if (!code) return "-";
+            var clean = String(code).trim();
+            if (/^0+\d+$/.test(clean)) {
+                return clean.replace(/^0+/, "");
+            }
+            return clean;
+        }
+
+        function applyFilter() {
+            var searchMat = (document.getElementById("searchMaterial") ? document.getElementById("searchMaterial").value : "").toLowerCase().trim();
+            var searchReq = (document.getElementById("searchRequester") ? document.getElementById("searchRequester").value : "").toLowerCase().trim();
+            var plantVal = document.getElementById("filterPlant") ? document.getElementById("filterPlant").value : "";
+
+            var filtered = fullHistoryData.filter(function(item) {
+                var cat = getItemCategory(item);
+                if (currentCategoryFilter !== "ALL" && cat !== currentCategoryFilter) {
+                    return false;
+                }
+                if (plantVal && item.werks && item.werks !== plantVal) {
+                    return false;
+                }
+                if (searchMat) {
+                    var m1 = (item.req_no || "").toLowerCase();
+                    var m2 = (item.matnr_gen || "").toLowerCase();
+                    var m3 = (item.maktx_desc || "").toLowerCase();
+                    var m4 = (item.name1 || "").toLowerCase();
+                    var m5 = (item.tax_num || "").toLowerCase();
+                    var m6 = (item.search_term || "").toLowerCase();
+                    if (m1.indexOf(searchMat) === -1 &&
+                        m2.indexOf(searchMat) === -1 &&
+                        m3.indexOf(searchMat) === -1 &&
+                        m4.indexOf(searchMat) === -1 &&
+                        m5.indexOf(searchMat) === -1 &&
+                        m6.indexOf(searchMat) === -1) {
+                        return false;
+                    }
+                }
+                if (searchReq) {
+                    var req = (item.requestor || "").toLowerCase();
+                    if (req.indexOf(searchReq) === -1) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            renderTable(filtered);
+        }
+
+        function renderTable(data) {
+            var tbody = document.getElementById("stagingTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            var summaryLabel = document.getElementById("summaryLabel");
+            if (summaryLabel) {
+                var catName = currentCategoryFilter === 'CUSTOMER' ? 'Customer' :
+                              currentCategoryFilter === 'VENDOR' ? 'Vendor' :
+                              currentCategoryFilter === 'IR' ? 'Info Record' :
+                              currentCategoryFilter === 'MM' ? 'Material Master' : 'Semua';
+                summaryLabel.innerText = "Menampilkan " + data.length + " record (" + catName + ")";
+            }
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400 italic">Tidak ada record ditolak dalam kategori ini.</td></tr>';
+                return;
+            }
+
+            data.forEach(function(item, idx) {
+                var cat = getItemCategory(item);
+                var reqNoEsc = escapeHtml(item.req_no);
+                var reqIdKey = (item.module_type || "GEN") + "_" + reqNoEsc;
+
+                var fDate = (item.req_date && item.req_date.length === 8) ?
+                    (item.req_date.substring(6,8) + "/" + item.req_date.substring(4,6) + "/" + item.req_date.substring(0,4)) :
+                    (escapeHtml(item.req_date) || "-");
+                var fTime = (item.req_time && item.req_time.length >= 4) ?
+                    (item.req_time.substring(0,2) + ":" + item.req_time.substring(2,4)) : "";
+                var dateTimeStr = fDate + (fTime ? " " + fTime : "");
+
+                var tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50/80 transition-colors border-b border-slate-100";
+
+                var tdDetail = document.createElement("td");
+                tdDetail.className = "p-3 text-center";
+                var btnExpand = document.createElement("button");
+                btnExpand.type = "button";
+                btnExpand.id = "expand_btn_" + reqIdKey;
+                btnExpand.className = "w-7 h-7 rounded-full bg-slate-100 " +
+                    "hover:bg-slate-200 text-slate-700 font-extrabold flex " +
+                    "items-center justify-center transition shadow-2xs " +
+                    "text-[10px] cursor-pointer mx-auto";
+                btnExpand.innerHTML = "&#9660;";
+                btnExpand.onclick = function() { toggleExpandRow(reqIdKey, item); };
+                tdDetail.appendChild(btnExpand);
+
+                var tdInfo = document.createElement("td");
+                tdInfo.className = "p-3 font-medium text-slate-800 max-w-[380px]";
+                var infoHtml = "";
+
+                var catPillHtml = '';
+                if (cat === 'CUSTOMER') {
+                    catPillHtml = '<span class="px-2 py-0.5 text-[9px] font-extrabold ' +
+                        'rounded-md bg-sky-100 text-sky-800 border border-sky-300 ' +
+                        'mr-1.5">CUSTOMER</span>';
+                } else if (cat === 'VENDOR') {
+                    catPillHtml = '<span class="px-2 py-0.5 text-[9px] font-extrabold ' +
+                        'rounded-md bg-amber-100 text-amber-800 border border-amber-300 ' +
+                        'mr-1.5">VENDOR</span>';
+                } else if (cat === 'IR') {
+                    catPillHtml = '<span class="px-2 py-0.5 text-[9px] font-extrabold ' +
+                        'rounded-md bg-purple-100 text-purple-800 border border-purple-300 ' +
+                        'mr-1.5">INFO RECORD</span>';
+                } else {
+                    catPillHtml = '<span class="px-2 py-0.5 text-[9px] font-extrabold ' +
+                        'rounded-md bg-rose-100 text-rose-800 border border-rose-300 ' +
+                        'mr-1.5">MATERIAL</span>';
+                }
+
+                var titleText = item.sub_reason || item.name1 || item.maktx_desc ||
+                    item.remarks || "Permintaan Material";
+                infoHtml += '<div class="flex items-center gap-1.5 flex-wrap mb-1">' +
+                    catPillHtml + '</div>';
+                infoHtml += '<div class="font-extrabold text-slate-900 text-xs ' +
+                    'leading-snug">' + escapeHtml(titleText) + '</div>';
+
+                if (cat === 'MM' && item.matnr_gen) {
+                    infoHtml += '<div class="mt-1"><span class="inline-flex ' +
+                        'items-center bg-rose-50 text-rose-800 border border-rose-200 ' +
+                        'px-2 py-0.5 rounded-full font-mono text-[10px] ' +
+                        'font-extrabold">Code: ' + escapeHtml(item.matnr_gen) +
+                        '</span></div>';
+                } else if ((cat === 'CUSTOMER' || cat === 'VENDOR') && item.tax_num) {
+                    infoHtml += '<div class="flex items-center gap-2 text-[10px] ' +
+                        'text-slate-500 mt-1 flex-wrap">';
+                    infoHtml += '<span>Tax/NPWP: <strong class="font-mono ' +
+                        'text-slate-700">' + escapeHtml(item.tax_num) +
+                        '</strong></span>';
+                    if (item.city) {
+                        infoHtml += '<span>&bull; Lokasi: ' + escapeHtml(item.city) +
+                            '</span>';
+                    }
+                    infoHtml += '</div>';
+                }
+
+                if (item.rej_reason) {
+                    infoHtml += '<div class="mt-1.5 p-2 rounded-xl bg-rose-50 ' +
+                        'border border-rose-200 text-rose-800 text-[11px] ' +
+                        'leading-relaxed">';
+                    infoHtml += '<strong class="font-black">&#10005; Alasan ' +
+                        'Penolakan:</strong> ' + escapeHtml(item.rej_reason);
+                    infoHtml += '</div>';
+                }
+                tdInfo.innerHTML = infoHtml;
+
+                var tdDate = document.createElement("td");
+                tdDate.className = "p-3 text-center font-mono text-slate-600 text-[11px]";
+                tdDate.innerText = dateTimeStr;
+
+                var tdUser = document.createElement("td");
+                tdUser.className = "p-3 text-center text-[11px]";
+                var userHtml = '<div class="font-extrabold text-slate-800">' + escapeHtml(formatUserFullName(item.requestor) || "-") + '</div>';
+                if (item.appr_final_by) {
+                    userHtml += '<div class="text-[10px] text-rose-800 font-semibold mt-0.5">Evaluator: ' + escapeHtml(formatUserFullName(item.appr_final_by)) + '</div>';
+                }
+                tdUser.innerHTML = userHtml;
+
+                var tdStatus = document.createElement("td");
+                tdStatus.className = "p-3 text-center";
+                tdStatus.innerHTML = '<span class="inline-flex items-center gap-1.5 ' +
+                    'bg-rose-50 text-rose-800 text-[10px] font-extrabold px-2.5 ' +
+                    'py-1 rounded-full border border-rose-200"><span class="w-1.5 ' +
+                    'h-1.5 rounded-full bg-rose-500"></span>REJECTED</span>';
+
+                var tdAction = document.createElement("td");
+                tdAction.className = "p-3 text-center";
+                var btnAct = document.createElement("button");
+                btnAct.type = "button";
+                btnAct.className = "px-3 py-1 text-[11px] font-extrabold " +
+                    "rounded-full bg-slate-100 hover:bg-slate-200 " +
+                    "text-slate-700 border border-slate-200 transition " +
+                    "cursor-pointer mx-auto flex items-center gap-1";
+                btnAct.innerText = "Lihat Detail";
+                btnAct.onclick = function() { toggleExpandRow(reqIdKey, item); };
+                tdAction.appendChild(btnAct);
+
+                tr.appendChild(tdDetail);
+                tr.appendChild(tdInfo);
+                tr.appendChild(tdDate);
+                tr.appendChild(tdUser);
+                tr.appendChild(tdStatus);
+                tr.appendChild(tdAction);
+                tbody.appendChild(tr);
+
+                var trExp = document.createElement("tr");
+                trExp.id = "expand_row_" + reqIdKey;
+                trExp.className = "hidden bg-slate-50/90 border-b border-slate-200";
+                var tdExp = document.createElement("td");
+                tdExp.colSpan = 6;
+                tdExp.className = "p-3 max-w-0";
+                var cardBox = document.createElement("div");
+                cardBox.className = "p-3.5 bg-slate-100/90 border border-slate-200 " +
+                    "rounded-xl shadow-inner w-full max-w-full overflow-hidden";
+                var isMM = (cat === 'MM');
+                var isApproved = false;
+                cardBox.innerHTML = '<div class="flex items-center justify-between ' +
+                    'mb-2.5 px-1">' +
+                    '<span class="text-xs font-extrabold text-slate-800 uppercase ' +
+                    'tracking-wider flex items-center gap-2">' +
+                    '<span class="w-2 h-2 rounded-full ' + (isApproved ? 'bg-emerald-600' : 'bg-rose-600') + '"></span>' +
+                    (isMM ? 'Detail Item Material Master' : 'Master Data Business Partner') +
+                    ' &mdash; ID: <span class="font-mono ' +
+                    (isApproved ? 'text-emerald-800' : 'text-rose-800') + '">' + reqNoEsc + '</span>' +
+                    '</span>' +
+                    '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' +
+                    (isApproved ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-rose-100 text-rose-800 border border-rose-300') + '">' +
+                    escapeHtml(item.status || "REJECTED") + '</span>' +
+                    '</div>' +
+                    '<div id="expand_content_' + reqIdKey + '" class="w-full bg-white ' +
+                    'p-3 rounded-xl border border-slate-200 shadow-xs max-h-[400px] ' +
+                    'overflow-auto"></div>';
+                tdExp.appendChild(cardBox);
+                trExp.appendChild(tdExp);
+                tbody.appendChild(trExp);
+            });
+        }
+
+        function toggleExpandRow(reqIdKey, item) {
+            var row = document.getElementById("expand_row_" + reqIdKey);
+            var btn = document.getElementById("expand_btn_" + reqIdKey);
+            if (!row) return;
+
+            if (row.classList.contains("hidden")) {
+                row.classList.remove("hidden");
+                if (btn) btn.innerHTML = "&#9650;";
+                renderAccordionContent(reqIdKey, item);
+            } else {
+                row.classList.add("hidden");
+                if (btn) btn.innerHTML = "&#9660;";
+            }
+        }
+
+        var loadedBatchAttachments = {};
+
+        function fetchBatchDetail(reqNo, callback) {
+            var formData = new FormData();
+            formData.append("REQ_NO", reqNo);
+
+            fetch("?action=GET_UPLOAD_DETAIL", { method: "POST", body: formData })
+                .then(function(r) { return r.json(); })
+                .then(function(resp) {
+                    var items = [];
+                    var atts = [];
+                    if (Array.isArray(resp)) {
+                        items = resp;
+                    } else if (resp && typeof resp === 'object') {
+                        items = resp.items || resp.details || resp.data || [];
+                        atts = resp.attachments || resp.files || [];
+                    }
+                    loadedBatchDetails[reqNo] = items;
+                    loadedBatchAttachments[reqNo] = atts;
+                    if (typeof callback === "function") callback();
+                })
+                .catch(function(e) {
+                    loadedBatchDetails[reqNo] = [];
+                    loadedBatchAttachments[reqNo] = [];
+                    if (typeof callback === "function") callback();
+                });
+        }
+
+        function isImageFile(fileName, fileType) {
+            if (fileType && fileType.toLowerCase().indexOf('image') !== -1) return true;
+            if (!fileName) return false;
+            var fn = String(fileName).toLowerCase();
+            var ext = fn.split('.').pop();
+            return ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp'].indexOf(ext) !== -1;
+        }
+
+        function renderAttachmentGallery(reqNo, attachments) {
+            if (!attachments || attachments.length === 0) return "";
+            var reqNoEsc = escapeHtml(reqNo);
+            var h = '<div class="mb-4 bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs text-xs">';
+            h += '<div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">';
+            h += '<div class="flex items-center gap-2">';
+            h += '<span class="w-6 h-6 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs">';
+            h += '📎</span>';
+            h += '<h3 class="text-xs font-black text-slate-800 uppercase tracking-wider">File Attachment Pendukung Requester (ZMDG_REQ_ATT)</h3>';
+            h += '</div>';
+            h += '<span class="text-[10px] font-extrabold bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full">' + attachments.length + ' File Attachment</span>';
+            h += '</div>';
+
+            h += '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">';
+            attachments.forEach(function(att, idx) {
+                var rawB64 = att.file_base64 || '';
+                var fullB64 = rawB64;
+                if (rawB64 && !rawB64.startsWith('data:')) {
+                    var mime = att.file_type || 'image/jpeg';
+                    fullB64 = 'data:' + mime + ';base64,' + rawB64;
+                }
+                var isImg = isImageFile(att.file_name, att.file_type) || fullB64.startsWith('data:image');
+                var fileName = escapeHtml(att.file_name || ('Attachment_' + (idx + 1)));
+
+                h += '<div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex flex-col justify-between hover:border-rose-300 transition shadow-2xs group relative">';
+                if (isImg && fullB64) {
+                    h += '<div class="h-24 w-full bg-slate-200/60 rounded-lg overflow-hidden flex items-center justify-center mb-2 relative">';
+                    h += '<img src="' + fullB64 + '" alt="' + fileName + '" class="w-full h-full object-cover">';
+                    h += '</div>';
+                } else {
+                    h += '<div class="h-24 w-full bg-rose-50 rounded-lg flex flex-col items-center justify-center p-2 mb-2 border border-rose-100">';
+                    h += '<span class="text-[10px] font-bold text-rose-800 uppercase font-mono">' + escapeHtml((att.file_type || 'FILE').toUpperCase()) + '</span>';
+                    h += '</div>';
+                }
+                h += '<div><p class="text-[11px] font-bold text-slate-800 truncate" title="' + fileName + '">' + fileName + '</p>';
+                if (fullB64) {
+                    h += '<a href="' + fullB64 + '" download="' + fileName + '" class="mt-2 w-full text-[10px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 py-1 rounded text-center block transition">Download File</a>';
+                }
+                h += '</div></div>';
+            });
+            h += '</div></div>';
+            return h;
+        }
+
+        function renderIrCard(item) {
+            var reqNoEsc = escapeHtml(item.req_no);
+            var vendorInfoEsc = escapeHtml(item.sub_reason || item.remarks);
+            var matGenEsc = escapeHtml(item.matnr_gen || "-");
+
+            var h = '<div class="p-4 rounded-xl border border-purple-200 bg-purple-50/60 text-xs space-y-2 m-1">';
+            h += '<div class="text-[11px] font-black uppercase tracking-wider text-purple-900 pb-1 border-b border-purple-200">Purchasing Info Record (PIR) Detail</div>';
+            h += '<div class="grid grid-cols-1 md:grid-cols-3 gap-3">';
+            h += '<div><span class="text-purple-600 text-[10px] block font-semibold">Request ID</span>';
+            h += '<span class="font-mono font-extrabold text-purple-950">' + reqNoEsc + '</span></div>';
+            h += '<div><span class="text-purple-600 text-[10px] block font-semibold">Vendor &amp; Info Record</span>';
+            h += '<span class="font-bold text-slate-900">' + vendorInfoEsc + '</span></div>';
+            h += '<div><span class="text-purple-600 text-[10px] block font-semibold">Material Code / Ref</span>';
+            h += '<span class="font-mono font-bold text-purple-900">' + matGenEsc + '</span></div>';
+            h += '</div></div>';
+            return h;
+        }
+
+        function renderAccordionContent(reqIdKey, item) {
+            var container = document.getElementById("expand_content_" + reqIdKey);
+            if (!container) return;
+            var reqNo = item.req_no;
+
+            if (!loadedBatchAttachments[reqNo] && loadedBatchAttachments[reqNo] !== []) {
+                container.innerHTML = '<div class="p-4 text-center text-slate-400 italic text-xs">Memuat detail &amp; file lampiran...</div>';
+                fetchBatchDetail(reqNo, function() {
+                    renderAccordionContent(reqIdKey, item);
+                });
+                return;
+            }
+
+            var atts = loadedBatchAttachments[reqNo] || [];
+            var items = loadedBatchDetails[reqNo] || [];
+            var galleryHtml = renderAttachmentGallery(reqNo, atts);
+            var mod = (item.module_type || '').toUpperCase();
+
+            if (mod === "BP" || mod === "CUSTOMER" || mod === "VENDOR") {
+                container.innerHTML = galleryHtml + renderBpCard(item);
+            } else if (mod === "IR" || mod === "PIR") {
+                container.innerHTML = galleryHtml + renderIrCard(item);
+            } else {
+                container.innerHTML = galleryHtml;
+                var tableDiv = document.createElement("div");
+                container.appendChild(tableDiv);
+                renderMmTable(tableDiv, items);
+            }
+        }
+
+        function renderBpCard(item) {
+            var h = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">';
+            h += '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5">';
+            h += '<div class="text-[10px] font-black uppercase tracking-wider text-rose-800 pb-1 border-b border-slate-200">01. General Data</div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Category &amp; Role</span>' +
+                '<span class="font-bold text-slate-800">' + ((item.bp_category === "1") ? "Person" : "Organization") +
+                " (" + escapeHtml(item.bp_role || "FLVN00") + ")</span></div>";
+            h += '<div><span class="text-slate-400 text-[10px] block">Legal Name 1</span>' +
+                '<span class="font-extrabold text-slate-900">' + escapeHtml(item.name1 || "-") + '</span></div>';
+            if (item.name2) {
+                h += '<div><span class="text-slate-400 text-[10px] block">Name 2</span>' +
+                    '<span class="font-semibold text-slate-700">' + escapeHtml(item.name2) + '</span></div>';
+            }
+            h += '<div><span class="text-slate-400 text-[10px] block">Search Term</span>' +
+                '<span class="font-mono font-bold text-slate-800">' + escapeHtml(item.search_term || "-") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Telepon &amp; Email</span>' +
+                '<span class="text-slate-700">' + escapeHtml(item.telephone || "-") + " | " + escapeHtml(item.email || "-") + '</span></div>';
+            if (item.bp_number) {
+                h += '<div class="mt-1 pt-1 border-t border-slate-200"><span class="text-slate-400 text-[10px] block">SAP BP Number</span>' +
+                    '<span class="font-mono font-extrabold text-rose-900 bg-rose-100 px-2 py-0.5 rounded text-[11px] inline-block border border-rose-300">' +
+                    escapeHtml(item.bp_number) + '</span></div>';
+            }
+            h += '</div>';
+
+            h += '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5">';
+            h += '<div class="text-[10px] font-black uppercase tracking-wider text-rose-800 pb-1 border-b border-slate-200">02. Alamat &amp; Lokasi</div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Jalan / Alamat</span>' +
+                '<span class="font-semibold text-slate-800">' + escapeHtml(item.street || "-") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Kota &amp; Kode Pos</span>' +
+                '<span class="text-slate-800">' + escapeHtml(item.city || "-") + " " + escapeHtml(item.post_code || "") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Negara &amp; Region</span>' +
+                '<span class="text-slate-800">' + escapeHtml(item.country || "ID") + " / " + escapeHtml(item.region || "-") + '</span></div>';
+            h += '</div>';
+
+            h += '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5">';
+            h += '<div class="text-[10px] font-black uppercase tracking-wider text-rose-800 pb-1 border-b border-slate-200">03. Financial &amp; Tax</div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">No. NPWP / Tax ID</span>' +
+                '<span class="font-mono font-bold text-rose-900 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded inline-block">' +
+                escapeHtml(item.tax_num || "-") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Bank Key &amp; Name</span>' +
+                '<span class="font-mono text-slate-800">' + escapeHtml(item.bankl || "-") + " " + escapeHtml(item.bank_name || "") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">No Rekening &amp; Pemilik</span>' +
+                '<span class="font-mono text-slate-800">' + escapeHtml(item.bankn || "-") + " (" + escapeHtml(item.koinh || "-") + ")</span></div>";
+            h += '</div>';
+
+            h += '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5">';
+            h += '<div class="text-[10px] font-black uppercase tracking-wider text-rose-800 pb-1 border-b border-slate-200">04. CVI Accounting &amp; Audit</div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Company Code &amp; Currency</span>' +
+                '<span class="font-mono font-bold text-slate-800">' + escapeHtml(item.bukrs || "1000") + " (" + escapeHtml(item.waers || "IDR") + ")</span></div>";
+            h += '<div><span class="text-slate-400 text-[10px] block">Recon Account (AKONT)</span>' +
+                '<span class="font-mono text-slate-800">' + escapeHtml(item.akont || "-") + '</span></div>';
+            h += '<div><span class="text-slate-400 text-[10px] block">Payment Terms (ZTERM)</span>' +
+                '<span class="font-mono text-slate-800">' + escapeHtml(item.zterm || "-") + '</span></div>';
+            if (item.stw_data_by) {
+                h += '<div class="pt-1 border-t border-slate-200"><span class="text-slate-400 text-[10px] block">Data Steward</span>' +
+                    '<span class="font-bold text-rose-800">' + escapeHtml(item.stw_data_by) + '</span></div>';
+            }
+            if (item.appr_final_by) {
+                h += '<div class="pt-1 border-t border-slate-200"><span class="text-slate-400 text-[10px] block">Final Approver</span>' +
+                    '<span class="font-bold text-slate-800">' + escapeHtml(item.appr_final_by) + '</span></div>';
+            }
+            h += '</div>';
+            h += '</div>';
+            return h;
+        }
+
+        var mmCols = [
+            { label: "#", width: "40px", align: "center", sticky: true, left: "0px" },
+            { label: "Material Code", width: "130px", align: "left", fontClass: "font-mono font-bold text-rose-800" },
+            { label: "Description", width: "220px", align: "left", fontClass: "font-bold text-slate-900" },
+            { label: "Industry Sector", width: "100px", align: "center" },
+            { label: "Old Mat No", width: "110px", align: "left" },
+            { label: "Mat Type", width: "80px", align: "center" },
+            { label: "Mat Group", width: "90px", align: "center" },
+            { label: "Base UoM", width: "80px", align: "center" },
+            { label: "Plant", width: "70px", align: "center" },
+            { label: "Storage Loc", width: "90px", align: "center" },
+            { label: "Sales Org", width: "90px", align: "center" },
+            { label: "Dist Channel", width: "90px", align: "center" },
+            { label: "Valuation Class", width: "100px", align: "center" },
+            { label: "Standard Price", width: "100px", align: "right" },
+            { label: "Moving Avg Price", width: "110px", align: "right" },
+            { label: "Profit Center", width: "90px", align: "center" },
+            { label: "Purchasing Group", width: "110px", align: "center" }
+        ];
+
+        function renderMmTable(container, items) {
+            if (!items || items.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-slate-400 italic">Tidak ada item material ditemukan.</div>';
+                return;
+            }
+            var table = document.createElement("table");
+            table.className = "w-full text-xs text-slate-700 border-collapse whitespace-nowrap";
+            var thead = document.createElement("thead");
+            var thRow = document.createElement("tr");
+            thRow.className = "text-left font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border-b border-slate-200 sticky top-0 z-10 text-[11px]";
+            mmCols.forEach(function(c) {
+                var th = document.createElement("th");
+                th.className = "p-2 border-r border-slate-200 " + (c.fontClass || "") +
+                    (c.align === "center" ? " text-center" : c.align === "right" ? " text-right" : "") +
+                    (c.sticky ? " sticky bg-slate-100 z-20" : "");
+                if (c.width) th.style.minWidth = c.width;
+                if (c.left) th.style.left = c.left;
+                th.innerText = c.label;
+                thRow.appendChild(th);
+            });
+            thead.appendChild(thRow);
+            table.appendChild(thead);
+            var tbody = document.createElement("tbody");
+            tbody.className = "divide-y divide-slate-200 bg-white";
+            items.forEach(function(row, i) {
+                var tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50 transition-colors";
+                function cTd(val, align, extra, isStk, sLeft) {
+                    var td = document.createElement("td");
+                    td.className = "p-2 border-r border-slate-200 " + (extra || "") +
+                        (align === "center" ? " text-center" : align === "right" ? " text-right" : "") +
+                        (isStk ? " sticky bg-white z-10" : "");
+                    if (sLeft) td.style.left = sLeft;
+                    td.innerText = (val !== null && val !== undefined && val !== "") ? val : "-";
+                    return td;
+                }
+                tr.appendChild(cTd(row.item_no || (i + 1), "center", "font-bold text-slate-700", true, "0px"));
+                tr.appendChild(cTd(formatMaterialCode(row.matnr_ext || row.matnr), "left", "font-mono font-bold text-rose-800"));
+                tr.appendChild(cTd(row.maktx, "left", "font-bold text-slate-900"));
+                tr.appendChild(cTd(row.mbrsh || "F", "center"));
+                tr.appendChild(cTd(row.bismt, "left", "font-mono"));
+                tr.appendChild(cTd(row.mtart || "ZOS3", "center", "font-bold"));
+                tr.appendChild(cTd(row.matkl, "center", "font-mono"));
+                tr.appendChild(cTd(row.meins || "PC", "center"));
+                tr.appendChild(cTd(row.werks || "1200", "center", "font-mono"));
+                tr.appendChild(cTd(row.lgort || "1201", "center", "font-mono"));
+                tr.appendChild(cTd(row.vkorg, "center", "font-mono"));
+                tr.appendChild(cTd(row.vtweg || "1", "center"));
+                tr.appendChild(cTd(row.bklas || "OS01", "center", "font-mono"));
+                tr.appendChild(cTd(row.stprs || "0", "right"));
+                tr.appendChild(cTd(row.verpr || "0", "right"));
+                tr.appendChild(cTd(row.prctr || "200201", "center", "font-mono"));
+                tr.appendChild(cTd(row.ekgrp || "K01", "center"));
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            container.innerHTML = "";
+            container.appendChild(table);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var nameLabel = document.getElementById("userNameLabel");
+            if (nameLabel && nameLabel.innerText.trim()) {
+                var initial = nameLabel.innerText.trim().charAt(0).toUpperCase();
+                var avatar = document.getElementById("userAvatarInitial");
+                if (avatar) avatar.innerText = initial;
+            }
+            if (fullHistoryData && fullHistoryData.length) {
+                updateStatCardsFromData(fullHistoryData);
+                syncCategoryFilterButtons();
+                applyFilter();
+            }
+            loadHistoryList();
+            loadSidebarCounters();
+        });
+    </script>
+</body>
+</html>

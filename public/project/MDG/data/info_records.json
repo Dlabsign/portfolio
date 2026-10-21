@@ -1,0 +1,53 @@
+[
+  {
+    "infnr": "530000101",
+    "matnr": "10000001",
+    "maktx": "KAYU JATI SOLID GRADE A PERHUTANI 400x20x5 CM",
+    "lifnr": "20001001",
+    "vendor_name": "PT RIMBA PERKASA TEAK",
+    "ekorg": "1000",
+    "werks": "1000",
+    "esokz": "0",
+    "netpr": 12500000,
+    "waers": "IDR",
+    "peinh": 1,
+    "bprme": "M3",
+    "plifz": 7,
+    "mwskz": "V1",
+    "status": "ACTIVE"
+  },
+  {
+    "infnr": "530000102",
+    "matnr": "10000004",
+    "maktx": "LEM KAYU POLYURETHANE D4 WATERPROOF 20 KG PAIL",
+    "lifnr": "20001002",
+    "vendor_name": "PT CAHAYA KIMIA ABADI",
+    "ekorg": "1000",
+    "werks": "1000",
+    "esokz": "0",
+    "netpr": 1850000,
+    "waers": "IDR",
+    "peinh": 1,
+    "bprme": "PAI",
+    "plifz": 3,
+    "mwskz": "V1",
+    "status": "ACTIVE"
+  },
+  {
+    "infnr": "530000103",
+    "matnr": "10000006",
+    "maktx": "ENGSEL SENDOK SLOW MOTION SOFT-CLOSE 110 DEGREE",
+    "lifnr": "20001003",
+    "vendor_name": "CV LOGAM PRESISI NUSANTARA",
+    "ekorg": "1000",
+    "werks": "1000",
+    "esokz": "0",
+    "netpr": 1750000,
+    "waers": "IDR",
+    "peinh": 100,
+    "bprme": "PR",
+    "plifz": 5,
+    "mwskz": "V1",
+    "status": "ACTIVE"
+  }
+]

@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Super Smash Badminton — 2D Arcade Championship</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('/pp%20neue/ppneuemontreal-book.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('/pp%20neue/ppneuemontreal-medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'PP Neue Montreal';
+            src: url('/pp%20neue/ppneuemontreal-bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        :root {
+            --court-green: #10b981;
+            --accent-blue: #38bdf8;
+            --accent-red: #fb7185;
+            --accent-gold: #f59e0b;
+        }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #090a0f;
+            background-image: radial-gradient(circle at 50% 0%, #171b26 0%, #07080c 100%);
+            color: #f4f4f6;
+            font-family: 'PP Neue Montreal', 'PP Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-arcade {
+            font-family: 'Chakra Petch', -apple-system, sans-serif;
+        }
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1120px;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            border-radius: 1.25rem;
+            overflow: hidden;
+            background: #06080e;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Apple Glass & Minimalist Modal */
+        .apple-modal {
+            background: rgba(18, 18, 24, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            backdrop-filter: blur(36px) saturate(190%);
+            -webkit-backdrop-filter: blur(36px) saturate(190%);
+            box-shadow: 0 32px 72px -16px rgba(0, 0, 0, 0.85),
+                        0 0 0 1px rgba(255, 255, 255, 0.04),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        }
+
+        /* Apple Segmented Controls */
+        .segmented-control {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 11px;
+            padding: 3px;
+            gap: 3px;
+            width: 100%;
+        }
+        .segmented-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #a1a1aa;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .segmented-btn:hover {
+            color: #f4f4f5;
+        }
+        .segmented-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-weight: 600;
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* Apple Action Buttons */
+        .apple-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #ffffff;
+            color: #09090b;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+        .apple-btn-primary:hover {
+            background: #f4f4f5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+        .apple-btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .apple-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.07);
+            color: #f4f4f5;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+        .apple-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.11);
+            border-color: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+        .apple-btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        /* Apple Keyboard Keycap Badge */
+        .apple-kbd {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+            font-family: 'PP Neue Montreal', 'PP Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 500;
+            font-size: 0.72rem;
+            color: #e4e4e7;
+            line-height: 1;
+        }
+
+        /* Header Navigation Button */
+        .apple-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #d4d4d8;
+            font-size: 0.78rem;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .apple-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.14);
+        }
+        .apple-nav-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Footer Touch Controls */
+        .apple-touch-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 12px;
+            color: #f4f4f5;
+            transition: all 0.12s ease;
+            touch-action: manipulation;
+            cursor: pointer;
+        }
+        .apple-touch-btn:active, .apple-touch-btn.pressed {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between py-2 px-2 sm:px-4">
+
+    <!-- Top Navigation & Status Bar -->
+    <header class="w-full max-w-[1120px] flex flex-wrap items-center justify-between gap-3 mb-2 px-3 sm:px-4 py-2.5 bg-zinc-900/80 border border-white/10 rounded-2xl backdrop-blur-xl">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-emerald-400">
+                <!-- Clean Shuttlecock Vector Icon -->
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 21a2 2 0 0 1-2-2v-1h4v1a2 2 0 0 1-2 2z"/>
+                    <path d="M6 5l4 11h4l4-11"/>
+                    <path d="M4 4l3 3m13-3l-3 3"/>
+                    <path d="M8 12h8"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-sm sm:text-base font-semibold tracking-tight text-white leading-tight">
+                    Super Smash Badminton
+                </h1>
+                <p class="text-[11px] text-zinc-400 hidden sm:block tracking-normal">Championship Arcade Edition</p>
+            </div>
+        </div>
+
+        <!-- Live Match Pill & Nav Actions -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+            <a href="/" class="apple-nav-btn" title="Back to Portfolio">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6"/>
+                </svg>
+                <span>Portfolio</span>
+            </a>
+            <div id="hudModeLabel" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">
+                1P vs AI (Pro) • 11 Pts
+            </div>
+            <button id="btnPracticeTip" class="apple-nav-btn" title="Controls &amp; Shot Guide">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <span>Guide</span>
+            </button>
+            <button id="btnAudioToggle" class="apple-nav-btn" title="Toggle Sound">
+                <span id="audioIcon" class="inline-flex items-center justify-center">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                </span>
+                <span class="hidden sm:inline text-xs" id="audioText">SFX On</span>
+            </button>
+            <button id="btnPause" class="apple-nav-btn bg-white/10 hover:bg-white/15 text-white border-white/15">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="6" y="4" width="4" height="16" rx="1"/>
+                    <rect x="14" y="4" width="4" height="16" rx="1"/>
+                </svg>
+                <span>Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Canvas Container -->
+    <main class="canvas-wrapper" id="canvasContainer">
+        <canvas id="gameCanvas" width="1280" height="720"></canvas>
+
+        <!-- Start / Pause / Settings Modal Overlay -->
+        <div id="menuOverlay" class="absolute inset-0 bg-black/70 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 z-20 transition-all duration-200">
+            <div class="apple-modal w-full max-w-[500px] p-5 sm:p-6 flex flex-col gap-4">
+                <!-- Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-emerald-400 shrink-0">
+                            <!-- Clean Shuttlecock Vector Icon -->
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21a2 2 0 0 1-2-2v-1h4v1a2 2 0 0 1-2 2z"/>
+                                <path d="M6 5l4 11h4l4-11"/>
+                                <path d="M4 4l3 3m13-3l-3 3"/>
+                                <path d="M8 12h8"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 id="menuTitle" class="text-base sm:text-lg font-semibold tracking-tight text-white leading-tight">Super Smash Badminton</h2>
+                            <p id="menuSubtitle" class="text-[11px] text-zinc-400">Match Setup</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end pl-2">
+                        <span class="text-[10px] font-medium tracking-wide uppercase text-zinc-400">Top Smash</span>
+                        <span id="topSmashDisplay" class="font-mono text-xs sm:text-sm font-semibold text-emerald-400">342 km/h</span>
+                    </div>
+                </div>
+
+                <!-- Segmented Tabs: Match Setup vs Controls Guide -->
+                <div class="segmented-control">
+                    <button type="button" id="tabBtnSetup" class="segmented-btn active" aria-selected="true">
+                        Match Setup
+                    </button>
+                    <button type="button" id="tabBtnGuide" class="segmented-btn" aria-selected="false">
+                        Controls &amp; Guide
+                    </button>
+                </div>
+
+                <!-- View 1: Match Setup -->
+                <div id="tabContentSetup" class="flex flex-col gap-3.5">
+                    <!-- Game Mode -->
+                    <div>
+                        <label class="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wider">Mode</label>
+                        <div class="segmented-control">
+                            <button type="button" data-mode="1p" class="mode-btn segmented-btn active" aria-pressed="true">
+                                Single Player (vs AI)
+                            </button>
+                            <button type="button" data-mode="2p" class="mode-btn segmented-btn" aria-pressed="false">
+                                Two Players (Local)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Two-column grid for Difficulty & Match Length -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- AI Difficulty -->
+                        <div id="aiDiffPanel" class="transition-opacity duration-150">
+                            <label class="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wider">AI Difficulty</label>
+                            <div class="segmented-control">
+                                <button type="button" data-diff="easy" class="diff-btn segmented-btn" aria-pressed="false">
+                                    Club
+                                </button>
+                                <button type="button" data-diff="medium" class="diff-btn segmented-btn active" aria-pressed="true">
+                                    Pro
+                                </button>
+                                <button type="button" data-diff="hard" class="diff-btn segmented-btn" aria-pressed="false">
+                                    Legend
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Match Points -->
+                        <div>
+                            <label class="block text-[11px] font-medium text-zinc-400 mb-1.5 uppercase tracking-wider">Target Points</label>
+                            <div class="segmented-control">
+                                <button type="button" data-pts="7" class="pts-btn segmented-btn" aria-pressed="false">
+                                    7 Pts
+                                </button>
+                                <button type="button" data-pts="11" class="pts-btn segmented-btn active" aria-pressed="true">
+                                    11 Pts
+                                </button>
+                                <button type="button" data-pts="21" class="pts-btn segmented-btn" aria-pressed="false">
+                                    21 Pts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Key Strip -->
+                    <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.07] text-xs">
+                        <div class="flex items-center gap-2 text-zinc-400 text-[11px] sm:text-[12px] truncate">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
+                            <span class="truncate"><strong class="text-zinc-200 font-medium">P1:</strong> <kbd class="apple-kbd">A</kbd><kbd class="apple-kbd">D</kbd> Move • <kbd class="apple-kbd">W</kbd> Jump • <kbd class="apple-kbd">F</kbd> Lob • <kbd class="apple-kbd">G</kbd> Smash</span>
+                        </div>
+                        <button type="button" id="btnQuickViewGuide" class="text-[11px] font-medium text-zinc-400 hover:text-white transition-colors shrink-0 ml-2 underline underline-offset-2">
+                            View All
+                        </button>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end gap-2.5 pt-1">
+                        <button id="btnResumeMatch" class="hidden apple-btn-secondary text-sm">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            <span>Resume</span>
+                        </button>
+                        <button id="btnStartMatch" class="apple-btn-primary text-sm">
+                            <svg id="startBtnIcon" class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            <span id="startBtnText">Start Match</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- View 2: Controls & Guide -->
+                <div id="tabContentGuide" class="hidden flex flex-col gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <!-- Player 1 -->
+                        <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                            <div class="flex items-center gap-2 mb-2 font-medium text-zinc-200">
+                                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                                <span>Player 1 (Left Court)</span>
+                            </div>
+                            <ul class="space-y-1.5 text-zinc-400 text-[11px]">
+                                <li class="flex items-center justify-between">
+                                    <span>Move &amp; Jump</span>
+                                    <div class="flex gap-1">
+                                        <kbd class="apple-kbd">A</kbd>
+                                        <kbd class="apple-kbd">D</kbd>
+                                        <kbd class="apple-kbd">W</kbd>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Clear / Lob</span>
+                                    <div class="flex gap-1 items-center">
+                                        <kbd class="apple-kbd">F</kbd>
+                                        <span class="text-zinc-500">/</span>
+                                        <kbd class="apple-kbd">Space</kbd>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Drive / Drop</span>
+                                    <kbd class="apple-kbd">G</kbd>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Jump Smash</span>
+                                    <div class="flex gap-1 items-center">
+                                        <kbd class="apple-kbd">W</kbd>
+                                        <span class="text-zinc-500">+</span>
+                                        <kbd class="apple-kbd">G</kbd>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Player 2 -->
+                        <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                            <div class="flex items-center gap-2 mb-2 font-medium text-zinc-200">
+                                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                                <span>Player 2 (Right Court)</span>
+                            </div>
+                            <ul class="space-y-1.5 text-zinc-400 text-[11px]">
+                                <li class="flex items-center justify-between">
+                                    <span>Move &amp; Jump</span>
+                                    <div class="flex gap-1">
+                                        <kbd class="apple-kbd">←</kbd>
+                                        <kbd class="apple-kbd">→</kbd>
+                                        <kbd class="apple-kbd">↑</kbd>
+                                    </div>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Clear / Lob</span>
+                                    <kbd class="apple-kbd">K</kbd>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Drive / Drop</span>
+                                    <kbd class="apple-kbd">L</kbd>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>Jump Smash</span>
+                                    <div class="flex gap-1 items-center">
+                                        <kbd class="apple-kbd">↑</kbd>
+                                        <span class="text-zinc-500">+</span>
+                                        <kbd class="apple-kbd">L</kbd>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Super Smash Note -->
+                    <div class="px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] text-zinc-400 flex items-start gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-1"></span>
+                        <span><strong class="text-zinc-200 font-medium">Super Smash:</strong> Build rally momentum to charge meter. At 100%, leap and strike at peak jump for max velocity.</span>
+                    </div>
+
+                    <!-- Back Action -->
+                    <div class="flex items-center justify-end gap-2.5 pt-0.5">
+                        <button type="button" id="btnBackToSetup" class="apple-btn-secondary text-sm">
+                            Back to Setup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Victory / Match Over Overlay -->
+        <div id="victoryOverlay" class="hidden absolute inset-0 bg-black/70 backdrop-blur-xl flex items-center justify-center p-4 z-30 transition-all duration-200">
+            <div class="apple-modal w-full max-w-sm p-6 text-center flex flex-col items-center gap-4">
+                <div class="w-11 h-11 rounded-2xl bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-amber-400">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                        <path d="M4 22h16"/>
+                        <path d="M10 14.66V17c0 .55-.45 1-1 1H8v2h8v-2h-1c-.55 0-1-.45-1-1v-2.34"/>
+                        <path d="M18 4H6v7a6 6 0 0 0 12 0V4z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Championship Final</p>
+                    <h2 id="winnerTitle" class="text-lg sm:text-xl font-semibold tracking-tight text-white mt-1">Player 1 Wins</h2>
+                    <p id="finalScoreText" class="font-mono text-2xl font-semibold text-zinc-100 mt-0.5">11 — 7</p>
+                </div>
+                <div class="w-full grid grid-cols-3 gap-2 bg-white/[0.03] p-3 rounded-xl border border-white/[0.07] text-xs">
+                    <div>
+                        <div class="text-[10px] text-zinc-400 uppercase tracking-wider">Rally</div>
+                        <div id="statLongestRally" class="font-mono text-xs sm:text-sm font-semibold text-zinc-100 mt-0.5">14 Hits</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-zinc-400 uppercase tracking-wider">Smashes</div>
+                        <div id="statSmashes" class="font-mono text-xs sm:text-sm font-semibold text-zinc-100 mt-0.5">6</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-zinc-400 uppercase tracking-wider">Top Speed</div>
+                        <div id="statFastest" class="font-mono text-xs sm:text-sm font-semibold text-zinc-100 mt-0.5">398 km/h</div>
+                    </div>
+                </div>
+                <div class="flex gap-2.5 w-full pt-1">
+                    <button id="btnRematch" class="apple-btn-primary flex-1 justify-center py-2.5 text-sm">
+                        Play Again
+                    </button>
+                    <button id="btnChangeSettings" class="apple-btn-secondary px-4 py-2.5 text-sm">
+                        Match Setup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Interactive Touch & Mouse Controls Bar (Placed outside Canvas) -->
+    <footer class="w-full max-w-[1120px] mt-2 flex flex-col gap-2">
+        <div class="w-full bg-zinc-900/80 border border-white/10 rounded-2xl p-2 sm:p-3 backdrop-blur-xl flex flex-wrap items-center justify-between gap-2">
+            <!-- Player 1 Controls -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-sky-400 px-1 hidden md:inline">P1</span>
+                <button data-touch="p1_left" class="touch-btn apple-touch-btn w-11 h-11 sm:w-13 sm:h-12 text-sm" aria-label="Player 1 Left">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">A</span>
+                </button>
+                <button data-touch="p1_right" class="touch-btn apple-touch-btn w-11 h-11 sm:w-13 sm:h-12 text-sm" aria-label="Player 1 Right">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">D</span>
+                </button>
+                <button data-touch="p1_jump" class="touch-btn apple-touch-btn w-12 h-11 sm:w-14 sm:h-12 text-xs font-medium ml-0.5" aria-label="Player 1 Jump">
+                    <svg class="w-3.5 h-3.5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">W</span>
+                </button>
+                <button data-touch="p1_clear" class="touch-btn apple-touch-btn px-3 h-11 sm:h-12 text-xs font-medium bg-sky-500/10 hover:bg-sky-500/15 border-sky-400/30 text-sky-300" aria-label="Player 1 High Clear">
+                    <span>Clear</span>
+                    <span class="text-[9px] text-sky-300/70 font-mono">F / Space</span>
+                </button>
+                <button data-touch="p1_drive" class="touch-btn apple-touch-btn px-3 h-11 sm:h-12 text-xs font-medium bg-amber-500/10 hover:bg-amber-500/15 border-amber-400/30 text-amber-300" aria-label="Player 1 Smash / Drive">
+                    <span>Drive / Smash</span>
+                    <span class="text-[9px] text-amber-300/70 font-mono">G</span>
+                </button>
+            </div>
+
+            <!-- Center Shot Tip Banner -->
+            <div id="liveTipText" class="hidden xl:flex items-center gap-2 text-xs text-zinc-400 bg-white/[0.03] px-3.5 py-1.5 rounded-xl border border-white/[0.08]">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Pro Tip: Jump with <kbd class="apple-kbd">W</kbd> as the shuttle descends and press <kbd class="apple-kbd">G</kbd> for a steep Jump Smash</span>
+            </div>
+
+            <!-- Player 2 Controls (Visible always for 2P or quick test) -->
+            <div id="p2TouchControls" class="flex items-center gap-1.5 sm:gap-2">
+                <button data-touch="p2_clear" class="touch-btn apple-touch-btn px-3 h-11 sm:h-12 text-xs font-medium bg-rose-500/10 hover:bg-rose-500/15 border-rose-400/30 text-rose-300" aria-label="Player 2 Clear">
+                    <span>Clear</span>
+                    <span class="text-[9px] text-rose-300/70 font-mono">K</span>
+                </button>
+                <button data-touch="p2_drive" class="touch-btn apple-touch-btn px-3 h-11 sm:h-12 text-xs font-medium bg-amber-500/10 hover:bg-amber-500/15 border-amber-400/30 text-amber-300" aria-label="Player 2 Smash / Drive">
+                    <span>Drive / Smash</span>
+                    <span class="text-[9px] text-amber-300/70 font-mono">L</span>
+                </button>
+                <button data-touch="p2_jump" class="touch-btn apple-touch-btn w-12 h-11 sm:w-14 sm:h-12 text-xs font-medium" aria-label="Player 2 Jump">
+                    <svg class="w-3.5 h-3.5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">↑</span>
+                </button>
+                <button data-touch="p2_left" class="touch-btn apple-touch-btn w-11 h-11 sm:w-13 sm:h-12 text-sm" aria-label="Player 2 Left">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">←</span>
+                </button>
+                <button data-touch="p2_right" class="touch-btn apple-touch-btn w-11 h-11 sm:w-13 sm:h-12 text-sm" aria-label="Player 2 Right">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    <span class="text-[9px] text-zinc-400 font-mono">→</span>
+                </button>
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-rose-400 px-1 hidden md:inline">P2</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /********************************************************************
+         * 1. SYNTHESIZED WEB AUDIO API SOUND ENGINE
+         * Generates authentic racket whooshes, high-tension string pops,
+         * booming smashes, net thuds, umpire whistle, and crowd cheers.
+         ********************************************************************/
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            toggle() {
+                this.enabled = !this.enabled;
+                return this.enabled;
+            }
+
+            // Racket swing whoosh through air
+            playSwing() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const duration = 0.14;
+                const bufferSize = this.ctx.sampleRate * duration;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+                }
+
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(300, now);
+                filter.frequency.exponentialRampToValueAtTime(1400, now + duration);
+                filter.Q.value = 2.2;
+
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                noise.start(now);
+            }
+
+            // Crisp badminton string pop ("ping-pop!")
+            playHit(type = 'clear') {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                if (type === 'super_smash') {
+                    // Thunderous boom + high metallic string snap
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(55, now + 0.28);
+                    gain.gain.setValueAtTime(0.45, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.30);
+
+                    // Secondary sub-bass punch
+                    const sub = this.ctx.createOscillator();
+                    const subGain = this.ctx.createGain();
+                    sub.type = 'sine';
+                    sub.frequency.setValueAtTime(150, now);
+                    sub.frequency.exponentialRampToValueAtTime(32, now + 0.35);
+                    subGain.gain.setValueAtTime(0.55, now);
+                    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    sub.connect(subGain);
+                    subGain.connect(this.ctx.destination);
+                    sub.start(now);
+                    sub.stop(now + 0.36);
+                } else if (type === 'smash') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(420, now);
+                    osc.frequency.exponentialRampToValueAtTime(85, now + 0.16);
+                    gain.gain.setValueAtTime(0.36, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+                } else if (type === 'drop') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(680, now);
+                    osc.frequency.exponentialRampToValueAtTime(240, now + 0.07);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                } else {
+                    // High clear / drive crisp pop
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(580, now);
+                    osc.frequency.exponentialRampToValueAtTime(160, now + 0.11);
+                    gain.gain.setValueAtTime(0.28, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                }
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.32);
+            }
+
+            playNetHit() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.13);
+            }
+
+            // Umpire Whistle + Crowd Cheer on Point
+            playPointScored(isSuper = false) {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                // Pea whistle trill
+                const whistle = this.ctx.createOscillator();
+                const lfo = this.ctx.createOscillator();
+                const lfoGain = this.ctx.createGain();
+                const wGain = this.ctx.createGain();
+
+                whistle.type = 'sine';
+                whistle.frequency.setValueAtTime(2850, now);
+
+                lfo.type = 'sine';
+                lfo.frequency.setValueAtTime(38, now);
+                lfoGain.gain.setValueAtTime(120, now);
+
+                lfo.connect(lfoGain);
+                lfoGain.connect(whistle.frequency);
+
+                wGain.gain.setValueAtTime(0.001, now);
+                wGain.gain.linearRampToValueAtTime(0.14, now + 0.02);
+                wGain.gain.setValueAtTime(0.14, now + 0.22);
+                wGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+                whistle.connect(wGain);
+                wGain.connect(this.ctx.destination);
+
+                whistle.start(now);
+                lfo.start(now);
+                whistle.stop(now + 0.34);
+                lfo.stop(now + 0.34);
+
+                // Arcade Point Jingle
+                const notes = isSuper ? [523.25, 659.25, 783.99, 1046.5] : [440, 554.37, 659.25];
+                notes.forEach((freq, idx) => {
+                    const o = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    o.type = 'triangle';
+                    o.frequency.setValueAtTime(freq, now + 0.1 + idx * 0.07);
+                    g.gain.setValueAtTime(0.16, now + 0.1 + idx * 0.07);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.32 + idx * 0.07);
+                    o.connect(g);
+                    g.connect(this.ctx.destination);
+                    o.start(now + 0.1 + idx * 0.07);
+                    o.stop(now + 0.35 + idx * 0.07);
+                });
+            }
+
+            playVictoryFanfare() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const now = this.ctx.currentTime;
+                const melody = [
+                    { f: 523.25, t: 0.0, d: 0.15 },
+                    { f: 659.25, t: 0.15, d: 0.15 },
+                    { f: 783.99, t: 0.30, d: 0.15 },
+                    { f: 1046.50, t: 0.45, d: 0.45 }
+                ];
+                melody.forEach(n => {
+                    const o = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    o.type = 'triangle';
+                    o.frequency.setValueAtTime(n.f, now + n.t);
+                    g.gain.setValueAtTime(0.22, now + n.t);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+                    o.connect(g);
+                    g.connect(this.ctx.destination);
+                    o.start(now + n.t);
+                    o.stop(now + n.t + n.d + 0.02);
+                });
+            }
+        }
+
+        const sfx = new SoundEngine();
+
+        /********************************************************************
+         * 2. ARENA GEOMETRY & CONSTANTS
+         ********************************************************************/
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const W = 1280;
+        const H = 720;
+
+        const COURT = {
+            groundY: 590,
+            leftBound: 110,        // Left back boundary line
+            rightBound: 1170,      // Right back boundary line
+            netX: 640,
+            netTopY: 448,          // 142px high net
+            netBottomY: 590,
+            leftServiceLine: 475,  // Short service line left
+            rightServiceLine: 805, // Short service line right
+            leftLongService: 165,
+            rightLongService: 1115
+        };
+
+        // Game state & configuration
+        const state = {
+            mode: '1p',            // '1p' or '2p'
+            difficulty: 'medium',  // 'easy', 'medium', 'hard'
+            targetPoints: 11,      // 7, 11, 21
+            paused: true,
+            phase: 'serve',        // 'serve', 'rally', 'point_Pause', 'gameover'
+            server: 1,             // 1 or 2
+            pointTimer: 0,
+            rallyCount: 0,
+            longestRally: 0,
+            totalSmashes: 0,
+            topSpeedKmh: 342,
+            lastShotSpeedKmh: 0,
+            lastShotType: '',
+            calloutText: '',
+            calloutSubtext: '',
+            calloutColor: '#38bdf8',
+            calloutTimer: 0,
+            screenShake: 0,
+            hitStopFrames: 0,
+            netRipple: 0,
+            netRippleVel: 0,
+            crowdExcitement: 0,
+            landingMarker: null    // { x, inBounds, timer }
+        };
+
+        // Input tracking
+        const keys = {};
+        const touchState = {
+            p1_left: false, p1_right: false, p1_jump: false, p1_clear: false, p1_drive: false,
+            p2_left: false, p2_right: false, p2_jump: false, p2_clear: false, p2_drive: false
+        };
+
+        /********************************************************************
+         * 3. SHUTTLECOCK AERODYNAMIC PHYSICS
+         * Authentic badminton flight:
+         * - Very high launch speed off the strings
+         * - Strong aerodynamic drag decelerates horizontal speed rapidly
+         * - Parachute turnover causes steep vertical descent in backcourt
+         ********************************************************************/
+        class Shuttlecock {
+            constructor() {
+                this.reset(1);
+                this.trail = [];
+            }
+
+            reset(serverNum) {
+                this.inPlay = false;
+                this.x = serverNum === 1 ? 410 : 870;
+                this.y = COURT.groundY - 75;
+                this.vx = 0;
+                this.vy = 0;
+                this.angle = serverNum === 1 ? -0.3 : Math.PI + 0.3;
+                this.lastHitter = serverNum;
+                this.shotType = 'serve';
+                this.isSuperSmash = false;
+                this.trail = [];
+                this.hitCooldown = 0;
+            }
+
+            launch(vx, vy, shotType, hitterNum, isSuper = false) {
+                this.inPlay = true;
+                this.vx = vx;
+                this.vy = vy;
+                this.shotType = shotType;
+                this.lastHitter = hitterNum;
+                this.isSuperSmash = isSuper;
+                this.hitCooldown = 14; // Prevent double hits on same swing
+
+                // Compute realistic km/h display for excitement
+                const rawSpeed = Math.hypot(vx, vy);
+                let kmh = Math.round(rawSpeed * 12.2);
+                if (isSuper) kmh = Math.max(395, Math.min(465, kmh + 65));
+                else if (shotType === 'smash') kmh = Math.max(285, Math.min(375, kmh + 25));
+                state.lastShotSpeedKmh = kmh;
+                if (kmh > state.topSpeedKmh) {
+                    state.topSpeedKmh = kmh;
+                    document.getElementById('topSmashDisplay').textContent = `${kmh} km/h`;
+                }
+            }
+
+            update() {
+                if (!this.inPlay) return;
+                if (this.hitCooldown > 0) this.hitCooldown--;
+
+                // Save trail position for visual arcs & fiery smash streaks
+                this.trail.push({
+                    x: this.x,
+                    y: this.y,
+                    isSuper: this.isSuperSmash,
+                    shotType: this.shotType
+                });
+                const maxTrail = this.isSuperSmash ? 22 : (this.shotType === 'smash' ? 16 : 12);
+                if (this.trail.length > maxTrail) this.trail.shift();
+
+                // Aerodynamic drag model
+                const speed = Math.hypot(this.vx, this.vy);
+                // High-speed quadratic drag + base feather drag
+                const dragFactor = this.isSuperSmash ? 0.991 : 0.9855;
+                const extraHighSpeedDrag = speed > 18 ? 0.976 : 1.0;
+
+                this.vx *= dragFactor * extraHighSpeedDrag;
+                this.vy *= dragFactor;
+
+                // Gravity with terminal feather parachute descent
+                const gravity = 0.44;
+                this.vy += gravity;
+                if (this.vy > 13.5 && !this.isSuperSmash) {
+                    this.vy = 13.5; // Terminal velocity of feathered skirt
+                }
+
+                // Integrate position
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Smoothly align cork orientation with velocity vector
+                const targetAngle = Math.atan2(this.vy, this.vx);
+                let diff = targetAngle - this.angle;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                this.angle += diff * 0.32;
+
+                // Check Net Collision
+                const prevX = this.x - this.vx;
+                const crossedNet = (prevX <= COURT.netX && this.x >= COURT.netX) ||
+                                   (prevX >= COURT.netX && this.x <= COURT.netX);
+
+                if (crossedNet && this.y >= COURT.netTopY) {
+                    sfx.playNetHit();
+                    // Check if it clipped the top white tape ( within 14px of net top )
+                    if (this.y < COURT.netTopY + 14 && Math.abs(this.vx) > 6) {
+                        // Lucky net cord let! Slows down and dribbles over
+                        this.vx *= 0.38;
+                        this.vy = -3.2;
+                        this.y = COURT.netTopY - 3;
+                        this.isSuperSmash = false;
+                        state.netRippleVel = 8;
+                        showCallout('NET CORD!', 'Lucky Roll Over', '#facc15', 45);
+                    } else {
+                        // Stopped by the net mesh
+                        this.vx *= -0.18;
+                        this.vy = 2.5;
+                        this.x = prevX < COURT.netX ? COURT.netX - 7 : COURT.netX + 7;
+                        this.isSuperSmash = false;
+                        state.netRippleVel = 14 * Math.sign( prevX < COURT.netX ? 1 : -1 );
+                    }
+                }
+
+                // Check Ground Contact
+                if (this.y >= COURT.groundY - 8) {
+                    this.y = COURT.groundY - 8;
+                    this.inPlay = false;
+                    handleShuttleLanded(this.x);
+                }
+            }
+
+            // Predict landing X on court for AI & subtle court shadow indicator
+            predictLandingX() {
+                if (!this.inPlay) return this.x;
+                let simX = this.x;
+                let simY = this.y;
+                let simVx = this.vx;
+                let simVy = this.vy;
+                const drag = this.isSuperSmash ? 0.991 : 0.9855;
+                for (let step = 0; step < 180; step++) {
+                    const spd = Math.hypot(simVx, simVy);
+                    const extra = spd > 18 ? 0.976 : 1.0;
+                    simVx *= drag * extra;
+                    simVy *= drag;
+                    simVy += 0.44;
+                    if (simVy > 13.5 && !this.isSuperSmash) simVy = 13.5;
+                    simX += simVx;
+                    simY += simVy;
+                    if (simY >= COURT.groundY - 8) break;
+                }
+                return simX;
+            }
+
+            // Full trajectory simulation so AI knows exact intercept X, Y, and frames to arrival
+            predictTrajectory(targetHeightY = COURT.groundY - 68) {
+                if (!this.inPlay) {
+                    return { landX: this.x, interceptX: this.x, interceptY: this.y, framesToIntercept: 0, apexX: this.x, apexY: this.y, framesToApex: 0 };
+                }
+                let simX = this.x;
+                let simY = this.y;
+                let simVx = this.vx;
+                let simVy = this.vy;
+                const drag = this.isSuperSmash ? 0.991 : 0.9855;
+
+                let interceptX = null;
+                let interceptY = null;
+                let framesToIntercept = 0;
+                let apexX = simX;
+                let apexY = simY;
+                let framesToApex = 0;
+
+                for (let step = 1; step <= 200; step++) {
+                    const spd = Math.hypot(simVx, simVy);
+                    const extra = spd > 18 ? 0.976 : 1.0;
+                    simVx *= drag * extra;
+                    simVy *= drag;
+                    simVy += 0.44;
+                    if (simVy > 13.5 && !this.isSuperSmash) simVy = 13.5;
+                    simX += simVx;
+                    simY += simVy;
+
+                    if (simY < apexY) {
+                        apexY = simY;
+                        apexX = simX;
+                        framesToApex = step;
+                    }
+
+                    // Record where the descending shuttle passes through optimal racket strike height
+                    if (interceptX === null && simVy > 0 && simY >= targetHeightY && simX > COURT.netX) {
+                        interceptX = simX;
+                        interceptY = simY;
+                        framesToIntercept = step;
+                    }
+
+                    if (simY >= COURT.groundY - 8) break;
+                }
+
+                return {
+                    landX: simX,
+                    interceptX: interceptX !== null ? interceptX : simX,
+                    interceptY: interceptY !== null ? interceptY : COURT.groundY - 68,
+                    framesToIntercept: framesToIntercept || 30,
+                    apexX,
+                    apexY,
+                    framesToApex
+                };
+            }
+
+            draw(ctx) {
+                // Draw Ground Shadow under shuttlecock
+                const shadowScale = Math.max(0.25, 1 - (COURT.groundY - this.y) / 500);
+                ctx.save();
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+                ctx.beginPath();
+                ctx.ellipse(this.x, COURT.groundY + 2, 14 * shadowScale, 4 * shadowScale, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Draw Velocity Trail
+                if (this.inPlay && this.trail.length > 1) {
+                    for (let i = 0; i < this.trail.length - 1; i++) {
+                        const pt = this.trail[i];
+                        const next = this.trail[i + 1];
+                        const ratio = i / this.trail.length;
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.moveTo(pt.x, pt.y);
+                        ctx.lineTo(next.x, next.y);
+                        if (pt.isSuper) {
+                            ctx.strokeStyle = i % 2 === 0 ? `rgba(250, 204, 21, ${ratio * 0.95})` : `rgba(244, 63, 94, ${ratio * 0.95})`;
+                            ctx.lineWidth = ratio * 15;
+                        } else if (pt.shotType === 'smash') {
+                            ctx.strokeStyle = `rgba(251, 146, 60, ${ratio * 0.8})`;
+                            ctx.lineWidth = ratio * 10;
+                        } else if (pt.shotType === 'drive') {
+                            ctx.strokeStyle = `rgba(56, 189, 248, ${ratio * 0.65})`;
+                            ctx.lineWidth = ratio * 7;
+                        } else {
+                            ctx.strokeStyle = `rgba(248, 250, 252, ${ratio * 0.45})`;
+                            ctx.lineWidth = ratio * 5;
+                        }
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+
+                // Draw Detailed Feathered Shuttlecock
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                // Glow if Super Smash
+                if (this.isSuperSmash) {
+                    ctx.shadowColor = '#facc15';
+                    ctx.shadowBlur = 18;
+                }
+
+                // Feathered Skirt (Conical frustum behind cork)
+                ctx.fillStyle = '#f8fafc';
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(-2, -4);
+                ctx.lineTo(-17, -10);
+                ctx.lineTo(-15, 0);
+                ctx.lineTo(-17, 10);
+                ctx.lineTo(-2, 4);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Feather ribs
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(-2, -2); ctx.lineTo(-16, -5);
+                ctx.moveTo(-2, 0);  ctx.lineTo(-15, 0);
+                ctx.moveTo(-2, 2);  ctx.lineTo(-16, 5);
+                ctx.stroke();
+
+                // Colored collar band
+                ctx.fillStyle = this.isSuperSmash ? '#f43f5e' : '#0284c7';
+                ctx.fillRect(-4, -4.5, 2.5, 9);
+
+                // Rounded Cork Head (points toward +X in local space)
+                ctx.fillStyle = this.isSuperSmash ? '#fef08a' : '#ffffff';
+                ctx.beginPath();
+                ctx.arc(1, 0, 5, -Math.PI / 2, Math.PI / 2);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        /********************************************************************
+         * 4. PLAYER CLASS (Controls, AI, Expressive Animation, Shot Types)
+         ********************************************************************/
+        class Player {
+            constructor(num) {
+                this.num = num; // 1 (Left) or 2 (Right)
+                this.isLeft = num === 1;
+                this.score = 0;
+                this.smashMeter = 35; // 0 to 100
+                this.primaryColor = this.isLeft ? '#38bdf8' : '#fb7185';
+                this.secondaryColor = this.isLeft ? '#0284c7' : '#e11d48';
+                this.skinColor = this.isLeft ? '#fcd34d' : '#fdba74';
+                this.resetPosition();
+            }
+
+            resetPosition() {
+                this.x = this.isLeft ? 350 : 930;
+                this.y = COURT.groundY;
+                this.vx = 0;
+                this.vy = 0;
+                this.speed = 6.5;
+                this.jumpPower = -12.6;
+                this.onGround = true;
+                this.swingTimer = 0;
+                this.swingDuration = 16;
+                this.swingType = 'clear';
+                this.runCycle = 0;
+                this.mood = 'focused'; // 'focused', 'celebrate', 'disappointed'
+                this.aiReactionDelay = 0;
+                this.aiTargetX = this.x;
+            }
+
+            addMeter(amount) {
+                this.smashMeter = Math.min(100, this.smashMeter + amount);
+            }
+
+            update(shuttle) {
+                // Determine input source
+                let moveLeft = false;
+                let moveRight = false;
+                let jumpPressed = false;
+                let hitClear = false;
+                let hitDrive = false;
+
+                if (this.num === 1) {
+                    moveLeft = keys['KeyA'] || touchState.p1_left;
+                    moveRight = keys['KeyD'] || touchState.p1_right;
+                    jumpPressed = keys['KeyW'] || touchState.p1_jump;
+                    hitClear = keys['KeyF'] || keys['Space'] || touchState.p1_clear;
+                    hitDrive = keys['KeyG'] || touchState.p1_drive;
+                } else if (state.mode === '2p') {
+                    moveLeft = keys['ArrowLeft'] || touchState.p2_left;
+                    moveRight = keys['ArrowRight'] || touchState.p2_right;
+                    jumpPressed = keys['ArrowUp'] || touchState.p2_jump;
+                    hitClear = keys['KeyK'] || touchState.p2_clear;
+                    hitDrive = keys['KeyL'] || touchState.p2_drive;
+                } else {
+                    // AI Controller for Player 2
+                    const aiDecision = this.computeAI(shuttle);
+                    moveLeft = aiDecision.moveLeft;
+                    moveRight = aiDecision.moveRight;
+                    jumpPressed = aiDecision.jump;
+                    hitClear = aiDecision.hitClear;
+                    hitDrive = aiDecision.hitDrive;
+                }
+
+                // Horizontal movement with snappy arcade acceleration
+                if (moveLeft) {
+                    this.vx = -this.speed;
+                    this.runCycle += 0.32;
+                } else if (moveRight) {
+                    this.vx = this.speed;
+                    this.runCycle += 0.32;
+                } else {
+                    this.vx *= 0.72;
+                    if (Math.abs(this.vx) < 0.2) this.vx = 0;
+                }
+
+                this.x += this.vx;
+
+                // Constrain player to their half of the court
+                if (this.isLeft) {
+                    const maxLeftX = state.phase === 'serve' && state.server === 1 ? COURT.leftServiceLine - 15 : COURT.netX - 42;
+                    this.x = Math.max(COURT.leftBound - 35, Math.min(maxLeftX, this.x));
+                } else {
+                    const minRightX = state.phase === 'serve' && state.server === 2 ? COURT.rightServiceLine + 15 : COURT.netX + 42;
+                    this.x = Math.max(minRightX, Math.min(COURT.rightBound + 35, this.x));
+                }
+
+                // Jump physics
+                if (jumpPressed && this.onGround && state.phase !== 'serve') {
+                    this.vy = this.jumpPower;
+                    this.onGround = false;
+                }
+
+                this.vy += 0.56; // Player gravity
+                this.y += this.vy;
+
+                if (this.y >= COURT.groundY) {
+                    this.y = COURT.groundY;
+                    this.vy = 0;
+                    this.onGround = true;
+                }
+
+                // If holding shuttle for serve, attach shuttle to player hand
+                if (state.phase === 'serve' && state.server === this.num) {
+                    const dir = this.isLeft ? 1 : -1;
+                    shuttle.x = this.x + dir * 28;
+                    shuttle.y = this.y - 52;
+                    shuttle.angle = this.isLeft ? -0.35 : Math.PI + 0.35;
+
+                    if ((hitClear || hitDrive) && this.swingTimer === 0) {
+                        this.executeServe(shuttle, hitClear ? 'high_serve' : 'short_serve');
+                        // Clear one-shot triggers
+                        if (this.num === 1) {
+                            keys['KeyF'] = false; keys['Space'] = false; keys['KeyG'] = false;
+                            touchState.p1_clear = false; touchState.p1_drive = false;
+                        } else {
+                            keys['KeyK'] = false; keys['KeyL'] = false;
+                            touchState.p2_clear = false; touchState.p2_drive = false;
+                        }
+                    }
+                } else if (state.phase === 'rally') {
+                    // Trigger swing in rally
+                    if ((hitClear || hitDrive) && this.swingTimer === 0) {
+                        this.swingTimer = this.swingDuration;
+                        this.swingType = hitClear ? 'clear' : 'drive';
+                        sfx.playSwing();
+
+                        if (this.num === 1) {
+                            keys['KeyF'] = false; keys['Space'] = false; keys['KeyG'] = false;
+                            touchState.p1_clear = false; touchState.p1_drive = false;
+                        } else {
+                            keys['KeyK'] = false; keys['KeyL'] = false;
+                            touchState.p2_clear = false; touchState.p2_drive = false;
+                        }
+                    }
+
+                    // Active hitbox frames during swing
+                    if (this.swingTimer > 4) {
+                        this.checkShuttleHit(shuttle, moveLeft, moveRight);
+                    }
+                }
+
+                if (this.swingTimer > 0) {
+                    this.swingTimer--;
+                }
+            }
+
+            executeServe(shuttle, serveStyle) {
+                const dir = this.isLeft ? 1 : -1;
+                this.swingTimer = this.swingDuration;
+                this.swingType = serveStyle === 'high_serve' ? 'clear' : 'drive';
+                state.phase = 'rally';
+                state.rallyCount = 1;
+                this.addMeter(8);
+
+                if (serveStyle === 'high_serve') {
+                    // Deep high serve to backcourt
+                    shuttle.launch(dir * (16.2 + Math.random() * 1.1), -15.6, 'clear', this.num, false);
+                    sfx.playHit('clear');
+                    showCallout('HIGH SERVE', `${state.lastShotSpeedKmh} km/h`, this.primaryColor, 35);
+                } else {
+                    // Low skimming short serve over the tape
+                    shuttle.launch(dir * (12.8 + Math.random() * 0.8), -8.9, 'drop', this.num, false);
+                    sfx.playHit('drop');
+                    showCallout('SHORT SERVE', `${state.lastShotSpeedKmh} km/h`, this.primaryColor, 35);
+                }
+            }
+
+            checkShuttleHit(shuttle, moveLeft, moveRight) {
+                if (!shuttle.inPlay || shuttle.hitCooldown > 0) return;
+                // Only hit shuttle if it's on or very near our side of the net
+                if (this.isLeft && shuttle.x > COURT.netX + 18) return;
+                if (!this.isLeft && shuttle.x < COURT.netX - 18) return;
+
+                const dir = this.isLeft ? 1 : -1;
+                // Strike zone center is slightly ahead and above player's shoulder
+                const strikeX = this.x + dir * 24;
+                const strikeY = this.y - 68;
+                const dx = shuttle.x - strikeX;
+                const dy = shuttle.y - strikeY;
+                const dist = Math.hypot(dx, dy);
+
+                // Generous arcade sweet-spot radius (76px)
+                if (dist <= 78) {
+                    const isAirborne = !this.onGround && (COURT.groundY - this.y > 22);
+                    const shuttleHighEnough = shuttle.y < COURT.netTopY + 25;
+                    const holdingBack = (this.isLeft && moveLeft) || (!this.isLeft && moveRight);
+                    const holdingForward = (this.isLeft && moveRight) || (!this.isLeft && moveLeft);
+
+                    let vx = 0, vy = 0;
+                    let finalType = 'clear';
+                    let isSuper = false;
+
+                    // Distance to net determines trajectory angles so shots reliably clear the net and stay in bounds
+                    const distFromNet = Math.abs(this.x - COURT.netX);
+                    const distNorm = Math.min(1, Math.max(0, (distFromNet - 80) / 420)); // 0 near net, 1 at baseline
+
+                    // CASE 1: AIRBORNE JUMP SMASH!
+                    if (isAirborne && shuttleHighEnough && (this.swingType === 'drive' || this.smashMeter >= 100)) {
+                        isSuper = this.smashMeter >= 100;
+                        finalType = 'smash';
+                        state.totalSmashes++;
+
+                        if (isSuper) {
+                            this.smashMeter = 0;
+                            // Calculate blistering downward trajectory toward opponent mid/back court
+                            const targetX = this.isLeft ? 880 + Math.random() * 140 : 400 - Math.random() * 140;
+                            const targetY = COURT.groundY - 10;
+                            const flightFactor = 0.036;
+                            vx = (targetX - shuttle.x) * flightFactor;
+                            vy = Math.max(4.5, (targetY - shuttle.y) * flightFactor * 0.82);
+
+                            state.screenShake = 18;
+                            state.hitStopFrames = 5;
+                            state.crowdExcitement = 50;
+                            sfx.playHit('super_smash');
+                            spawnImpactParticles(shuttle.x, shuttle.y, '#facc15', 32, true);
+                        } else {
+                            this.addMeter(18);
+                            vx = dir * (21.5 + distNorm * 3.5);
+                            // Aim downward but clear the net!
+                            const minVyToClearNet = ((COURT.netTopY - 14) - shuttle.y) / (distFromNet / Math.abs(vx)) - 2.2;
+                            vy = Math.max(minVyToClearNet, 2.2 - distNorm * 1.5);
+
+                            state.screenShake = 9;
+                            state.hitStopFrames = 2;
+                            sfx.playHit('smash');
+                            spawnImpactParticles(shuttle.x, shuttle.y, '#fb923c', 18, false);
+                        }
+                    }
+                    // CASE 2: HIGH CLEAR / LOB (F / Space or K)
+                    else if (this.swingType === 'clear') {
+                        finalType = 'clear';
+                        this.addMeter(15);
+                        // High deep defensive or attacking lob to the backcourt
+                        vx = dir * (14.8 + distNorm * 4.4);
+                        vy = -14.8 - distNorm * 2.2;
+                        sfx.playHit('clear');
+                        spawnImpactParticles(shuttle.x, shuttle.y, '#38bdf8', 12, false);
+                    }
+                    // CASE 3: DECEPTIVE DROP SHOT (G/L while holding Back or close to net)
+                    else if (holdingBack || distFromNet < 165) {
+                        finalType = 'drop';
+                        this.addMeter(14);
+                        // Soft touch that just clears the net tape and drops steeply
+                        vx = dir * (9.2 + distNorm * 3.8);
+                        vy = -7.6 - distNorm * 2.4;
+                        sfx.playHit('drop');
+                        spawnImpactParticles(shuttle.x, shuttle.y, '#34d399', 10, false);
+                    }
+                    // CASE 4: FAST FLAT DRIVE SHOT (G/L neutral or forward)
+                    else {
+                        finalType = 'drive';
+                        this.addMeter(16);
+                        vx = dir * (18.2 + (holdingForward ? 2.0 : 0.5));
+                        vy = -7.8 - distNorm * 2.1;
+                        sfx.playHit('clear');
+                        spawnImpactParticles(shuttle.x, shuttle.y, '#f472b6', 14, false);
+                    }
+
+                    state.rallyCount++;
+                    if (state.rallyCount > state.longestRally) {
+                        state.longestRally = state.rallyCount;
+                    }
+
+                    shuttle.launch(vx, vy, finalType, this.num, isSuper);
+
+                    // Trigger HUD shot banner
+                    if (isSuper) {
+                        showCallout('SUPER SMASH', `${state.lastShotSpeedKmh} km/h`, '#facc15', 55);
+                    } else if (finalType === 'smash') {
+                        showCallout('JUMP SMASH', `${state.lastShotSpeedKmh} km/h`, '#fb923c', 42);
+                    } else if (finalType === 'drop') {
+                        showCallout('NET DROP', `${state.lastShotSpeedKmh} km/h`, '#34d399', 32);
+                    } else if (finalType === 'drive') {
+                        showCallout('FLAT DRIVE', `${state.lastShotSpeedKmh} km/h`, '#38bdf8', 32);
+                    } else {
+                        showCallout('HIGH CLEAR', `${state.lastShotSpeedKmh} km/h`, '#cbd5e1', 30);
+                    }
+                }
+            }
+
+            // Advanced Tactical AI Controller (Intercept physics, Out-of-Bounds awareness, Jump Smash timing, & Exploiting P1 position)
+            computeAI(shuttle) {
+                const res = { moveLeft: false, moveRight: false, jump: false, hitClear: false, hitDrive: false };
+
+                // Difficulty tuning parameters
+                const cfg = {
+                    easy:   { speedMult: 0.85, homeX: 905, jumpChance: 0.35, tacticalIq: 0.45, tolerance: 20, reactionFrames: 10 },
+                    medium: { speedMult: 1.02, homeX: 895, jumpChance: 0.82, tacticalIq: 0.80, tolerance: 10, reactionFrames: 3 },
+                    hard:   { speedMult: 1.18, homeX: 885, jumpChance: 0.98, tacticalIq: 0.98, tolerance: 6,  reactionFrames: 0 }
+                }[state.difficulty];
+
+                this.speed = 6.5 * cfg.speedMult;
+
+                // 1. Tactical AI Serving (varies serve based on where Player 1 is standing)
+                if (state.phase === 'serve' && state.server === 2) {
+                    const serveStandX = player1.x < 300 ? 830 : 885;
+                    if (this.x < serveStandX - 10) {
+                        res.moveRight = true;
+                        return res;
+                    } else if (this.x > serveStandX + 10) {
+                        res.moveLeft = true;
+                        return res;
+                    }
+
+                    this.aiReactionDelay++;
+                    if (this.aiReactionDelay > 32) {
+                        this.aiReactionDelay = 0;
+                        // If P1 stands too far back, serve short; if P1 crowds the service line, flick a deep high serve
+                        if (player1.x < 310) res.hitDrive = true;
+                        else if (player1.x > 400) res.hitClear = true;
+                        else if (Math.random() < 0.55) res.hitClear = true;
+                        else res.hitDrive = true;
+                    }
+                    return res;
+                }
+
+                if (!shuttle.inPlay) {
+                    this.aiReactionDelay = 0;
+                    return res;
+                }
+
+                // 2. Shuttle is flying toward or is on AI's side of the court
+                const comingToAI = shuttle.vx > 0 || shuttle.x > COURT.netX - 10;
+
+                if (comingToAI && shuttle.lastHitter === 1) {
+                    this.aiReactionDelay++;
+                    if (this.aiReactionDelay <= cfg.reactionFrames) {
+                        return res;
+                    }
+
+                    // Predict trajectory at both standing strike height and airborne jump-smash height
+                    const standPred = shuttle.predictTrajectory(COURT.groundY - 68);
+                    const jumpPred = shuttle.predictTrajectory(COURT.groundY - 138);
+
+                    // Smart Out-of-Bounds Judgment: Let clearly long shots fall OUT!
+                    const clearlyOut = standPred.landX > COURT.rightBound + 24 && shuttle.x > COURT.netX + 120;
+                    if (clearlyOut && Math.random() < cfg.tacticalIq) {
+                        const safeWaitX = COURT.rightBound - 65;
+                        if (this.x < safeWaitX - 12) res.moveRight = true;
+                        else if (this.x > safeWaitX + 12) res.moveLeft = true;
+                        return res;
+                    }
+
+                    // Decide if this incoming ball can be intercepted with an aggressive Jump Smash
+                    const canJumpIntercept =
+                        (shuttle.shotType === 'clear' || shuttle.y < COURT.netTopY - 35 || this.smashMeter >= 100) &&
+                        jumpPred.interceptX > COURT.netX + 60 &&
+                        jumpPred.interceptX < COURT.rightBound - 10 &&
+                        jumpPred.framesToIntercept > 6 &&
+                        jumpPred.framesToIntercept < 48;
+
+                    // AI's strike zone is at `this.x - 24` (since dir = -1), so stand 24px to the right of the intercept point!
+                    const rawTargetX = canJumpIntercept ? (jumpPred.interceptX + 24) : (standPred.interceptX + 24);
+                    const clampedTargetX = Math.max(COURT.netX + 46, Math.min(COURT.rightBound + 25, rawTargetX));
+
+                    if (this.x < clampedTargetX - cfg.tolerance) res.moveRight = true;
+                    else if (this.x > clampedTargetX + cfg.tolerance) res.moveLeft = true;
+
+                    // Execute timed jump so AI peaks right as the shuttle arrives at jump strike height
+                    const distToJumpSpot = Math.abs((this.x - 24) - jumpPred.interceptX);
+                    if (
+                        this.onGround &&
+                        canJumpIntercept &&
+                        distToJumpSpot < 58 &&
+                        jumpPred.framesToIntercept >= 9 &&
+                        jumpPred.framesToIntercept <= 23 &&
+                        shuttle.y < COURT.netTopY + 10
+                    ) {
+                        if (Math.random() < cfg.jumpChance || this.smashMeter >= 100) {
+                            res.jump = true;
+                        }
+                    }
+
+                    // 3. Precise Strike Trigger & Tactical Shot Selection
+                    const strikeX = this.x - 24;
+                    const strikeY = this.y - 68;
+                    const futureShuttleX = shuttle.x + shuttle.vx * 2;
+                    const futureShuttleY = shuttle.y + shuttle.vy * 2;
+                    const distNow = Math.hypot(shuttle.x - strikeX, shuttle.y - strikeY);
+                    const distNext = Math.hypot(futureShuttleX - strikeX, futureShuttleY - strikeY);
+
+                    if ((distNow <= 73 || distNext <= 68) && shuttle.x > COURT.netX - 12 && this.swingTimer === 0) {
+                        const isAirborne = !this.onGround && (COURT.groundY - this.y > 22);
+                        const p1NearNet = player1.x > 420;
+                        const p1DeepBack = player1.x < 265;
+
+                        if (isAirborne && shuttle.y < COURT.netTopY + 25) {
+                            // Unleash Jump Smash or Super Smash!
+                            res.hitDrive = true;
+                            res.moveRight = false;
+                        } else if (shuttle.y > COURT.netTopY + 35 && this.x < COURT.netX + 175) {
+                            // Defensive scramble low near the net: lift it high and deep or play a tight net drop
+                            if (p1NearNet && Math.random() < cfg.tacticalIq) {
+                                res.hitClear = true; // Punish P1 crowding the net with a deep lob
+                            } else {
+                                res.hitDrive = true;
+                            }
+                        } else if (p1DeepBack && Math.random() < cfg.tacticalIq) {
+                            // Player 1 is stuck in the backcourt -> play a deceptive short Drop Shot!
+                            res.hitDrive = true;
+                            res.moveRight = true; // Holding back (Right for P2) triggers a tight drop shot
+                        } else if (p1NearNet && Math.random() < cfg.tacticalIq) {
+                            // Player 1 is near the net -> hit a fast flat Drive or deep High Clear past them
+                            if (shuttle.y < COURT.netTopY + 10 && Math.random() < 0.65) {
+                                res.hitDrive = true;
+                                res.moveLeft = true; // Holding forward boosts flat drive speed
+                            } else {
+                                res.hitClear = true;
+                            }
+                        } else {
+                            // Balanced rally mix
+                            if (Math.random() < 0.62) {
+                                res.hitDrive = true;
+                                if (Math.random() < 0.35) res.moveRight = true;
+                                else res.moveLeft = true;
+                            } else {
+                                res.hitClear = true;
+                            }
+                        }
+                    }
+                } else {
+                    // 4. Smart Court Recovery: Anticipate Player 1's next shot
+                    this.aiReactionDelay = 0;
+                    // If P1 is in the backcourt preparing a smash/clear, defend slightly deeper; if P1 is at the net, guard the front court
+                    const dynamicHomeX = player1.x > 440 ? cfg.homeX - 45 : (player1.x < 260 ? cfg.homeX + 25 : cfg.homeX);
+                    if (this.x < dynamicHomeX - 14) res.moveRight = true;
+                    else if (this.x > dynamicHomeX + 14) res.moveLeft = true;
+                }
+
+                return res;
+            }
+
+            draw(ctx) {
+                const dir = this.isLeft ? 1 : -1;
+                const isMoving = Math.abs(this.vx) > 0.5;
+                const legSwing = !this.onGround ? 0.55 : (isMoving ? Math.sin(this.runCycle) * 0.65 : 0);
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // Player Floor Shadow
+                const shadowScale = Math.max(0.35, 1 - (COURT.groundY - this.y) / 300);
+                ctx.save();
+                ctx.translate(0, COURT.groundY - this.y);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
+                ctx.beginPath();
+                ctx.ellipse(0, 2, 26 * shadowScale, 6 * shadowScale, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Super Smash Ready Aura under/around player
+                if (this.smashMeter >= 100) {
+                    const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.012);
+                    ctx.save();
+                    ctx.strokeStyle = `rgba(250, 204, 21, ${0.45 + pulse * 0.45})`;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.ellipse(0, -45, 36 + pulse * 6, 54 + pulse * 6, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                // Back Leg
+                ctx.save();
+                ctx.translate(-dir * 5, -28);
+                ctx.rotate(-legSwing);
+                ctx.strokeStyle = this.skinColor;
+                ctx.lineWidth = 7;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-dir * 4, 24);
+                ctx.stroke();
+                // Shoe
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(-dir * 4 - 5, 21, 13 * dir, 6);
+                ctx.restore();
+
+                // Front Leg
+                ctx.save();
+                ctx.translate(dir * 5, -28);
+                ctx.rotate(legSwing);
+                ctx.strokeStyle = this.skinColor;
+                ctx.lineWidth = 7;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(dir * 5, 24);
+                ctx.stroke();
+                // Shoe
+                ctx.fillStyle = this.primaryColor;
+                ctx.fillRect(dir * 5 - 4, 21, 13 * dir, 6);
+                ctx.restore();
+
+                // Athletic Shorts
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                ctx.roundRect(-13, -38, 26, 15, 5);
+                ctx.fill();
+
+                // Torso / Jersey with slight athletic lean
+                ctx.save();
+                const torsoLean = (this.vx * 0.025) + (this.swingTimer > 0 ? dir * 0.14 : 0);
+                ctx.translate(0, -35);
+                ctx.rotate(torsoLean);
+
+                ctx.fillStyle = this.primaryColor;
+                ctx.beginPath();
+                ctx.roundRect(-14, -34, 28, 34, 8);
+                ctx.fill();
+
+                // Jersey Diagonal Stripe
+                ctx.fillStyle = this.secondaryColor;
+                ctx.beginPath();
+                ctx.moveTo(-14, -22);
+                ctx.lineTo(14, -30);
+                ctx.lineTo(14, -18);
+                ctx.lineTo(-14, -10);
+                ctx.closePath();
+                ctx.fill();
+
+                // Head & Expressive Face
+                ctx.save();
+                ctx.translate(0, -46);
+                ctx.fillStyle = this.skinColor;
+                ctx.beginPath();
+                ctx.arc(0, 0, 13.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Sporty Hair
+                ctx.fillStyle = this.isLeft ? '#0f172a' : '#451a03';
+                ctx.beginPath();
+                ctx.arc(-dir * 2, -4, 13.5, Math.PI * 0.85, Math.PI * 2.15);
+                ctx.fill();
+
+                // Headband
+                ctx.fillStyle = this.smashMeter >= 100 ? '#facc15' : '#ffffff';
+                ctx.fillRect(-13.5, -7, 27, 4.5);
+
+                // Determined Eye & Eyebrow
+                ctx.fillStyle = '#0f172a';
+                ctx.beginPath();
+                ctx.arc(dir * 6, -1, 2.2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Mouth expression
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                if (this.swingTimer > 0 || !this.onGround) {
+                    // Battle cry open mouth during jump/swing
+                    ctx.arc(dir * 5, 5, 3, 0, Math.PI * 2);
+                } else if (this.mood === 'celebrate') {
+                    ctx.arc(dir * 5, 4, 3.5, 0, Math.PI);
+                } else {
+                    ctx.moveTo(dir * 2, 5.5);
+                    ctx.lineTo(dir * 8, 5);
+                }
+                ctx.stroke();
+                ctx.restore(); // End head
+
+                // Racket Arm & Dynamic Swing Arc
+                ctx.save();
+                ctx.translate(dir * 4, -26);
+
+                let armAngle = dir * -0.45;
+                if (this.swingTimer > 0) {
+                    const progress = 1 - (this.swingTimer / this.swingDuration);
+                    // Overhead whip arc from behind head (-2.2 rad) to forward follow-through (+1.3 rad)
+                    const swingArc = -2.2 + progress * 3.6;
+                    armAngle = dir * swingArc;
+
+                    // Draw glowing swing trail arc
+                    ctx.save();
+                    ctx.rotate(0);
+                    ctx.strokeStyle = this.smashMeter >= 100
+                        ? 'rgba(250, 204, 21, 0.7)'
+                        : (this.swingType === 'drive' ? 'rgba(251, 146, 60, 0.65)' : 'rgba(56, 189, 248, 0.55)');
+                    ctx.lineWidth = 14;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    if (this.isLeft) {
+                        ctx.arc(0, 0, 50, -2.1, swingArc, false);
+                    } else {
+                        ctx.arc(0, 0, 50, Math.PI + 2.1, Math.PI - swingArc, true);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                } else if (!this.onGround) {
+                    // Ready cocked overhead pose when jumping
+                    armAngle = dir * -1.75;
+                }
+
+                ctx.rotate(armAngle);
+
+                // Arm segment
+                ctx.strokeStyle = this.skinColor;
+                ctx.lineWidth = 6.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -22);
+                ctx.stroke();
+
+                // Badminton Racket Handle & Shaft
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(0, -22);
+                ctx.lineTo(0, -44);
+                ctx.stroke();
+
+                // Grip Tape
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 4.5;
+                ctx.beginPath();
+                ctx.moveTo(0, -20);
+                ctx.lineTo(0, -29);
+                ctx.stroke();
+
+                // Isometric Oval Racket Head
+                ctx.strokeStyle = this.smashMeter >= 100 ? '#facc15' : this.primaryColor;
+                ctx.lineWidth = 3;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+                ctx.beginPath();
+                ctx.ellipse(0, -56, 10, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Racket Strings Crosshatch
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+                ctx.lineWidth = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(-5, -66); ctx.lineTo(-5, -46);
+                ctx.moveTo(0, -69);  ctx.lineTo(0, -43);
+                ctx.moveTo(5, -66);  ctx.lineTo(5, -46);
+                ctx.moveTo(-9, -61); ctx.lineTo(9, -61);
+                ctx.moveTo(-10, -56); ctx.lineTo(10, -56);
+                ctx.moveTo(-9, -51); ctx.lineTo(9, -51);
+                ctx.stroke();
+
+                ctx.restore(); // End racket arm
+                ctx.restore(); // End torso
+                ctx.restore(); // End player transform
+            }
+        }
+
+        /********************************************************************
+         * 5. PARTICLE EFFECTS & ARENA CROWD
+         ********************************************************************/
+        const particles = [];
+        const spectators = [];
+
+        // Initialize animated stadium spectators
+        for (let row = 0; row < 2; row++) {
+            for (let i = 0; i < 26; i++) {
+                if (i >= 10 && i <= 15) continue; // Leave room for central Jumbotron
+                spectators.push({
+                    x: 75 + i * 45 + (row % 2) * 18,
+                    y: 235 + row * 40,
+                    color: ['#38bdf8', '#fb7185', '#facc15', '#34d399', '#a78bfa', '#f472b6'][(i + row) % 6],
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function spawnImpactParticles(x, y, color, count = 16, isElectric = false) {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * (isElectric ? 11 : 6.5);
+                particles.push({
+                    x,
+                    y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    radius: isElectric ? 3 + Math.random() * 4 : 2 + Math.random() * 3,
+                    color: isElectric && i % 2 === 0 ? '#ffffff' : color,
+                    alpha: 1,
+                    decay: 0.03 + Math.random() * 0.025
+                });
+            }
+        }
+
+        function updateAndDrawParticles(ctx) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.15;
+                p.alpha -= p.decay;
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        /********************************************************************
+         * 6. MATCH RULES, SCORING & CALLOUTS
+         ********************************************************************/
+        const player1 = new Player(1);
+        const player2 = new Player(2);
+        const shuttle = new Shuttlecock();
+
+        function showCallout(title, subtext, color = '#38bdf8', duration = 45) {
+            state.calloutText = title;
+            state.calloutSubtext = subtext;
+            state.calloutColor = color;
+            state.calloutTimer = duration;
+        }
+
+        function handleShuttleLanded(landX) {
+            state.phase = 'point_pause';
+            state.pointTimer = 78;
+            state.crowdExcitement = 65;
+
+            let pointWinner = 1;
+            let reason = 'IN!';
+            let inBounds = true;
+
+            // Determine which side of the net the shuttle landed on
+            if (landX < COURT.netX) {
+                // Landed on Player 1's side (Left)
+                if (landX < COURT.leftBound) {
+                    // If Player 2 hit it past Player 1's back boundary line -> OUT!
+                    if (shuttle.lastHitter === 2) {
+                        pointWinner = 1;
+                        reason = 'OUT! (LONG)';
+                        inBounds = false;
+                    } else {
+                        pointWinner = 2;
+                        reason = 'OUT!';
+                        inBounds = false;
+                    }
+                } else {
+                    // Landed inside Player 1's court -> Point to Player 2
+                    pointWinner = 2;
+                    reason = shuttle.lastHitter === 1 ? 'NET FAULT!' : 'IN! POINT P2';
+                }
+            } else {
+                // Landed on Player 2's side (Right)
+                if (landX > COURT.rightBound) {
+                    if (shuttle.lastHitter === 1) {
+                        pointWinner = 2;
+                        reason = 'OUT! (LONG)';
+                        inBounds = false;
+                    } else {
+                        pointWinner = 1;
+                        reason = 'OUT!';
+                        inBounds = false;
+                    }
+                } else {
+                    // Landed inside Player 2's court -> Point to Player 1
+                    pointWinner = 1;
+                    reason = shuttle.lastHitter === 2 ? 'NET FAULT!' : 'IN! POINT P1';
+                }
+            }
+
+            state.landingMarker = {
+                x: landX,
+                inBounds,
+                timer: 75
+            };
+
+            if (pointWinner === 1) {
+                player1.score++;
+                player1.mood = 'celebrate';
+                player2.mood = 'disappointed';
+                state.server = 1;
+                showCallout(reason, 'Point for Player 1', '#38bdf8', 70);
+            } else {
+                player2.score++;
+                player2.mood = 'celebrate';
+                player1.mood = 'disappointed';
+                state.server = 2;
+                const p2Label = state.mode === '1p' ? 'AI Challenger' : 'Player 2';
+                showCallout(reason, `Point for ${p2Label}`, '#fb7185', 70);
+            }
+
+            sfx.playPointScored(shuttle.isSuperSmash);
+            spawnImpactParticles(landX, COURT.groundY - 4, inBounds ? '#34d399' : '#f43f5e', 20, false);
+
+            // Check Match Win Condition
+            const target = state.targetPoints;
+            if (player1.score >= target || player2.score >= target) {
+                if (Math.abs(player1.score - player2.score) >= 2 || player1.score >= target + 4 || player2.score >= target + 4) {
+                    setTimeout(() => triggerMatchOver(pointWinner), 900);
+                }
+            }
+        }
+
+        function triggerMatchOver(winnerNum) {
+            state.phase = 'gameover';
+            state.paused = true;
+            sfx.playVictoryFanfare();
+
+            const winnerTitle = document.getElementById('winnerTitle');
+            if (winnerNum === 1) {
+                winnerTitle.textContent = 'Player 1 Wins Championship';
+                winnerTitle.className = 'text-lg sm:text-xl font-semibold tracking-tight text-white mt-1';
+            } else {
+                winnerTitle.textContent = state.mode === '1p' ? 'AI Challenger Wins' : 'Player 2 Wins Championship';
+                winnerTitle.className = 'text-lg sm:text-xl font-semibold tracking-tight text-white mt-1';
+            }
+
+            document.getElementById('finalScoreText').textContent = `${player1.score} — ${player2.score}`;
+            document.getElementById('statLongestRally').textContent = `${state.longestRally} Hits`;
+            document.getElementById('statSmashes').textContent = `${state.totalSmashes}`;
+            document.getElementById('statFastest').textContent = `${state.topSpeedKmh} km/h`;
+
+            document.getElementById('victoryOverlay').classList.remove('hidden');
+        }
+
+        function resetMatch() {
+            player1.score = 0;
+            player2.score = 0;
+            player1.smashMeter = 35;
+            player2.smashMeter = 35;
+            state.server = 1;
+            state.phase = 'serve';
+            state.rallyCount = 0;
+            state.longestRally = 0;
+            state.totalSmashes = 0;
+            state.lastShotSpeedKmh = 0;
+            player1.resetPosition();
+            player2.resetPosition();
+            shuttle.reset(1);
+            showCallout('SERVICE COURT', 'Press F (High Serve) or G (Short Serve)', '#38bdf8', 90);
+        }
+
+        /********************************************************************
+         * 7. RENDERING THE INDOOR BADMINTON ARENA, UMPIRE & SCOREBOARD
+         ********************************************************************/
+        function drawArenaBackground(ctx) {
+            // 1. Stadium Ceiling & Deep Arena Gradient
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, 440);
+            skyGrad.addColorStop(0, '#070b14');
+            skyGrad.addColorStop(0.55, '#0f172a');
+            skyGrad.addColorStop(1, '#1e293b');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, W, 440);
+
+            // 2. Overhead Volumetric Stadium Spotlights
+            const lightsX = [200, 480, 800, 1080];
+            lightsX.forEach(lx => {
+                const beamGrad = ctx.createLinearGradient(lx, 20, lx, 520);
+                beamGrad.addColorStop(0, 'rgba(224, 242, 254, 0.20)');
+                beamGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+                ctx.fillStyle = beamGrad;
+                ctx.beginPath();
+                ctx.moveTo(lx - 28, 18);
+                ctx.lineTo(lx + 28, 18);
+                ctx.lineTo(lx + 155, 520);
+                ctx.lineTo(lx - 155, 520);
+                ctx.closePath();
+                ctx.fill();
+
+                // Light fixture housing
+                ctx.fillStyle = '#f8fafc';
+                ctx.beginPath();
+                ctx.ellipse(lx, 18, 26, 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // 3. Spectator Tiered Bleachers
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(40, 210, W - 80, 115);
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(40, 255); ctx.lineTo(W - 40, 255);
+            ctx.moveTo(40, 295); ctx.lineTo(W - 40, 295);
+            ctx.stroke();
+
+            // Animated Spectators
+            const bounceTime = performance.now() * 0.008;
+            spectators.forEach(sp => {
+                const jumpOffset = state.crowdExcitement > 0
+                    ? Math.abs(Math.sin(bounceTime * 2.5 + sp.phase)) * 9
+                    : Math.sin(bounceTime * 0.6 + sp.phase) * 1.5;
+
+                ctx.fillStyle = sp.color;
+                ctx.beginPath();
+                ctx.roundRect(sp.x - 9, sp.y - jumpOffset, 18, 18, 5);
+                ctx.fill();
+
+                ctx.fillStyle = '#fde68a';
+                ctx.beginPath();
+                ctx.arc(sp.x, sp.y - 7 - jumpOffset, 6.5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // 4. Perimeter LED Sponsor Boards
+            const boardGrad = ctx.createLinearGradient(0, 395, 0, 445);
+            boardGrad.addColorStop(0, '#020617');
+            boardGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = boardGrad;
+            ctx.fillRect(0, 395, W, 50);
+            ctx.strokeStyle = '#0d9488';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 395, W, 50);
+
+            ctx.font = '700 13px "Chakra Petch", sans-serif';
+            ctx.fillStyle = '#2dd4bf';
+            ctx.textAlign = 'center';
+            ctx.fillText('★ SUPER SMASH WORLD TOUR  •  AERO-FEATHER PRO  •  BWF ARCADE ARENA ★', W / 2, 425);
+
+            // 5. Surrounding Hardwood Hall Flooring
+            const woodGrad = ctx.createLinearGradient(0, 445, 0, H);
+            woodGrad.addColorStop(0, '#1e293b');
+            woodGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = woodGrad;
+            ctx.fillRect(0, 445, W, H - 445);
+
+            // 6. Official Emerald Teal PVC Badminton Court Mat (Perspective Trapezoid)
+            const matGrad = ctx.createLinearGradient(0, 465, 0, 650);
+            matGrad.addColorStop(0, '#0f766e');
+            matGrad.addColorStop(0.5, '#0d9488');
+            matGrad.addColorStop(1, '#0f766e');
+            ctx.fillStyle = matGrad;
+
+            ctx.beginPath();
+            ctx.moveTo(145, 515);
+            ctx.lineTo(1135, 515);
+            ctx.lineTo(1235, 648);
+            ctx.lineTo(45, 648);
+            ctx.closePath();
+            ctx.fill();
+
+            // Crisp White Court Boundary Lines
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 3;
+
+            // Outer court boundary trapezoid
+            ctx.beginPath();
+            ctx.moveTo(165, 530);
+            ctx.lineTo(1115, 530);
+            ctx.lineTo(1170, 628);
+            ctx.lineTo(110, 628);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Main baseline plane at player feet (groundY = 590)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            // Center horizontal division line on left and right courts
+            ctx.moveTo(132, COURT.groundY);
+            ctx.lineTo(COURT.leftServiceLine, COURT.groundY);
+            ctx.moveTo(COURT.rightServiceLine, COURT.groundY);
+            ctx.lineTo(1148, COURT.groundY);
+
+            // Short Service Lines
+            ctx.moveTo(485, 530); ctx.lineTo(468, 628);
+            ctx.moveTo(795, 530); ctx.lineTo(812, 628);
+
+            // Long Doubles Service Lines
+            ctx.moveTo(205, 530); ctx.lineTo(160, 628);
+            ctx.moveTo(1075, 530); ctx.lineTo(1120, 628);
+            ctx.stroke();
+
+            // Subtle Landing Marker when shuttle hits ground
+            if (state.landingMarker && state.landingMarker.timer > 0) {
+                state.landingMarker.timer--;
+                const m = state.landingMarker;
+                ctx.save();
+                ctx.strokeStyle = m.inBounds ? '#34d399' : '#f43f5e';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.ellipse(m.x, COURT.groundY + 2, 22, 6, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // Draw Elevated Referee / Umpire Chair at Center Net
+        function drawRefereeChair(ctx, shuttle) {
+            const cx = COURT.netX;
+            const baseY = 532;
+
+            ctx.save();
+            // Tall metallic ladder frame
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(cx - 22, baseY); ctx.lineTo(cx - 14, 375);
+            ctx.moveTo(cx + 22, baseY); ctx.lineTo(cx + 14, 375);
+            // Ladder rungs
+            for (let ry = 410; ry < baseY; ry += 28) {
+                ctx.moveTo(cx - 18, ry);
+                ctx.lineTo(cx + 18, ry);
+            }
+            ctx.stroke();
+
+            // Chair seat & backrest
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(cx - 20, 355, 40, 24);
+
+            // Umpire Torso (Official Navy Blazer)
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.roundRect(cx - 14, 332, 28, 30, 6);
+            ctx.fill();
+
+            // Umpire Head tracking the shuttlecock
+            const lookOffset = Math.max(-4, Math.min(4, (shuttle.x - cx) * 0.01));
+            ctx.fillStyle = '#fcd34d';
+            ctx.beginPath();
+            ctx.arc(cx + lookOffset, 320, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Umpire Cap
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(cx + lookOffset, 317, 10, Math.PI, Math.PI * 2);
+            ctx.fill();
+
+            // Umpire raises arm when point is scored!
+            if (state.phase === 'point_pause') {
+                const armSide = state.server === 1 ? -1 : 1;
+                ctx.strokeStyle = '#1e3a8a';
+                ctx.lineWidth = 6;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(cx + armSide * 12, 340);
+                ctx.lineTo(cx + armSide * 28, 315);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        // Draw Center Net, Posts & Dynamic Top Tape
+        function drawNet(ctx) {
+            // Update net ripple spring physics
+            state.netRipple += state.netRippleVel;
+            state.netRippleVel *= 0.82;
+            state.netRipple *= 0.85;
+
+            const nx = COURT.netX + state.netRipple;
+            const topY = COURT.netTopY;
+            const botY = COURT.netBottomY;
+
+            ctx.save();
+            // Net Mesh (Dark Maroon/Cord mesh with crosshatch)
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.55)';
+            ctx.beginPath();
+            ctx.moveTo(COURT.netX - 3, topY + 6);
+            ctx.quadraticCurveTo(nx, (topY + botY) / 2, COURT.netX - 3, botY - 12);
+            ctx.lineTo(COURT.netX + 3, botY - 12);
+            ctx.quadraticCurveTo(nx + 4, (topY + botY) / 2, COURT.netX + 3, topY + 6);
+            ctx.closePath();
+            ctx.fill();
+
+            // Net mesh horizontal strings
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+            ctx.lineWidth = 1;
+            for (let y = topY + 12; y < botY - 14; y += 8) {
+                const offset = Math.sin(((y - topY) / (botY - topY)) * Math.PI) * state.netRipple;
+                ctx.beginPath();
+                ctx.moveTo(COURT.netX - 3 + offset, y);
+                ctx.lineTo(COURT.netX + 3 + offset, y);
+                ctx.stroke();
+            }
+
+            // Center Net Post
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(COURT.netX - 4, topY, 8, botY - topY + 6);
+
+            // Crisp White Top Tape
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(COURT.netX - 5 + state.netRipple * 0.4, topY, 10, 9);
+            ctx.restore();
+        }
+
+        // Draw Arena Jumbotron Scoreboard & Smash Meters
+        function drawScoreboardHUD(ctx) {
+            // 1. Center Stadium Jumbotron
+            const jx = W / 2 - 220;
+            const jy = 22;
+            const jw = 440;
+            const jh = 108;
+
+            ctx.save();
+            // Outer Jumbotron Bezel
+            ctx.fillStyle = 'rgba(9, 13, 22, 0.92)';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.roundRect(jx, jy, jw, jh, 16);
+            ctx.fill();
+            ctx.stroke();
+
+            // Player 1 Score Block
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 13px "Chakra Petch", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('PLAYER 1', jx + 22, jy + 26);
+
+            if (state.server === 1) {
+                ctx.fillStyle = '#facc15';
+                ctx.fillText('● SERVE', jx + 92, jy + 26);
+            }
+
+            // Player 2 Score Block
+            const p2Title = state.mode === '1p' ? `AI (${state.difficulty.toUpperCase()})` : 'PLAYER 2';
+            ctx.fillStyle = '#fb7185';
+            ctx.textAlign = 'right';
+            ctx.fillText(p2Title, jx + jw - 22, jy + 26);
+
+            if (state.server === 2) {
+                ctx.fillStyle = '#facc15';
+                ctx.fillText('SERVE ●', jx + jw - 110, jy + 26);
+            }
+
+            // Big Digital Scores
+            ctx.font = '700 46px "Chakra Petch", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(player1.score, jx + 125, jy + 74);
+            ctx.fillStyle = '#64748b';
+            ctx.font = '700 28px "Chakra Petch", sans-serif';
+            ctx.fillText(':', W / 2, jy + 68);
+            ctx.font = '700 46px "Chakra Petch", sans-serif';
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(player2.score, jx + jw - 125, jy + 74);
+
+            // Rally & Shot Speed Telemetry Strip
+            ctx.font = '600 12px "Inter", sans-serif';
+            ctx.fillStyle = '#94a3b8';
+            const speedStr = state.lastShotSpeedKmh > 0 ? `LAST SHOT: ${state.lastShotSpeedKmh} km/h` : 'READY TO SERVE';
+            ctx.fillText(`RALLY: ${state.rallyCount} HITS   •   ${speedStr}`, W / 2, jy + 96);
+
+            // 2. Player 1 Smash Meter (Top Left)
+            drawSmashMeter(ctx, 42, 42, 230, player1.smashMeter, '#38bdf8', 'P1 SMASH METER', true);
+
+            // 3. Player 2 Smash Meter (Top Right)
+            drawSmashMeter(ctx, W - 272, 42, 230, player2.smashMeter, '#fb7185', 'P2 SMASH METER', false);
+
+            // 4. Dynamic Action Callout Banner (SUPER SMASH, IN, OUT, etc.)
+            if (state.calloutTimer > 0) {
+                state.calloutTimer--;
+                const alpha = Math.min(1, state.calloutTimer / 15);
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.textAlign = 'center';
+
+                ctx.font = 'italic 700 28px "Chakra Petch", sans-serif';
+                ctx.fillStyle = state.calloutColor;
+                ctx.shadowColor = 'rgba(0,0,0,0.85)';
+                ctx.shadowBlur = 10;
+                ctx.fillText(state.calloutText, W / 2, 168);
+
+                if (state.calloutSubtext) {
+                    ctx.font = '600 14px "Inter", sans-serif';
+                    ctx.fillStyle = '#e2e8f0';
+                    ctx.fillText(state.calloutSubtext, W / 2, 190);
+                }
+                ctx.restore();
+            }
+
+            ctx.restore();
+        }
+
+        function drawSmashMeter(ctx, x, y, w, value, color, label, alignLeft) {
+            ctx.save();
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+            ctx.strokeStyle = value >= 100 ? '#facc15' : '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, 44, 10);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.font = '700 11px "Chakra Petch", sans-serif';
+            ctx.fillStyle = value >= 100 ? '#facc15' : '#cbd5e1';
+            ctx.textAlign = alignLeft ? 'left' : 'right';
+            const statusText = value >= 100 ? 'MAX SUPER SMASH READY' : `${label} (${Math.floor(value)}%)`;
+            ctx.fillText(statusText, alignLeft ? x + 12 : x + w - 12, y + 17);
+
+            // Bar Track
+            const barX = x + 12;
+            const barY = y + 24;
+            const barW = w - 24;
+            const barH = 11;
+
+            ctx.fillStyle = '#1e293b';
+            ctx.beginPath();
+            ctx.roundRect(barX, barY, barW, barH, 5);
+            ctx.fill();
+
+            // Bar Fill
+            const fillW = (barW * Math.min(100, value)) / 100;
+            if (fillW > 0) {
+                const grad = ctx.createLinearGradient(barX, 0, barX + barW, 0);
+                if (value >= 100) {
+                    grad.addColorStop(0, '#facc15');
+                    grad.addColorStop(0.5, '#f97316');
+                    grad.addColorStop(1, '#f43f5e');
+                } else {
+                    grad.addColorStop(0, color);
+                    grad.addColorStop(1, '#facc15');
+                }
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.roundRect(alignLeft ? barX : barX + (barW - fillW), barY, fillW, barH, 5);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        /********************************************************************
+         * 8. MAIN GAME LOOP
+         ********************************************************************/
+        function gameLoop() {
+            requestAnimationFrame(gameLoop);
+
+            // Hit-stop freeze frames on booming smashes for visceral arcade impact
+            if (state.hitStopFrames > 0) {
+                state.hitStopFrames--;
+                return;
+            }
+
+            if (!state.paused) {
+                if (state.crowdExcitement > 0) state.crowdExcitement--;
+
+                if (state.phase === 'point_pause') {
+                    state.pointTimer--;
+                    if (state.pointTimer <= 0) {
+                        state.phase = 'serve';
+                        player1.mood = 'focused';
+                        player2.mood = 'focused';
+                        player1.resetPosition();
+                        player2.resetPosition();
+                        shuttle.reset(state.server);
+                    }
+                } else {
+                    player1.update(shuttle);
+                    player2.update(shuttle);
+                    shuttle.update();
+                }
+            }
+
+            // Render Frame with Screen Shake
+            ctx.save();
+            if (state.screenShake > 0) {
+                const sx = (Math.random() - 0.5) * state.screenShake * 1.4;
+                const sy = (Math.random() - 0.5) * state.screenShake * 1.4;
+                ctx.translate(sx, sy);
+                state.screenShake *= 0.84;
+                if (state.screenShake < 0.5) state.screenShake = 0;
+            }
+
+            drawArenaBackground(ctx);
+            drawRefereeChair(ctx, shuttle);
+            player1.draw(ctx);
+            player2.draw(ctx);
+            drawNet(ctx);
+            shuttle.draw(ctx);
+            updateAndDrawParticles(ctx);
+            drawScoreboardHUD(ctx);
+
+            ctx.restore();
+        }
+
+        /********************************************************************
+         * 9. KEYBOARD, TOUCH & MENU EVENT LISTENERS
+         ********************************************************************/
+        window.addEventListener('keydown', (e) => {
+            // Prevent page scrolling on Space or Arrow keys
+            if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                e.preventDefault();
+            }
+            keys[e.code] = true;
+
+            if (e.code === 'Escape') {
+                togglePauseMenu();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+
+        // Wire On-Screen Touch / Mouse Controls
+        document.querySelectorAll('.touch-btn').forEach(btn => {
+            const action = btn.getAttribute('data-touch');
+
+            const startAction = (e) => {
+                e.preventDefault();
+                sfx.init();
+                touchState[action] = true;
+                btn.classList.add('pressed');
+            };
+
+            const endAction = (e) => {
+                e.preventDefault();
+                touchState[action] = false;
+                btn.classList.remove('pressed');
+            };
+
+            btn.addEventListener('mousedown', startAction);
+            btn.addEventListener('mouseup', endAction);
+            btn.addEventListener('mouseleave', endAction);
+            btn.addEventListener('touchstart', startAction, { passive: false });
+            btn.addEventListener('touchend', endAction, { passive: false });
+            btn.addEventListener('touchcancel', endAction, { passive: false });
+        });
+
+        // Menu Setup & Segmented Tab Navigation
+        function updateHUDModeBadge() {
+            const modeStr = state.mode === '1p' ? `1P vs AI (${state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1)})` : '2 Players Local';
+            const badge = document.getElementById('hudModeLabel');
+            if (badge) badge.textContent = `${modeStr} • ${state.targetPoints} Pts`;
+        }
+
+        // Segmented Controls (Mode, Difficulty, Points)
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sfx.playHit('drop');
+                state.mode = btn.getAttribute('data-mode');
+                document.querySelectorAll('.mode-btn').forEach(b => {
+                    const active = b.getAttribute('data-mode') === state.mode;
+                    b.classList.toggle('active', active);
+                    b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+                const diffPanel = document.getElementById('aiDiffPanel');
+                if (diffPanel) {
+                    diffPanel.style.opacity = state.mode === '1p' ? '1' : '0.35';
+                    diffPanel.style.pointerEvents = state.mode === '1p' ? 'auto' : 'none';
+                }
+                updateHUDModeBadge();
+            });
+        });
+
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sfx.playHit('drop');
+                state.difficulty = btn.getAttribute('data-diff');
+                document.querySelectorAll('.diff-btn').forEach(b => {
+                    const active = b.getAttribute('data-diff') === state.difficulty;
+                    b.classList.toggle('active', active);
+                    b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+                updateHUDModeBadge();
+            });
+        });
+
+        document.querySelectorAll('.pts-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sfx.playHit('drop');
+                state.targetPoints = parseInt(btn.getAttribute('data-pts'), 10);
+                document.querySelectorAll('.pts-btn').forEach(b => {
+                    const active = parseInt(b.getAttribute('data-pts'), 10) === state.targetPoints;
+                    b.classList.toggle('active', active);
+                    b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+                updateHUDModeBadge();
+            });
+        });
+
+        // Tab Switching inside Menu Overlay
+        const tabBtnSetup = document.getElementById('tabBtnSetup');
+        const tabBtnGuide = document.getElementById('tabBtnGuide');
+        const tabContentSetup = document.getElementById('tabContentSetup');
+        const tabContentGuide = document.getElementById('tabContentGuide');
+
+        function switchMenuTab(tab) {
+            if (tab === 'guide') {
+                if (tabBtnGuide) { tabBtnGuide.classList.add('active'); tabBtnGuide.setAttribute('aria-selected', 'true'); }
+                if (tabBtnSetup) { tabBtnSetup.classList.remove('active'); tabBtnSetup.setAttribute('aria-selected', 'false'); }
+                if (tabContentGuide) tabContentGuide.classList.remove('hidden');
+                if (tabContentSetup) tabContentSetup.classList.add('hidden');
+            } else {
+                if (tabBtnSetup) { tabBtnSetup.classList.add('active'); tabBtnSetup.setAttribute('aria-selected', 'true'); }
+                if (tabBtnGuide) { tabBtnGuide.classList.remove('active'); tabBtnGuide.setAttribute('aria-selected', 'false'); }
+                if (tabContentSetup) tabContentSetup.classList.remove('hidden');
+                if (tabContentGuide) tabContentGuide.classList.add('hidden');
+            }
+        }
+
+        if (tabBtnSetup) tabBtnSetup.addEventListener('click', () => switchMenuTab('setup'));
+        if (tabBtnGuide) tabBtnGuide.addEventListener('click', () => switchMenuTab('guide'));
+        const btnQuickViewGuide = document.getElementById('btnQuickViewGuide');
+        if (btnQuickViewGuide) btnQuickViewGuide.addEventListener('click', () => switchMenuTab('guide'));
+        const btnBackToSetup = document.getElementById('btnBackToSetup');
+        if (btnBackToSetup) btnBackToSetup.addEventListener('click', () => switchMenuTab('setup'));
+
+        function updateStartButton(isPaused) {
+            const startBtnText = document.getElementById('startBtnText');
+            const startBtnIcon = document.getElementById('startBtnIcon');
+            if (isPaused) {
+                if (startBtnText) startBtnText.textContent = 'New Match';
+                if (startBtnIcon) {
+                    startBtnIcon.innerHTML = `<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>`;
+                    startBtnIcon.setAttribute('fill', 'none');
+                    startBtnIcon.setAttribute('stroke', 'currentColor');
+                    startBtnIcon.setAttribute('stroke-width', '2');
+                    startBtnIcon.setAttribute('stroke-linecap', 'round');
+                    startBtnIcon.setAttribute('stroke-linejoin', 'round');
+                }
+            } else {
+                if (startBtnText) startBtnText.textContent = 'Start Match';
+                if (startBtnIcon) {
+                    startBtnIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"/>`;
+                    startBtnIcon.setAttribute('fill', 'currentColor');
+                    startBtnIcon.removeAttribute('stroke');
+                    startBtnIcon.removeAttribute('stroke-width');
+                    startBtnIcon.removeAttribute('stroke-linecap');
+                    startBtnIcon.removeAttribute('stroke-linejoin');
+                }
+            }
+        }
+
+        function togglePauseMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            const resumeBtn = document.getElementById('btnResumeMatch');
+            const menuTitle = document.getElementById('menuTitle');
+            const menuSubtitle = document.getElementById('menuSubtitle');
+
+            if (state.paused) {
+                state.paused = false;
+                menuOverlay.classList.add('hidden');
+            } else {
+                state.paused = true;
+                switchMenuTab('setup');
+                if (resumeBtn) resumeBtn.classList.remove('hidden');
+                if (menuTitle) menuTitle.textContent = 'Super Smash Badminton';
+                if (menuSubtitle) menuSubtitle.textContent = 'Match Paused';
+                updateStartButton(true);
+                menuOverlay.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('btnStartMatch').addEventListener('click', () => {
+            sfx.init();
+            sfx.playHit('smash');
+            resetMatch();
+            state.paused = false;
+            document.getElementById('menuOverlay').classList.add('hidden');
+            document.getElementById('victoryOverlay').classList.add('hidden');
+        });
+
+        document.getElementById('btnResumeMatch').addEventListener('click', () => {
+            sfx.init();
+            state.paused = false;
+            document.getElementById('menuOverlay').classList.add('hidden');
+        });
+
+        document.getElementById('btnPause').addEventListener('click', togglePauseMenu);
+
+        document.getElementById('btnPracticeTip').addEventListener('click', () => {
+            state.paused = true;
+            switchMenuTab('guide');
+            const resumeBtn = document.getElementById('btnResumeMatch');
+            if (resumeBtn) resumeBtn.classList.remove('hidden');
+            const menuTitle = document.getElementById('menuTitle');
+            const menuSubtitle = document.getElementById('menuSubtitle');
+            if (menuTitle) menuTitle.textContent = 'Super Smash Badminton';
+            if (menuSubtitle) menuSubtitle.textContent = 'Controls & Shot Guide';
+            updateStartButton(true);
+            document.getElementById('menuOverlay').classList.remove('hidden');
+        });
+
+        document.getElementById('btnRematch').addEventListener('click', () => {
+            sfx.playHit('smash');
+            resetMatch();
+            state.paused = false;
+            document.getElementById('victoryOverlay').classList.add('hidden');
+        });
+
+        document.getElementById('btnChangeSettings').addEventListener('click', () => {
+            document.getElementById('victoryOverlay').classList.add('hidden');
+            const resumeBtn = document.getElementById('btnResumeMatch');
+            if (resumeBtn) resumeBtn.classList.add('hidden');
+            const menuTitle = document.getElementById('menuTitle');
+            const menuSubtitle = document.getElementById('menuSubtitle');
+            if (menuTitle) menuTitle.textContent = 'Super Smash Badminton';
+            if (menuSubtitle) menuSubtitle.textContent = 'Match Setup';
+            updateStartButton(false);
+            switchMenuTab('setup');
+            document.getElementById('menuOverlay').classList.remove('hidden');
+        });
+
+        document.getElementById('btnAudioToggle').addEventListener('click', () => {
+            const on = sfx.toggle();
+            const icon = document.getElementById('audioIcon');
+            const text = document.getElementById('audioText');
+            if (icon) {
+                if (on) {
+                    icon.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
+                } else {
+                    icon.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
+                }
+            }
+            if (text) text.textContent = on ? 'SFX On' : 'Muted';
+        });
+
+        // Start animation loop on window load
+        window.onload = function () {
+            resetMatch();
+            state.paused = true;
+            gameLoop();
+        };
+    </script>
+</body>
+</html>

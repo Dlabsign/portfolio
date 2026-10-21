@@ -1,0 +1,35 @@
+[
+  {
+    "req_no": "PRT-2026-001",
+    "project_name": "Meja Kantor Eksekutif Verona Gen 3",
+    "requestor": "DANIEL",
+    "req_date": "2026-10-19",
+    "status": "SUBMITTED",
+    "status_desc": "Pending Engineering Review",
+    "total_parts": 3,
+    "parts": [
+      {
+        "part_no": "P01",
+        "part_name": "Top Table Veneer Oak 2200x900",
+        "qty": 1,
+        "uom": "PC",
+        "matnr_ref": "10000002"
+      },
+      {
+        "part_no": "P02",
+        "part_name": "Kaki Meja Metal Powder Coat Black",
+        "qty": 2,
+        "uom": "SET",
+        "matnr_ref": "10000006"
+      },
+      {
+        "part_no": "P03",
+        "part_name": "Modesty Panel Akrilik Frosted",
+        "qty": 1,
+        "uom": "PC",
+        "matnr_ref": ""
+      }
+    ],
+    "remarks": "BOM awal untuk produk baru kuartal 1 2027"
+  }
+]

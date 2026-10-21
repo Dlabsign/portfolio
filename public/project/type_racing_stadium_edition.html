@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TYPE RACING — Balap Ketik Ceria di Stadion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,500;0,600;0,700;0,800;1,800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-dark: #0b192e;
+      --navy-panel: #142a4c;
+      --navy-card: #0d1e38;
+      --track-main: #a84934;
+      --track-dark: #8e3b28;
+      --green-main: #4bc83c;
+      --green-dark: #2c8c21;
+      --yellow-main: #f3c12c;
+      --yellow-dark: #c49108;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--navy-dark);
+    }
+
+    /* Custom Display Font for Logo & Headers */
+    .font-display {
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Top Left Logo Slanted Container */
+    .logo-slant {
+      background: linear-gradient(180deg, #0f2442 0%, #09162b 100%);
+      clip-path: polygon(0 0, 100% 0, 88% 100%, 0% 100%);
+      border-bottom: 3px solid #2b4c7e;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+    }
+
+    /* Stadium Banners */
+    .stadium-banner {
+      background: linear-gradient(180deg, #8ab8e6 0%, #4f85c2 45%, #3769a6 100%);
+      clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%);
+      border-top: 2px solid #b7d8f7;
+      border-bottom: 3px solid #234775;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .stadium-banner-center {
+      background: linear-gradient(180deg, #d7ecff 0%, #8ebef0 50%, #5b93d1 100%);
+      clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+      border-top: 2px solid #ffffff;
+      border-bottom: 3px solid #356299;
+    }
+
+    /* Running Track Styling */
+    .running-track {
+      background: linear-gradient(180deg, #9d422e 0%, #ae4d38 25%, #9c412d 50%, #ae4d38 75%, #8f3926 100%);
+      position: relative;
+      box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.35), inset 0 -6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .track-lane {
+      position: relative;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.85);
+      transition: background-color 0.2s ease;
+    }
+
+    .track-lane:first-child {
+      border-top: 3px solid rgba(255, 255, 255, 0.85);
+    }
+
+    /* Checkered Finish Line on Track */
+    .finish-line-strip {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 3.5%;
+      width: 28px;
+      transform: skewX(-7deg);
+      background-color: #ffffff;
+      background-image:
+        linear-gradient(45deg, #161a22 25%, transparent 25%),
+        linear-gradient(-45deg, #161a22 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #161a22 75%),
+        linear-gradient(-45deg, transparent 75%, #161a22 75%);
+      background-size: 14px 14px;
+      background-position: 0 0, 0 7px, 7px -7px, -7px 0;
+      border-left: 2px solid rgba(255,255,255,0.9);
+      border-right: 2px solid rgba(255,255,255,0.9);
+      box-shadow: -4px 0 12px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
+    /* Player Lane Green Aura Trail */
+    .player-lane-glow {
+      background: linear-gradient(90deg, rgba(82, 214, 63, 0.05) 0%, rgba(82, 214, 63, 0.26) 40%, rgba(76, 201, 56, 0.32) 85%, rgba(76, 201, 56, 0.0) 100%);
+    }
+
+    /* Runner Character Limb Animations */
+    @keyframes armSwingLeft {
+      0%, 100% { transform: rotate(-38deg); }
+      50% { transform: rotate(42deg); }
+    }
+    @keyframes armSwingRight {
+      0%, 100% { transform: rotate(42deg); }
+      50% { transform: rotate(-38deg); }
+    }
+    @keyframes legRunLeft {
+      0%, 100% { transform: rotate(-42deg); }
+      50% { transform: rotate(38deg); }
+    }
+    @keyframes legRunRight {
+      0%, 100% { transform: rotate(38deg); }
+      50% { transform: rotate(-42deg); }
+    }
+    @keyframes bodyBob {
+      0%, 100% { transform: translateY(0px) rotate(6deg); }
+      25% { transform: translateY(-3.5px) rotate(8deg); }
+      50% { transform: translateY(0px) rotate(6deg); }
+      75% { transform: translateY(-3.5px) rotate(4deg); }
+    }
+    @keyframes speedLinesPulse {
+      0%, 100% { opacity: 0.85; transform: translateX(0px) scaleX(1); }
+      50% { opacity: 0.45; transform: translateX(-5px) scaleX(0.88); }
+    }
+
+    .runner-wrapper {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -56%);
+      z-index: 15;
+      pointer-events: none;
+      will-change: left;
+    }
+
+    .runner-active .runner-rig {
+      animation: bodyBob var(--run-cycle, 0.36s) infinite ease-in-out;
+    }
+    .runner-active .arm-l {
+      transform-origin: 48px 46px;
+      animation: armSwingLeft var(--run-cycle, 0.36s) infinite ease-in-out;
+    }
+    .runner-active .arm-r {
+      transform-origin: 48px 46px;
+      animation: armSwingRight var(--run-cycle, 0.36s) infinite ease-in-out;
+    }
+    .runner-active .leg-l {
+      transform-origin: 46px 68px;
+      animation: legRunLeft var(--run-cycle, 0.36s) infinite ease-in-out;
+    }
+    .runner-active .leg-r {
+      transform-origin: 46px 68px;
+      animation: legRunRight var(--run-cycle, 0.36s) infinite ease-in-out;
+    }
+    .runner-active .speed-lines {
+      animation: speedLinesPulse 0.25s infinite ease-in-out;
+    }
+
+    .runner-idle .speed-lines {
+      opacity: 0;
+    }
+
+    /* Virtual Keyboard Key Styling */
+    .kbd-key {
+      background: linear-gradient(180deg, #324665 0%, #263852 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 4px solid #152235;
+      border-radius: 9px;
+      color: #f8fafc;
+      font-weight: 700;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+      transition: all 0.07s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .kbd-key:hover {
+      filter: brightness(1.08);
+    }
+
+    .kbd-key:active, .kbd-key.key-pressed {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    /* Active / Target Key Green Highlight (like 'D' in reference) */
+    .kbd-key.key-target {
+      background: linear-gradient(180deg, #5fd84b 0%, #43b532 100%);
+      border-top: 1px solid #9ef48e;
+      border-bottom: 4px solid #25731a;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(79, 211, 61, 0.55), 0 3px 6px rgba(0, 0, 0, 0.4);
+      transform: scale(1.04);
+      z-index: 2;
+    }
+
+    /* Wrong Key Flash */
+    .kbd-key.key-wrong {
+      background: linear-gradient(180deg, #f85149 0%, #dc2626 100%) !important;
+      border-bottom-color: #7f1d1d !important;
+      color: #fff !important;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.6) !important;
+    }
+
+    /* Keluar Button 3D Gold Style */
+    .btn-keluar {
+      background: linear-gradient(180deg, #fad046 0%, #eab318 100%);
+      border-top: 2px solid ##ffea8a;
+      border-bottom: 5px solid #b58306;
+      color: #0e1e36;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+      transition: all 0.12s ease;
+    }
+    .btn-keluar:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+    .btn-keluar:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    /* Blinking Typing Cursor */
+    @keyframes cursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .typing-cursor {
+      display: inline-block;
+      width: 2.5px;
+      height: 1.25em;
+      background-color: #0f172a;
+      vertical-align: middle;
+      margin: 0 1px;
+      animation: cursorBlink 0.9s infinite;
+    }
+    .track-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.15em;
+      background-color: #ffffff;
+      vertical-align: middle;
+      margin: 0 1px;
+      box-shadow: 0 0 6px #fff;
+    }
+
+    /* Error Shake Animation for Prompt Box */
+    @keyframes errorShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .prompt-shake {
+      animation: errorShake 0.24s ease-in-out;
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    /* Clouds Floating Animation */
+    @keyframes floatCloudSlow {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(18px); }
+      100% { transform: translateX(0px); }
+    }
+    .cloud-anim {
+      animation: floatCloudSlow 14s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden select-none">
+
+  <!-- ======================================================================= -->
+  <!-- 1. TOP STADIUM SKY, CITY SKYLINE & HUD HEADER (~25% Height)             -->
+  <!-- ======================================================================= -->
+  <header class="relative w-full h-[24%] min-h-[135px] max-h-[210px] flex flex-col justify-between overflow-hidden shrink-0"
+          style="background: linear-gradient(180deg, #1b6bd8 0%, #52a4f5 52%, #a2d4ff 85%, #cbe8ff 100%);">
+
+    <!-- Decorative Sky Clouds & Distant City Skyline SVG -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1440 220" preserveAspectRatio="none">
+      <!-- Soft Clouds -->
+      <g class="cloud-anim" fill="#ffffff" opacity="0.78">
+        <path d="M90 120 Q105 95 135 102 Q155 80 185 95 Q210 95 215 120 Z" />
+        <path d="M460 110 Q480 82 515 92 Q540 65 580 85 Q615 80 628 110 Z" />
+        <path d="M920 105 Q945 70 985 82 Q1020 55 1065 78 Q1105 72 1125 105 Z" />
+        <path d="M1260 115 Q1280 90 1310 98 Q1335 78 1365 95 Q1390 95 1400 115 Z" />
+      </g>
+
+      <!-- Distant City Buildings Silhouette -->
+      <g fill="#7ab8f5" opacity="0.65">
+        <rect x="60" y="105" width="45" height="75" />
+        <rect x="112" y="88" width="58" height="92" />
+        <rect x="178" y="115" width="38" height="65" />
+        <rect x="250" y="95" width="52" height="85" />
+        <rect x="310" y="110" width="44" height="70" />
+        <rect x="405" y="82" width="64" height="98" />
+        <rect x="475" y="104" width="50" height="76" />
+        <rect x="570" y="92" width="48" height="88" />
+        <rect x="625" y="75" width="58" height="105" />
+        <rect x="690" y="108" width="45" height="72" />
+        <rect x="775" y="90" width="60" height="90" />
+        <rect x="842" y="110" width="46" height="70" />
+        <rect x="935" y="85" width="55" height="95" />
+        <rect x="998" y="68" width="66" height="112" />
+        <rect x="1072" y="102" width="50" height="78" />
+        <rect x="1155" y="88" width="58" height="92" />
+        <rect x="1220" y="106" width="45" height="74" />
+        <rect x="1310" y="82" width="62" height="98" />
+      </g>
+      <g fill="#5c9ee0" opacity="0.55">
+        <rect x="85" y="118" width="50" height="62" />
+        <rect x="210" y="105" width="55" height="75" />
+        <rect x="355" y="98" width="62" height="82" />
+        <rect x="515" y="112" width="65" height="68" />
+        <rect x="720" y="100" width="68" height="80" />
+        <rect x="880" y="96" width="64" height="84" />
+        <rect x="1110" y="110" width="58" height="70" />
+        <rect x="1260" y="95" width="62" height="85" />
+      </g>
+
+      <!-- Lush Green Stadium Trees Line -->
+      <g fill="#2e6f40">
+        <circle cx="30" cy="168" r="34" />
+        <circle cx="85" cy="172" r="30" />
+        <circle cx="145" cy="165" r="38" />
+        <circle cx="215" cy="174" r="28" />
+        <circle cx="385" cy="172" r="32" />
+        <circle cx="440" cy="166" r="36" />
+        <circle cx="500" cy="175" r="28" />
+        <circle cx="945" cy="174" r="29" />
+        <circle cx="1005" cy="165" r="37" />
+        <circle cx="1065" cy="172" r="32" />
+        <circle cx="1235" cy="172" r="30" />
+        <circle cx="1295" cy="162" r="40" />
+        <circle cx="1365" cy="168" r="35" />
+        <circle cx="1420" cy="170" r="32" />
+      </g>
+      <g fill="#428e4f">
+        <circle cx="55" cy="174" r="28" />
+        <circle cx="120" cy="170" r="32" />
+        <circle cx="178" cy="174" r="26" />
+        <circle cx="415" cy="172" r="28" />
+        <circle cx="470" cy="174" r="26" />
+        <circle cx="975" cy="172" r="28" />
+        <circle cx="1038" cy="174" r="27" />
+        <circle cx="1265" cy="172" r="29" />
+        <circle cx="1330" cy="168" r="33" />
+        <circle cx="1395" cy="174" r="27" />
+      </g>
+    </svg>
+
+    <!-- Top HUD Row -->
+    <div class="relative z-10 flex items-start justify-between w-full pr-3 sm:pr-6 pt-0">
+      <!-- Left Group: Game Logo + LAP Box -->
+      <div class="flex items-center gap-2 sm:gap-5">
+        <!-- Slanted Logo Badge -->
+        <div class="logo-slant pl-3 pr-8 sm:pl-5 sm:pr-11 py-1.5 sm:py-2.5 flex items-center">
+          <div class="flex flex-col leading-none">
+            <div class="flex items-center gap-1">
+              <!-- Speed lines left of TYPE -->
+              <div class="flex flex-col gap-1 mr-1">
+                <span class="w-3 sm:w-4 h-[2.5px] bg-yellow-400 rounded-full"></span>
+                <span class="w-4 sm:w-5 h-[2.5px] bg-yellow-400 rounded-full -ml-1"></span>
+                <span class="w-2.5 sm:w-3.5 h-[2.5px] bg-yellow-400 rounded-full"></span>
+              </div>
+              <span class="font-display italic font-extrabold text-white text-xl sm:text-3xl tracking-wider drop-shadow">TYPE</span>
+              <!-- Sprinter silhouette icon -->
+              <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white -ml-0.5" viewBox="0 0 32 32" fill="currentColor">
+                <circle cx="21" cy="6" r="3" />
+                <path d="M13 11 L20 11 L24 15 L22 17 L19 14 L16 18 L21 22 L19 27 L16 26 L18 22 L13 19 L10 24 L6 23 L9 17 L13 13 L10 13 L8 16 L6 14 L9 10 Z" />
+              </svg>
+            </div>
+            <div class="flex items-center">
+              <div class="flex flex-col gap-1 mr-1.5">
+                <span class="w-2.5 sm:w-3.5 h-[2px] bg-yellow-400/80 rounded-full"></span>
+                <span class="w-3.5 sm:w-4.5 h-[2px] bg-yellow-400/80 rounded-full -ml-1"></span>
+              </div>
+              <span class="font-display italic font-extrabold text-[#f7c627] text-xl sm:text-3xl tracking-wide drop-shadow">RACING</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAP Counter Card -->
+        <div class="bg-[#0d1f3a]/95 border-2 border-[#2a4978] rounded-xl px-3.5 py-1 sm:px-5 sm:py-1.5 text-center shadow-lg mt-1.5">
+          <div class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-300">LAP</div>
+          <div id="hud-lap" class="text-lg sm:text-2xl font-extrabold text-white leading-tight font-mono-num">1/3</div>
+        </div>
+      </div>
+
+      <!-- Center: Race Timer Scoreboard -->
+      <div class="bg-[#0d1f3a]/95 border-2 border-[#72a9e5] rounded-2xl px-4 py-1.5 sm:px-8 sm:py-2 shadow-[0_6px_20px_rgba(0,0,0,0.4)] mt-1.5">
+        <div id="hud-timer" class="font-mono-num text-xl sm:text-4xl font-extrabold text-white tracking-wider">00:00.00</div>
+      </div>
+
+      <!-- Right Group: WPM & Accuracy Card + Audio Button -->
+      <div class="flex items-center gap-2 sm:gap-4 mt-1.5">
+        <div class="bg-[#0d1f3a]/95 border-2 border-[#2a4978] rounded-xl px-3 py-1 sm:px-5 sm:py-1.5 flex items-center gap-3 sm:gap-6 shadow-lg">
+          <div class="text-center">
+            <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300">WPM</div>
+            <div id="hud-wpm" class="text-base sm:text-2xl font-extrabold text-white leading-tight font-mono-num">0</div>
+          </div>
+          <div class="w-[1px] h-7 sm:h-9 bg-slate-600/70"></div>
+          <div class="text-center">
+            <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300">ACCURACY</div>
+            <div id="hud-acc" class="text-base sm:text-2xl font-extrabold text-white leading-tight font-mono-num">100%</div>
+          </div>
+        </div>
+
+        <!-- Sound Toggle Button -->
+        <button id="btn-sound" onclick="toggleSound()" title="Suara Efek (Aktif/Bisu)"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0d1f3a]/95 border-2 border-[#4d7bb8] flex items-center justify-center text-white hover:bg-[#17325c] active:scale-95 transition shadow-lg">
+          <svg id="icon-sound-on" class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg id="icon-sound-off" class="w-5 h-5 sm:w-6 sm:h-6 hidden text-rose-400" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stadium Railing & Motivational Banners Row -->
+    <div class="relative z-10 w-full bg-gradient-to-b from-[#6c7d93] via-[#4a5a70] to-[#323f52] border-t-2 border-[#9cb0c9] border-b-4 border-[#2b3545] py-1 px-4 flex items-center justify-center gap-3 sm:gap-8 shadow-md">
+      <!-- Left Banner -->
+      <div class="stadium-banner px-4 sm:px-8 py-0.5 sm:py-1 flex items-center gap-1.5">
+        <span class="text-yellow-300 text-xs sm:text-sm">⚡</span>
+        <span class="font-display italic font-bold text-white text-xs sm:text-sm tracking-wider drop-shadow">TYPE FAST</span>
+      </div>
+
+      <!-- Pillar Divider -->
+      <div class="hidden sm:flex gap-1.5">
+        <span class="w-1.5 h-5 bg-slate-800 rounded-sm"></span>
+        <span class="w-1.5 h-5 bg-slate-800 rounded-sm"></span>
+      </div>
+
+      <!-- Center Banner -->
+      <div class="stadium-banner-center px-6 sm:px-14 py-0.5 sm:py-1 flex items-center gap-2">
+        <span class="font-display italic font-extrabold text-[#173d73] text-xs sm:text-sm tracking-widest">FOCUS • TYPE • WIN</span>
+      </div>
+
+      <!-- Pillar Divider -->
+      <div class="hidden sm:flex gap-1.5">
+        <span class="w-1.5 h-5 bg-slate-800 rounded-sm"></span>
+        <span class="w-1.5 h-5 bg-slate-800 rounded-sm"></span>
+      </div>
+
+      <!-- Right Banner -->
+      <div class="stadium-banner px-4 sm:px-8 py-0.5 sm:py-1 flex items-center gap-1.5">
+        <span class="text-sky-200 text-xs sm:text-sm font-extrabold">≫</span>
+        <span class="font-display italic font-bold text-white text-xs sm:text-sm tracking-wider drop-shadow">SPEED UP!</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- 2. FOUR-LANE RUNNING TRACK AREA (~33% Height)                           -->
+  <!-- ======================================================================= -->
+  <section class="running-track w-full h-[34%] min-h-[195px] flex flex-col justify-between shrink-0 select-none overflow-hidden">
+    <!-- Slanted Checkered Finish Line -->
+    <div class="finish-line-strip"></div>
+
+    <!-- Dynamic 4 Lanes Container -->
+    <div id="lanes-container" class="w-full h-full flex flex-col">
+      <!-- Lanes injected and updated by JS -->
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 3. BOTTOM NAVY CONTROL PANEL (~42% Height)                              -->
+  <!-- ======================================================================= -->
+  <main class="w-full flex-1 bg-gradient-to-b from-[#173158] to-[#0d1f3a] border-t-4 border-[#3a629c] px-2.5 sm:px-5 py-2 sm:py-3 flex items-stretch gap-2.5 sm:gap-4 overflow-hidden">
+
+    <!-- LEFT COLUMN: STATISTIK PANEL -->
+    <aside class="w-[180px] sm:w-[230px] bg-[#0b1a30]/95 border-2 border-[#254575] rounded-2xl p-2.5 sm:p-3.5 flex flex-col justify-between shadow-xl shrink-0">
+      <div class="text-center border-b border-slate-700/80 pb-1.5">
+        <h2 class="text-xs sm:text-sm font-extrabold tracking-widest text-white uppercase">STATISTIK</h2>
+      </div>
+
+      <div class="flex flex-col justify-around flex-1 divide-y divide-slate-800/90 px-1">
+        <!-- WPM Row -->
+        <div class="flex items-center justify-between py-1.5">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-sky-300 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 14l4-4" stroke-linecap="round"/>
+              <path d="M3.34 19a10 10 0 1 1 17.32 0" stroke-linecap="round"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs font-bold text-slate-300 uppercase">WPM</span>
+          </div>
+          <span id="stat-wpm" class="font-mono-num text-base sm:text-xl font-extrabold text-[#4cd93c]">0</span>
+        </div>
+
+        <!-- ACCURACY Row -->
+        <div class="flex items-center justify-between py-1.5">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-sky-300 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="15" cy="4" r="2"/>
+              <path d="M10.5 9.5L7 11v3h2v-1.8l2.1-.9L9 16l-4 1v2l5.5-1.4 1.8-3.6 2.7 2V21h2v-6.2l-2.7-2.3.9-2.5 2.3 1.5H20v-2h-1.8l-3.2-2.2c-.8-.5-1.8-.4-2.5.2z"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs font-bold text-slate-300 uppercase">ACCURACY</span>
+          </div>
+          <span id="stat-acc" class="font-mono-num text-base sm:text-xl font-extrabold text-[#47b0f8]">100%</span>
+        </div>
+
+        <!-- KATA BENAR Row -->
+        <div class="flex items-center justify-between py-1.5">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#41b834] flex items-center justify-center text-white shrink-0 shadow">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </span>
+            <span class="text-[11px] sm:text-xs font-bold text-slate-300 uppercase">KATA BENAR</span>
+          </div>
+          <span id="stat-correct-words" class="font-mono-num text-base sm:text-xl font-extrabold text-[#4cd93c]">0</span>
+        </div>
+
+        <!-- KATA SALAH Row -->
+        <div class="flex items-center justify-between py-1.5">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#e53935] flex items-center justify-center text-white shrink-0 shadow">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </span>
+            <span class="text-[11px] sm:text-xs font-bold text-slate-300 uppercase">KATA SALAH</span>
+          </div>
+          <span id="stat-wrong-words" class="font-mono-num text-base sm:text-xl font-extrabold text-[#f85149]">0</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: SENTENCE TYPING DISPLAY & VIRTUAL QWERTY KEYBOARD -->
+    <section class="flex-1 bg-[#0c1d36]/95 border-2 border-[#2a4c7d] rounded-2xl p-2.5 sm:p-3.5 flex flex-col justify-between shadow-2xl min-w-0">
+      <!-- White Sentence Prompt Box -->
+      <div id="prompt-box"
+           class="w-full bg-[#f4f6f9] border-2 border-slate-300 rounded-xl px-3.5 sm:px-5 py-2 sm:py-2.5 shadow-inner flex items-center overflow-x-auto whitespace-nowrap transition-all">
+        <div id="sentence-render" class="text-sm sm:text-lg md:text-xl font-semibold tracking-tight leading-snug">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Virtual QWERTY Keyboard -->
+      <div id="virtual-keyboard" class="flex-1 flex flex-col justify-center gap-1.5 sm:gap-2 pt-2 select-none">
+        <!-- Row 1: Q - P -->
+        <div class="flex justify-center gap-1.5 sm:gap-2">
+          <button data-key="q" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">Q</button>
+          <button data-key="w" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">W</button>
+          <button data-key="e" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">E</button>
+          <button data-key="r" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">R</button>
+          <button data-key="t" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">T</button>
+          <button data-key="y" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">Y</button>
+          <button data-key="u" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">U</button>
+          <button data-key="i" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">I</button>
+          <button data-key="o" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">O</button>
+          <button data-key="p" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">P</button>
+        </div>
+
+        <!-- Row 2: A - L -->
+        <div class="flex justify-center gap-1.5 sm:gap-2">
+          <button data-key="a" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">A</button>
+          <button data-key="s" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">S</button>
+          <button data-key="d" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">D</button>
+          <button data-key="f" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">F</button>
+          <button data-key="g" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">G</button>
+          <button data-key="h" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">H</button>
+          <button data-key="j" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">J</button>
+          <button data-key="k" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">K</button>
+          <button data-key="l" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">L</button>
+        </div>
+
+        <!-- Row 3: Shift, Z - M, Backspace -->
+        <div class="flex justify-center gap-1.5 sm:gap-2">
+          <button data-key="shift" class="kbd-key w-11 h-8 sm:w-14 sm:h-10 text-xs sm:text-base" title="Shift">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 4L4 13h5v7h6v-7h5L12 4z"/>
+            </svg>
+          </button>
+          <button data-key="z" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">Z</button>
+          <button data-key="x" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">X</button>
+          <button data-key="c" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">C</button>
+          <button data-key="v" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">V</button>
+          <button data-key="b" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">B</button>
+          <button data-key="n" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">N</button>
+          <button data-key="m" class="kbd-key w-8 h-8 sm:w-11 sm:h-10 text-xs sm:text-base">M</button>
+          <button data-key="backspace" class="kbd-key w-11 h-8 sm:w-14 sm:h-10 text-xs sm:text-base" title="Backspace">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/>
+              <line x1="18" y1="9" x2="12" y2="15"/>
+              <line x1="12" y1="9" x2="18" y2="15"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Row 4: SPACE (+ subtle comma/period helpers for touch) -->
+        <div class="flex justify-center items-center gap-1.5 sm:gap-2">
+          <button data-key="," class="kbd-key w-8 h-7 sm:w-10 sm:h-9 text-xs sm:text-sm" title="Koma (,)">,</button>
+          <button data-key=" " class="kbd-key w-48 sm:w-72 md:w-80 h-7 sm:h-9 text-xs sm:text-sm tracking-widest uppercase">SPACE</button>
+          <button data-key="." class="kbd-key w-8 h-7 sm:w-10 sm:h-9 text-xs sm:text-sm" title="Titik (.)">.</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: POSISIMU CARD & KELUAR BUTTON -->
+    <aside class="w-[165px] sm:w-[215px] flex flex-col justify-between gap-2.5 shrink-0">
+      <!-- POSISIMU Card -->
+      <div class="flex-1 bg-[#0b1a30]/95 border-2 border-[#254575] rounded-2xl p-2.5 sm:p-3.5 flex flex-col justify-between items-center shadow-xl">
+        <h2 class="text-xs sm:text-sm font-extrabold tracking-widest text-white uppercase">POSISIMU</h2>
+
+        <!-- Big Rank Display -->
+        <div class="flex items-baseline justify-center my-auto">
+          <span id="pos-rank-num" class="font-display font-extrabold text-5xl sm:text-6xl text-[#4cd93c] drop-shadow">1</span>
+          <span class="font-bold text-xl sm:text-2xl text-slate-200 ml-1">/4</span>
+        </div>
+
+        <!-- Mini Finish Line Progress Bar -->
+        <div class="w-full pt-1 pb-0.5">
+          <div class="relative w-full h-3 bg-[#1e3558] rounded-full flex items-center pr-3">
+            <!-- Green Fill -->
+            <div id="mini-progress-fill" class="h-full bg-gradient-to-r from-[#38a82b] to-[#5ee34d] rounded-full transition-all duration-150" style="width: 0%;"></div>
+            <!-- Mini Green Runner Icon Moving on Progress Bar -->
+            <div id="mini-progress-runner" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-150 text-[#5ee34d] drop-shadow" style="left: 4%;">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="15" cy="4" r="2.2"/>
+                <path d="M10.5 9.5L7 11v3h2v-1.8l2.1-.9L9 16l-4 1v2l5.5-1.4 1.8-3.6 2.7 2V21h2v-6.2l-2.7-2.3.9-2.5 2.3 1.5H20v-2h-1.8l-3.2-2.2c-.8-.5-1.8-.4-2.5.2z"/>
+              </svg>
+            </div>
+            <!-- Checkered Flag Icon at Right End -->
+            <div class="absolute -right-1 top-1/2 -translate-y-1/2">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                <path d="M4 3v18" stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round"/>
+                <rect x="6" y="4" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="9.5" y="4" width="3.5" height="3.5" fill="#0f172a"/>
+                <rect x="13" y="4" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="16.5" y="4" width="3.5" height="3.5" fill="#0f172a"/>
+                <rect x="6" y="7.5" width="3.5" height="3.5" fill="#0f172a"/>
+                <rect x="9.5" y="7.5" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="13" y="7.5" width="3.5" height="3.5" fill="#0f172a"/>
+                <rect x="16.5" y="7.5" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="6" y="11" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="9.5" y="11" width="3.5" height="3.5" fill="#0f172a"/>
+                <rect x="13" y="11" width="3.5" height="3.5" fill="#fff"/>
+                <rect x="16.5" y="11" width="3.5" height="3.5" fill="#0f172a"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KELUAR / MENU Button -->
+      <button onclick="openMenuModal()" class="btn-keluar w-full py-2.5 sm:py-3.5 px-4 rounded-2xl flex items-center justify-between font-extrabold text-sm sm:text-lg tracking-wider uppercase">
+        <span class="mx-auto">KELUAR</span>
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </aside>
+
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- 4. STARTING COUNTDOWN OVERLAY (3 - 2 - 1 - MULAI!)                      -->
+  <!-- ======================================================================= -->
+  <div id="countdown-overlay" class="fixed inset-0 z-40 bg-slate-950/55 backdrop-blur-[2px] flex flex-col items-center justify-center pointer-events-auto">
+    <div class="bg-[#0d1f3a]/95 border-4 border-[#5da2f5] rounded-3xl px-10 py-7 text-center shadow-[0_20px_50px_rgba(0,0,0,0.65)] max-w-md w-[90%]">
+      <div class="text-xs font-bold uppercase tracking-widest text-sky-300 mb-1">BERSIAP DI GARIS START</div>
+      <div id="countdown-number" class="font-display font-extrabold text-6xl sm:text-7xl text-[#f7c627] drop-shadow my-2">3</div>
+      <p id="countdown-hint" class="text-slate-300 text-xs sm:text-sm">Ketik kalimat di layar secepat dan setepat mungkin!</p>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 5. RACE COMPLETION / FINAL PODIUM MODAL                                 -->
+  <!-- ======================================================================= -->
+  <div id="finish-modal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-gradient-to-b from-[#163058] to-[#0b1a30] border-2 border-[#4f85c8] rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl text-white">
+      <div class="flex items-center justify-between border-b border-slate-700/80 pb-3">
+        <div>
+          <span id="finish-badge" class="inline-block text-xs font-extrabold uppercase tracking-widest px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 mb-1">BALAPAN SELESAI</span>
+          <h2 id="finish-title" class="font-display text-2xl sm:text-3xl font-extrabold text-white">Juara 1! Luar Biasa! 🏆</h2>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-slate-400 uppercase font-bold">Waktu Tempuh</div>
+          <div id="finish-time" class="font-mono-num text-xl sm:text-2xl font-extrabold text-yellow-300">00:23.45</div>
+        </div>
+      </div>
+
+      <!-- Player Summary Stats Grid -->
+      <div class="grid grid-cols-4 gap-2.5 my-4">
+        <div class="bg-[#091526] border border-slate-700/70 rounded-xl p-2.5 text-center">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Kecepatan</div>
+          <div id="sum-wpm" class="font-mono-num text-lg sm:text-2xl font-extrabold text-[#4cd93c]">102</div>
+          <div class="text-[10px] text-slate-400">WPM</div>
+        </div>
+        <div class="bg-[#091526] border border-slate-700/70 rounded-xl p-2.5 text-center">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Akurasi</div>
+          <div id="sum-acc" class="font-mono-num text-lg sm:text-2xl font-extrabold text-sky-400">98%</div>
+          <div class="text-[10px] text-slate-400">Ketepatan</div>
+        </div>
+        <div class="bg-[#091526] border border-slate-700/70 rounded-xl p-2.5 text-center">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Kata Benar</div>
+          <div id="sum-correct" class="font-mono-num text-lg sm:text-2xl font-extrabold text-emerald-400">24</div>
+          <div class="text-[10px] text-slate-400">Kata</div>
+        </div>
+        <div class="bg-[#091526] border border-slate-700/70 rounded-xl p-2.5 text-center">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Salah Ketik</div>
+          <div id="sum-wrong" class="font-mono-num text-lg sm:text-2xl font-extrabold text-rose-400">0</div>
+          <div class="text-[10px] text-slate-400">Kesalahan</div>
+        </div>
+      </div>
+
+      <!-- Final Standings Leaderboard -->
+      <div class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Klasemen Akhir Lintasan</div>
+      <div id="finish-leaderboard" class="space-y-2 mb-5">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Replay & Settings Buttons -->
+      <div class="flex items-center gap-3">
+        <button onclick="startNewRace()" class="flex-1 bg-gradient-to-b from-[#55d644] to-[#349e26] border-b-4 border-[#1f6b15] hover:brightness-105 active:translate-y-0.5 text-white font-extrabold py-3 px-5 rounded-xl text-sm sm:text-base uppercase tracking-wider shadow-lg transition">
+          🏁 Balapan Lagi
+        </button>
+        <button onclick="openMenuModal()" class="bg-[#1e385e] hover:bg-[#294978] border border-slate-600 text-slate-200 font-bold py-3 px-4 rounded-xl text-sm transition">
+          Pengaturan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 6. KELUAR / PAUSE & SETTINGS MODAL                                      -->
+  <!-- ======================================================================= -->
+  <div id="menu-modal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-gradient-to-b from-[#163058] to-[#0b1a30] border-2 border-[#4f85c8] rounded-3xl max-w-md w-full p-6 shadow-2xl text-white">
+      <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
+        <h3 class="font-display text-xl font-extrabold text-white">Menu & Pengaturan Balapan</h3>
+        <button onclick="closeMenuModal()" class="text-slate-400 hover:text-white text-xl font-bold px-2">✕</button>
+      </div>
+
+      <!-- Difficulty Selection -->
+      <div class="mb-4">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Kecepatan Lawan (AI Difficulty)</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="setDifficulty('easy')" id="diff-easy" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300">
+            Santai<br><span class="text-[10px] font-normal opacity-80">35–52 WPM</span>
+          </button>
+          <button onclick="setDifficulty('medium')" id="diff-medium" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300">
+            Kompetitif<br><span class="text-[10px] font-normal opacity-80">55–75 WPM</span>
+          </button>
+          <button onclick="setDifficulty('pro')" id="diff-pro" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300">
+            Stadion Pro<br><span class="text-[10px] font-normal opacity-80">65–89 WPM</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lap Count Selection -->
+      <div class="mb-5">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Jumlah Putaran (Lap)</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="setTotalLaps(1)" id="lap-btn-1" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300">
+            1 Lap (Sprint Cepat)
+          </button>
+          <button onclick="setTotalLaps(3)" id="lap-btn-3" class="py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300">
+            3 Lap (Standar Stadion)
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2.5">
+        <button onclick="startNewRace()" class="w-full bg-gradient-to-b from-[#55d644] to-[#349e26] border-b-4 border-[#1f6b15] text-white font-extrabold py-2.5 rounded-xl text-sm uppercase tracking-wider shadow">
+          🔄 Mulai Ulang Balapan Baru
+        </button>
+        <button onclick="closeMenuModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl text-sm">
+          Kembali ke Lintasan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 7. GAME ENGINE, GRAPHICS & AUDIO SCRIPT                                 -->
+  <!-- ======================================================================= -->
+  <script>
+    // =========================================================================
+    // INDONESIAN MOTIVATIONAL & TYPING SENTENCES POOL
+    // First 4 match the exact reference artwork sentences!
+    // =========================================================================
+    const SENTENCE_POOL = [
+      "Keberhasilan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan.",
+      "Teruslah berusaha meskipun jalan terasa berat, karena setiap langkah membawa kita lebih dekat.",
+      "Disiplin hari ini adalah kebebasan di masa depan.",
+      "Jangan bandingkan dirimu dengan orang lain, tapi bandingkan dirimu dengan dirimu kemarin.",
+      "Kecepatan jari dan ketenangan pikiran adalah kunci menuju garis finis pertama.",
+      "Setiap latihan mengetik membuat langkah kakimu semakin ringan di lintasan juara.",
+      "Fokus pada satu kata di depan mata hingga seluruh rintangan berhasil dilewati.",
+      "Konsistensi kecil yang dilakukan setiap hari akan menghasilkan kemenangan besar.",
+      "Jangan takut melakukan kesalahan, bangkit lebih cepat dan raih kembali posisimu."
+    ];
+
+    // =========================================================================
+    // WEB AUDIO SYNTHESIZER (No external audio files required)
+    // =========================================================================
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function ensureAudio() {
+      if (!soundEnabled) return null;
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playKeySound(isCorrect = true) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+        if (isCorrect) {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520 + Math.random() * 80, now);
+          osc.frequency.exponentialRampToValueAtTime(240, now + 0.045);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(150, now);
+          osc.frequency.linearRampToValueAtTime(110, now + 0.11);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        }
+      } catch (e) {}
+    }
+
+    function playBeepSound(freq = 660, duration = 0.14) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.16, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playFanfare(isWin = true) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const notes = isWin ? [523.25, 659.25, 783.99, 1046.5] : [440, 392, 349.23, 329.63];
+      notes.forEach((freq, idx) => {
+        setTimeout(() => playBeepSound(freq, 0.22), idx * 110);
+      });
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('icon-sound-on').classList.toggle('hidden', !soundEnabled);
+      document.getElementById('icon-sound-off').classList.toggle('hidden', soundEnabled);
+      if (soundEnabled) playBeepSound(740, 0.08);
+    }
+
+    // =========================================================================
+    // SVG GENERATORS FOR CARTOON AVATARS & ANIMATED TRACK RUNNERS
+    // =========================================================================
+    function createAvatarSVG(runnerId) {
+      const configs = {
+        player:  { shirt: '#49c63a', hair: '#1e242b', skin: '#f5b994', ponytail: false },
+        rival1:  { shirt: '#2183df', hair: '#5c3317', skin: '#f3b48c', ponytail: false },
+        rival2:  { shirt: '#f0b429', hair: '#63371a', skin: '#f6be9a', ponytail: true  },
+        rival3:  { shirt: '#7b4fe0', hair: '#252336', skin: '#f2b28d', ponytail: false }
+      };
+      const c = configs[runnerId] || configs.player;
+      return `
+        <svg class="w-8 h-8 sm:w-10 sm:h-10 shrink-0 drop-shadow" viewBox="0 0 48 48">
+          ${c.ponytail ? `<path d="M12 18 Q5 20 7 28 Q11 26 14 22 Z" fill="${c.hair}" stroke="#141414" stroke-width="2"/>` : ''}
+          <!-- Shoulders / Shirt -->
+          <path d="M10 44 C10 34 38 34 38 44 Z" fill="${c.shirt}" stroke="#141414" stroke-width="2.2"/>
+          <!-- Neck -->
+          <rect x="20" y="29" width="8" height="6" rx="2" fill="${c.skin}" stroke="#141414" stroke-width="2"/>
+          <!-- Head -->
+          <circle cx="24" cy="21" r="10.5" fill="${c.skin}" stroke="#141414" stroke-width="2.2"/>
+          <!-- Hair -->
+          <path d="M13 20 C12 11 20 7 28 9 C35 10 37 16 35 20 C32 16 27 15 22 16 C18 17 15 18 13 20 Z" fill="${c.hair}" stroke="#141414" stroke-width="2"/>
+          <!-- Eyes & Smile -->
+          <circle cx="21" cy="21" r="1.5" fill="#141414"/>
+          <circle cx="28" cy="21" r="1.5" fill="#141414"/>
+          <path d="M21 25.5 Q24.5 28 28 25.5" fill="none" stroke="#141414" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    function createRunnerTrackSVG(runnerId) {
+      const configs = {
+        player: { shirt: '#49c63a', shorts: '#1d2d1e', shoe: '#38a12c', hair: '#1e242b', skin: '#f5b994', ponytail: false },
+        rival1: { shirt: '#2183df', shorts: '#1a2a40', shoe: '#2183df', hair: '#5a3115', skin: '#f3b48c', ponytail: false },
+        rival2: { shirt: '#f0b429', shorts: '#2b2418', shoe: '#d97706', hair: '#5e3418', skin: '#f6be9a', ponytail: true  },
+        rival3: { shirt: '#7b4fe0', shorts: '#251c3d', shoe: '#7b4fe0', hair: '#222030', skin: '#f2b28d', ponytail: false }
+      };
+      const c = configs[runnerId] || configs.player;
+
+      return `
+        <svg class="w-16 h-16 sm:w-20 sm:h-20 overflow-visible drop-shadow-[0_4px_6px_rgba(0,0,0,0.45)]" viewBox="0 0 100 96">
+          <!-- Motion Speed Lines Behind Runner -->
+          <g class="speed-lines" stroke="#ffffff" stroke-linecap="round" opacity="0.75">
+            <line x1="-18" y1="30" x2="14" y2="30" stroke-width="2.2" />
+            <line x1="-26" y1="45" x2="10" y2="45" stroke-width="2.6" />
+            <line x1="-14" y1="60" x2="16" y2="60" stroke-width="2" />
+            <line x1="-22" y1="74" x2="8" y2="74" stroke-width="1.8" />
+          </g>
+
+          <!-- Ground Shadow -->
+          <ellipse cx="48" cy="89" rx="20" ry="4.5" fill="rgba(0,0,0,0.32)" />
+
+          <!-- Animated Rig Group -->
+          <g class="runner-rig">
+            <!-- Back Arm -->
+            <g class="arm-l">
+              <path d="M46 45 L32 54 L25 46" fill="none" stroke="#141414" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M46 45 L32 54 L25 46" fill="none" stroke="${c.skin}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+
+            <!-- Back Leg -->
+            <g class="leg-l">
+              <path d="M44 66 L31 77 L21 73" fill="none" stroke="#141414" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M44 66 L31 77 L21 73" fill="none" stroke="${c.skin}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Back Shoe -->
+              <rect x="14" y="69" width="11" height="7" rx="3" transform="rotate(-20 19 72)" fill="${c.shoe}" stroke="#141414" stroke-width="2.2"/>
+            </g>
+
+            <!-- Front Leg -->
+            <g class="leg-r">
+              <path d="M48 66 L62 75 L56 85" fill="none" stroke="#141414" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M48 66 L62 75 L56 85" fill="none" stroke="${c.skin}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Front Shoe -->
+              <rect x="52" y="81" width="12" height="7" rx="3" transform="rotate(10 58 84)" fill="${c.shoe}" stroke="#141414" stroke-width="2.2"/>
+            </g>
+
+            <!-- Shorts -->
+            <path d="M38 60 L56 60 L59 70 L47 71 L45 66 L36 69 Z" fill="${c.shorts}" stroke="#141414" stroke-width="2.4" stroke-linejoin="round"/>
+
+            <!-- Torso / Shirt -->
+            <path d="M41 40 L57 41 L55 62 L38 61 Z" fill="${c.shirt}" stroke="#141414" stroke-width="2.5" stroke-linejoin="round"/>
+
+            <!-- Front Arm -->
+            <g class="arm-r">
+              <path d="M50 45 L63 53 L71 44" fill="none" stroke="#141414" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M50 45 L63 53 L71 44" fill="none" stroke="${c.skin}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M47 42 L56 49" fill="none" stroke="${c.shirt}" stroke-width="6" stroke-linecap="round"/>
+            </g>
+
+            <!-- Ponytail if Rival_02 -->
+            ${c.ponytail ? `<path d="M36 22 Q23 19 21 29 Q28 31 36 26 Z" fill="${c.hair}" stroke="#141414" stroke-width="2.3"/>` : ''}
+
+            <!-- Head -->
+            <circle cx="53" cy="25" r="13.5" fill="${c.skin}" stroke="#141414" stroke-width="2.6"/>
+
+            <!-- Ear -->
+            <circle cx="44" cy="26" r="3.2" fill="${c.skin}" stroke="#141414" stroke-width="2"/>
+
+            <!-- Spiky / Stylized Cartoon Hair -->
+            <path d="M38 22 C36 12 46 6 57 9 C64 7 69 13 66 18 C61 15 54 15 47 18 C43 19 40 21 38 22 Z"
+                  fill="${c.hair}" stroke="#141414" stroke-width="2.4" stroke-linejoin="round"/>
+
+            <!-- Expressive Determined Face -->
+            <circle cx="59" cy="24" r="1.9" fill="#141414"/>
+            <path d="M56 19.5 L62 21" stroke="#141414" stroke-width="2" stroke-linecap="round"/>
+            <path d="M56 30 Q60 32.5 63 29.5" fill="none" stroke="#141414" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+      `;
+    }
+
+    // =========================================================================
+    // GAME STATE & CONFIGURATION
+    // =========================================================================
+    const RANK_COLORS = {
+      1: { bg: '#47b838', border: '#ffffff' },
+      2: { bg: '#1e78d6', border: '#ffffff' },
+      3: { bg: '#df9a26', border: '#ffffff' },
+      4: { bg: '#6c42c8', border: '#ffffff' }
+    };
+
+    const DIFFICULTY_PRESETS = {
+      easy:   { r1: 52, r2: 44, r3: 36 },
+      medium: { r1: 74, r2: 64, r3: 54 },
+      pro:    { r1: 89, r2: 76, r3: 65 } // Matches the exact WPMs in the reference image!
+    };
+
+    let gameConfig = {
+      difficulty: 'pro',
+      totalLaps: 3
+    };
+
+    let gameState = {
+      status: 'countdown', // 'countdown' | 'racing' | 'paused' | 'finished'
+      startTime: 0,
+      elapsedBeforePause: 0,
+      lastFrameTime: 0,
+      lapSentences: [],
+      // Player typing telemetry
+      currentLap: 1,
+      charIndex: 0,
+      hasCharError: false,
+      currentWordHasError: false,
+      correctKeystrokes: 0,
+      totalKeystrokes: 0,
+      correctWords: 0,
+      wrongWords: 0,
+      liveWpm: 0,
+      liveAccuracy: 100,
+      // Runners array (Lane 1 = Player, Lanes 2..4 = AI Rivals)
+      runners: []
+    };
+
+    // Track visual horizontal bounds (% of track width)
+    const TRACK_START_PCT = 17.5;
+    const TRACK_FINISH_PCT = 94.8;
+
+    function pickLapSentences(count) {
+      // Keep the iconic reference sentence as Lap 1 for the player, then shuffle remaining
+      const firstSentence = SENTENCE_POOL[0];
+      const others = SENTENCE_POOL.slice(1).sort(() => Math.random() - 0.5);
+      return [firstSentence, ...others.slice(0, Math.max(0, count - 1))];
+    }
+
+    function initRunners() {
+      const preset = DIFFICULTY_PRESETS[gameConfig.difficulty];
+      const pSentences = pickLapSentences(gameConfig.totalLaps);
+
+      // Give each AI rival its own sequence starting with the exact reference sentence from their lane
+      const r1Sentences = [SENTENCE_POOL[1], SENTENCE_POOL[4], SENTENCE_POOL[5]].slice(0, gameConfig.totalLaps);
+      const r2Sentences = [SENTENCE_POOL[2], SENTENCE_POOL[6], SENTENCE_POOL[7]].slice(0, gameConfig.totalLaps);
+      const r3Sentences = [SENTENCE_POOL[3], SENTENCE_POOL[8], SENTENCE_POOL[0]].slice(0, gameConfig.totalLaps);
+
+      gameState.lapSentences = pSentences;
+
+      gameState.runners = [
+        {
+          id: 'player',
+          lane: 1,
+          name: 'You',
+          isPlayer: true,
+          sentences: pSentences,
+          lap: 1,
+          charIndex: 0,
+          progress: 0,         // 0.0 to 1.0 overall race completion
+          visualProgress: 0,   // smoothed progress for silky animation
+          wpm: 0,
+          targetWpm: 0,
+          rank: 1,
+          finished: false,
+          finishTime: null
+        },
+        {
+          id: 'rival1',
+          lane: 2,
+          name: 'Rival_01',
+          isPlayer: false,
+          sentences: r1Sentences,
+          lap: 1,
+          charIndex: 0,
+          charAccumulator: 0,
+          progress: 0,
+          visualProgress: 0,
+          wpm: preset.r1,
+          targetWpm: preset.r1,
+          rank: 2,
+          finished: false,
+          finishTime: null
+        },
+        {
+          id: 'rival2',
+          lane: 3,
+          name: 'Rival_02',
+          isPlayer: false,
+          sentences: r2Sentences,
+          lap: 1,
+          charIndex: 0,
+          charAccumulator: 0,
+          progress: 0,
+          visualProgress: 0,
+          wpm: preset.r2,
+          targetWpm: preset.r2,
+          rank: 3,
+          finished: false,
+          finishTime: null
+        },
+        {
+          id: 'rival3',
+          lane: 4,
+          name: 'Rival_03',
+          isPlayer: false,
+          sentences: r3Sentences,
+          lap: 1,
+          charIndex: 0,
+          charAccumulator: 0,
+          progress: 0,
+          visualProgress: 0,
+          wpm: preset.r3,
+          targetWpm: preset.r3,
+          rank: 4,
+          finished: false,
+          finishTime: null
+        }
+      ];
+    }
+
+    // =========================================================================
+    // BUILD & UPDATE THE 4 RUNNING TRACK LANES
+    // =========================================================================
+    function buildTrackLanesDOM() {
+      const container = document.getElementById('lanes-container');
+      container.innerHTML = '';
+
+      gameState.runners.forEach((runner) => {
+        const isPlayer = runner.isPlayer;
+        const laneEl = document.createElement('div');
+        laneEl.id = `lane-${runner.id}`;
+        laneEl.className = `track-lane flex-1 flex items-center justify-between px-2 sm:px-3 relative overflow-hidden ${isPlayer ? 'player-lane-glow' : ''}`;
+
+        const rankColor = RANK_COLORS[runner.rank] || RANK_COLORS[1];
+        const cardBg = isPlayer
+          ? 'bg-[#46b835]/80 border-[#7ef06d]/70'
+          : 'bg-[#b37a66]/55 border-white/25';
+
+        laneEl.innerHTML = `
+          <!-- Left Fixed Info Badge (Rank Medal + Avatar + Name + WPM) -->
+          <div class="relative z-20 flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <!-- Rank Circle -->
+            <div id="rank-badge-${runner.id}"
+                 class="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-white flex items-center justify-center font-display font-extrabold text-white text-sm sm:text-lg shadow-md transition-colors duration-300"
+                 style="background-color: ${rankColor.bg};">
+              ${runner.rank}
+            </div>
+
+            <!-- Player Info Pill -->
+            <div class="flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-xl border backdrop-blur-[2px] shadow-md min-w-[110px] sm:min-w-[138px] ${cardBg}">
+              ${createAvatarSVG(runner.id)}
+              <div class="leading-tight">
+                <div class="font-extrabold text-white text-xs sm:text-sm drop-shadow">${runner.name}</div>
+                <div id="lane-wpm-${runner.id}" class="font-mono-num text-[10px] sm:text-xs font-bold text-white/95">${runner.wpm} WPM</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Track Sentence Text Overlay on Lane -->
+          <div class="flex-1 pl-12 sm:pl-20 pr-12 sm:pr-16 pointer-events-none z-10 overflow-hidden">
+            <div id="lane-sentence-${runner.id}"
+                 class="text-xs sm:text-base md:text-lg font-semibold tracking-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]">
+            </div>
+          </div>
+
+          <!-- Animated Cartoon Runner Sprite -->
+          <div id="runner-sprite-${runner.id}"
+               class="runner-wrapper runner-idle"
+               style="left: ${TRACK_START_PCT}%; --run-cycle: 0.36s;">
+            ${createRunnerTrackSVG(runner.id)}
+          </div>
+        `;
+
+        container.appendChild(laneEl);
+      });
+
+      updateAllLaneSentences();
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function updateAllLaneSentences() {
+      gameState.runners.forEach((runner) => {
+        const el = document.getElementById(`lane-sentence-${runner.id}`);
+        if (!el) return;
+        const sentence = runner.sentences[Math.min(runner.lap - 1, runner.sentences.length - 1)] || '';
+        const typedPart = escapeHtml(sentence.slice(0, runner.charIndex));
+        const restPart = escapeHtml(sentence.slice(runner.charIndex));
+
+        if (runner.isPlayer) {
+          el.innerHTML = `<span class="text-[#78ff5e] font-bold">${typedPart}</span><span class="track-cursor"></span><span class="text-[#8ef57a]/85">${restPart}</span>`;
+        } else {
+          el.innerHTML = `<span class="text-amber-200/95 font-bold">${typedPart}</span><span class="text-white/90">${restPart}</span>`;
+        }
+      });
+    }
+
+    // =========================================================================
+    // RENDER WHITE SENTENCE PROMPT BOX & VIRTUAL KEYBOARD TARGET KEY
+    // =========================================================================
+    function renderPlayerPromptAndKeyboard() {
+      const player = gameState.runners[0];
+      const sentence = player.sentences[Math.min(player.lap - 1, player.sentences.length - 1)] || '';
+      const idx = gameState.charIndex;
+
+      // Split sentence into:
+      // 1) Already typed characters (bold green)
+      // 2) Current active word / phrase around cursor (dark slate)
+      // 3) Remaining sentence (muted slate gray)
+      const typedStr = sentence.slice(0, idx);
+      const currentChar = sentence[idx] || '';
+      const afterCursorStr = sentence.slice(idx + 1);
+
+      let cursorAndCurrentHtml = '';
+      if (idx < sentence.length) {
+        if (gameState.hasCharError) {
+          cursorAndCurrentHtml = `<span class="typing-cursor"></span><span class="bg-red-500 text-white px-0.5 rounded font-bold">${escapeHtml(currentChar)}</span>`;
+        } else {
+          cursorAndCurrentHtml = `<span class="typing-cursor"></span><span class="text-slate-900 font-bold underline decoration-emerald-500/60 decoration-2 underline-offset-4">${escapeHtml(currentChar)}</span>`;
+        }
+      } else {
+        cursorAndCurrentHtml = `<span class="typing-cursor"></span>`;
+      }
+
+      const renderEl = document.getElementById('sentence-render');
+      renderEl.innerHTML =
+        `<span class="text-[#15803d] font-bold">${escapeHtml(typedStr)}</span>` +
+        cursorAndCurrentHtml +
+        `<span class="text-slate-400 font-medium">${escapeHtml(afterCursorStr)}</span>`;
+
+      // Auto-scroll prompt box smoothly if sentence is wide on smaller screens
+      const promptBox = document.getElementById('prompt-box');
+      const progressRatio = sentence.length > 0 ? idx / sentence.length : 0;
+      const maxScroll = promptBox.scrollWidth - promptBox.clientWidth;
+      if (maxScroll > 0) {
+        promptBox.scrollLeft = Math.max(0, (progressRatio - 0.25) * maxScroll * 1.4);
+      }
+
+      // Highlight the next expected key on the Virtual QWERTY Keyboard
+      highlightExpectedVirtualKey(currentChar);
+    }
+
+    function highlightExpectedVirtualKey(expectedChar) {
+      const allKeys = document.querySelectorAll('#virtual-keyboard .kbd-key');
+      allKeys.forEach(k => k.classList.remove('key-target'));
+
+      if (!expectedChar) return;
+      const lower = expectedChar.toLowerCase();
+      const isUpper = expectedChar !== lower && expectedChar.toUpperCase() === expectedChar;
+
+      const targetBtn = document.querySelector(`#virtual-keyboard .kbd-key[data-key="${CSS.escape(lower)}"]`);
+      if (targetBtn) {
+        targetBtn.classList.add('key-target');
+      }
+      if (isUpper) {
+        const shiftBtn = document.querySelector(`#virtual-keyboard .kbd-key[data-key="shift"]`);
+        if (shiftBtn) shiftBtn.classList.add('key-target');
+      }
+    }
+
+    function flashVirtualKey(keyChar, isWrong = false) {
+      const lower = keyChar.toLowerCase();
+      const btn = document.querySelector(`#virtual-keyboard .kbd-key[data-key="${CSS.escape(lower)}"]`);
+      if (!btn) return;
+      btn.classList.add('key-pressed');
+      if (isWrong) btn.classList.add('key-wrong');
+      setTimeout(() => {
+        btn.classList.remove('key-pressed', 'key-wrong');
+      }, 160);
+    }
+
+    // =========================================================================
+    // KEYBOARD & VIRTUAL KEY INPUT HANDLER
+    // =========================================================================
+    function handlePlayerKeyInput(key) {
+      if (gameState.status !== 'racing') return;
+
+      const player = gameState.runners[0];
+      const sentence = player.sentences[player.lap - 1];
+      if (!sentence) return;
+
+      if (key === 'Backspace') {
+        flashVirtualKey('backspace', false);
+        playKeySound(true);
+        if (gameState.hasCharError) {
+          gameState.hasCharError = false;
+          renderPlayerPromptAndKeyboard();
+        }
+        return;
+      }
+
+      // Ignore modifier keys
+      if (key.length > 1) return;
+
+      const expectedChar = sentence[gameState.charIndex];
+      if (!expectedChar) return;
+
+      gameState.totalKeystrokes++;
+
+      // Check if character matches (exact match, or case-insensitive fallback if user didn't hold shift on virtual click)
+      const isMatch = (key === expectedChar);
+
+      if (isMatch) {
+        gameState.correctKeystrokes++;
+        gameState.hasCharError = false;
+        gameState.charIndex++;
+        player.charIndex = gameState.charIndex;
+
+        flashVirtualKey(key, false);
+        playKeySound(true);
+
+        // Check if a word was completed (space typed or end of sentence reached)
+        if (expectedChar === ' ' || gameState.charIndex === sentence.length) {
+          if (!gameState.currentWordHasError) {
+            gameState.correctWords++;
+          }
+          gameState.currentWordHasError = false;
+        }
+
+        // Update player's overall race progress across laps
+        const lapFraction = gameState.charIndex / sentence.length;
+        player.progress = ((player.lap - 1) + lapFraction) / gameConfig.totalLaps;
+
+        // Check if current lap sentence is complete
+        if (gameState.charIndex >= sentence.length) {
+          if (player.lap < gameConfig.totalLaps) {
+            // Advance to next lap!
+            player.lap++;
+            gameState.currentLap = player.lap;
+            gameState.charIndex = 0;
+            player.charIndex = 0;
+            gameState.currentWordHasError = false;
+            playBeepSound(880, 0.16);
+          } else {
+            // Player crossed the finish line!
+            player.progress = 1;
+            player.visualProgress = 1;
+            player.finished = true;
+            player.finishTime = getElapsedSeconds();
+            updateTelemetryDOM();
+            updateAllLaneSentences();
+            renderPlayerPromptAndKeyboard();
+            finishRace(player);
+            return;
+          }
+        }
+
+        updateTelemetryDOM();
+        updateAllLaneSentences();
+        renderPlayerPromptAndKeyboard();
+      } else {
+        // Incorrect keystroke: reduce accuracy, do NOT advance typing progress
+        gameState.hasCharError = true;
+        if (!gameState.currentWordHasError) {
+          gameState.currentWordHasError = true;
+          gameState.wrongWords++;
+        }
+
+        flashVirtualKey(key, true);
+        playKeySound(false);
+
+        const promptBox = document.getElementById('prompt-box');
+        promptBox.classList.remove('prompt-shake');
+        void promptBox.offsetWidth;
+        promptBox.classList.add('prompt-shake');
+
+        updateTelemetryDOM();
+        renderPlayerPromptAndKeyboard();
+      }
+    }
+
+    // Physical Keyboard Listener
+    window.addEventListener('keydown', (e) => {
+      // Allow Escape to toggle Pause/Menu modal
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        const menuModal = document.getElementById('menu-modal');
+        if (menuModal.classList.contains('hidden')) {
+          openMenuModal();
+        } else {
+          closeMenuModal();
+        }
+        return;
+      }
+
+      if (gameState.status !== 'racing') return;
+
+      // Prevent browser default behavior for Space, Backspace, Tab, or Apostrophe/Slash quick-find
+      if (e.key === ' ' || e.key === 'Backspace' || e.key === 'Tab' || e.key === "'" || e.key === '/') {
+        e.preventDefault();
+      }
+
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      handlePlayerKeyInput(e.key);
+    });
+
+    // Virtual Keyboard Click/Touch Listener
+    let virtualShiftActive = false;
+    document.getElementById('virtual-keyboard').addEventListener('click', (e) => {
+      const btn = e.target.closest('.kbd-key');
+      if (!btn || gameState.status !== 'racing') return;
+
+      const keyAttr = btn.getAttribute('data-key');
+      if (!keyAttr) return;
+
+      if (keyAttr === 'shift') {
+        virtualShiftActive = !virtualShiftActive;
+        btn.classList.toggle('ring-2', virtualShiftActive);
+        btn.classList.toggle('ring-yellow-300', virtualShiftActive);
+        return;
+      }
+
+      if (keyAttr === 'backspace') {
+        handlePlayerKeyInput('Backspace');
+        return;
+      }
+
+      // Smart virtual key: if the expected character matches this key in uppercase, automatically apply uppercase for touch convenience
+      const player = gameState.runners[0];
+      const sentence = player.sentences[player.lap - 1] || '';
+      const expected = sentence[gameState.charIndex] || '';
+
+      let charToSend = keyAttr;
+      if (virtualShiftActive || (expected.toLowerCase() === keyAttr && expected !== keyAttr)) {
+        charToSend = keyAttr.toUpperCase();
+        virtualShiftActive = false;
+      }
+
+      handlePlayerKeyInput(charToSend);
+    });
+
+    // =========================================================================
+    // LIVE TELEMETRY, TIMER & AI SIMULATION LOOP
+    // =========================================================================
+    function getElapsedSeconds() {
+      if (gameState.status === 'countdown') return 0;
+      if (gameState.status === 'paused' || gameState.status === 'finished') {
+        return gameState.elapsedBeforePause;
+      }
+      return gameState.elapsedBeforePause + (performance.now() - gameState.startTime) / 1000;
+    }
+
+    function formatRaceTime(sec) {
+      const mins = Math.floor(sec / 60);
+      const remSec = Math.floor(sec % 60);
+      const hundredths = Math.floor((sec - Math.floor(sec)) * 100);
+      return `${String(mins).padStart(2, '0')}:${String(remSec).padStart(2, '0')}.${String(hundredths).padStart(2, '0')}`;
+    }
+
+    function updateTelemetryDOM() {
+      const elapsedSec = Math.max(0.5, getElapsedSeconds());
+      const elapsedMin = elapsedSec / 60;
+
+      // Calculate Player WPM (standard 5 chars = 1 word)
+      const rawWpm = Math.round((gameState.correctKeystrokes / 5) / elapsedMin);
+      gameState.liveWpm = gameState.correctKeystrokes > 0 ? Math.min(220, rawWpm) : 0;
+      gameState.runners[0].wpm = gameState.liveWpm;
+
+      // Calculate Accuracy %
+      gameState.liveAccuracy = gameState.totalKeystrokes > 0
+        ? Math.max(0, Math.round((gameState.correctKeystrokes / gameState.totalKeystrokes) * 100))
+        : 100;
+
+      // Top HUD updates
+      document.getElementById('hud-lap').textContent = `${gameState.currentLap}/${gameConfig.totalLaps}`;
+      document.getElementById('hud-wpm').textContent = gameState.liveWpm;
+      document.getElementById('hud-acc').textContent = `${gameState.liveAccuracy}%`;
+
+      // Left STATISTIK Panel updates
+      document.getElementById('stat-wpm').textContent = gameState.liveWpm;
+      document.getElementById('stat-acc').textContent = `${gameState.liveAccuracy}%`;
+      document.getElementById('stat-correct-words').textContent = gameState.correctWords;
+      document.getElementById('stat-wrong-words').textContent = gameState.wrongWords;
+
+      // Player Lane WPM label
+      const playerLaneWpm = document.getElementById('lane-wpm-player');
+      if (playerLaneWpm) playerLaneWpm.textContent = `${gameState.liveWpm} WPM`;
+    }
+
+    function updateRankingsAndPositions() {
+      // Sort copy of runners by progress descending
+      const sorted = [...gameState.runners].sort((a, b) => {
+        if (b.progress !== a.progress) return b.progress - a.progress;
+        return a.lane - b.lane;
+      });
+
+      sorted.forEach((runner, idx) => {
+        runner.rank = idx + 1;
+        const badge = document.getElementById(`rank-badge-${runner.id}`);
+        if (badge) {
+          badge.textContent = runner.rank;
+          const rc = RANK_COLORS[runner.rank] || RANK_COLORS[1];
+          badge.style.backgroundColor = rc.bg;
+        }
+      });
+
+      // Update POSISIMU card on bottom-right
+      const player = gameState.runners[0];
+      const rankNumEl = document.getElementById('pos-rank-num');
+      rankNumEl.textContent = player.rank;
+
+      const pct = Math.min(100, Math.max(0, player.visualProgress * 100));
+      document.getElementById('mini-progress-fill').style.width = `${pct}%`;
+      document.getElementById('mini-progress-runner').style.left = `${Math.max(4, Math.min(94, pct))}%`;
+    }
+
+    function stepSimulation(now) {
+      const dt = Math.min(0.1, (now - gameState.lastFrameTime) / 1000);
+      gameState.lastFrameTime = now;
+
+      if (gameState.status === 'racing') {
+        const elapsed = getElapsedSeconds();
+        document.getElementById('hud-timer').textContent = formatRaceTime(elapsed);
+
+        if (gameState.correctKeystrokes > 0) {
+          updateTelemetryDOM();
+        }
+
+        // Advance AI Opponents
+        let aiSentenceChanged = false;
+        for (let i = 1; i < gameState.runners.length; i++) {
+          const ai = gameState.runners[i];
+          if (ai.finished) continue;
+
+          // Subtle natural speed fluctuation (+/- 6%)
+          const wave = Math.sin(elapsed * 1.7 + i * 2.1) * 3;
+          const currentAiWpm = Math.max(20, Math.round(ai.targetWpm + wave));
+          ai.wpm = currentAiWpm;
+
+          const aiWpmEl = document.getElementById(`lane-wpm-${ai.id}`);
+          if (aiWpmEl) aiWpmEl.textContent = `${ai.wpm} WPM`;
+
+          const charsPerSec = (currentAiWpm * 5) / 60;
+          ai.charAccumulator += charsPerSec * dt;
+
+          const currentSentence = ai.sentences[ai.lap - 1] || '';
+          while (ai.charAccumulator >= 1 && !ai.finished) {
+            ai.charAccumulator -= 1;
+            ai.charIndex++;
+            aiSentenceChanged = true;
+
+            if (ai.charIndex >= currentSentence.length) {
+              if (ai.lap < gameConfig.totalLaps) {
+                ai.lap++;
+                ai.charIndex = 0;
+              } else {
+                ai.charIndex = currentSentence.length;
+                ai.progress = 1;
+                ai.visualProgress = 1;
+                ai.finished = true;
+                ai.finishTime = elapsed;
+                finishRace(ai);
+                break;
+              }
+            }
+          }
+
+          if (!ai.finished && currentSentence.length > 0) {
+            const lapFrac = ai.charIndex / currentSentence.length;
+            ai.progress = ((ai.lap - 1) + lapFrac) / gameConfig.totalLaps;
+          }
+        }
+
+        if (aiSentenceChanged) {
+          updateAllLaneSentences();
+        }
+      }
+
+      // Smoothly interpolate runner visual positions & animate limbs
+      gameState.runners.forEach((runner) => {
+        const diff = runner.progress - runner.visualProgress;
+        runner.visualProgress += diff * Math.min(1, dt * 10);
+
+        const trackLeftPct = TRACK_START_PCT + runner.visualProgress * (TRACK_FINISH_PCT - TRACK_START_PCT);
+        const spriteEl = document.getElementById(`runner-sprite-${runner.id}`);
+        if (spriteEl) {
+          spriteEl.style.left = `${trackLeftPct}%`;
+
+          // Runner is actively running when racing and moving or typing
+          const isMoving = gameState.status === 'racing' && (
+            (!runner.isPlayer && !runner.finished) ||
+            (runner.isPlayer && (diff > 0.0004 || gameState.liveWpm > 5))
+          );
+
+          spriteEl.classList.toggle('runner-active', isMoving);
+          spriteEl.classList.toggle('runner-idle', !isMoving);
+
+          // Scale limb cycle speed with WPM
+          const wpmForAnim = Math.max(35, runner.wpm || 60);
+          const cycleSec = Math.max(0.20, Math.min(0.46, 26 / wpmForAnim));
+          spriteEl.style.setProperty('--run-cycle', `${cycleSec.toFixed(2)}s`);
+        }
+      });
+
+      updateRankingsAndPositions();
+      requestAnimationFrame(stepSimulation);
+    }
+
+    // =========================================================================
+    // RACE LIFECYCLE: COUNTDOWN, FINISH & MENU MODALS
+    // =========================================================================
+    let countdownInterval = null;
+
+    function startNewRace() {
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      document.getElementById('finish-modal').classList.add('hidden');
+      document.getElementById('finish-modal').classList.remove('flex');
+      document.getElementById('menu-modal').classList.add('hidden');
+      document.getElementById('menu-modal').classList.remove('flex');
+
+      gameState.status = 'countdown';
+      gameState.startTime = 0;
+      gameState.elapsedBeforePause = 0;
+      gameState.currentLap = 1;
+      gameState.charIndex = 0;
+      gameState.hasCharError = false;
+      gameState.currentWordHasError = false;
+      gameState.correctKeystrokes = 0;
+      gameState.totalKeystrokes = 0;
+      gameState.correctWords = 0;
+      gameState.wrongWords = 0;
+      gameState.liveWpm = 0;
+      gameState.liveAccuracy = 100;
+
+      initRunners();
+      buildTrackLanesDOM();
+      renderPlayerPromptAndKeyboard();
+      updateTelemetryDOM();
+      document.getElementById('hud-timer').textContent = '00:00.00';
+
+      // Trigger 3 - 2 - 1 - MULAI! Countdown
+      const overlay = document.getElementById('countdown-overlay');
+      const numEl = document.getElementById('countdown-number');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+
+      let count = 3;
+      numEl.textContent = count;
+      playBeepSound(520, 0.12);
+
+      countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          numEl.textContent = count;
+          playBeepSound(520, 0.12);
+        } else if (count === 0) {
+          numEl.textContent = 'MULAI!';
+          playBeepSound(880, 0.25);
+        } else {
+          clearInterval(countdownInterval);
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+          gameState.status = 'racing';
+          gameState.startTime = performance.now();
+        }
+      }, 750);
+    }
+
+    function finishRace(winner) {
+      if (gameState.status === 'finished') return;
+      const finalElapsed = getElapsedSeconds();
+      gameState.elapsedBeforePause = finalElapsed;
+      gameState.status = 'finished';
+
+      updateRankingsAndPositions();
+      updateTelemetryDOM();
+
+      const player = gameState.runners[0];
+      const playerWon = winner.id === 'player' || player.rank === 1;
+      playFanfare(playerWon);
+
+      // Populate Final Modal
+      document.getElementById('finish-time').textContent = formatRaceTime(finalElapsed);
+      document.getElementById('sum-wpm').textContent = gameState.liveWpm;
+      document.getElementById('sum-acc').textContent = `${gameState.liveAccuracy}%`;
+      document.getElementById('sum-correct').textContent = gameState.correctWords;
+      document.getElementById('sum-wrong').textContent = gameState.wrongWords;
+
+      const titleEl = document.getElementById('finish-title');
+      const badgeEl = document.getElementById('finish-badge');
+      if (player.rank === 1) {
+        badgeEl.textContent = 'JUARA STADION';
+        titleEl.textContent = 'Juara 1! Luar Biasa! 🏆';
+      } else {
+        badgeEl.textContent = `POSISI #${player.rank} DARI 4`;
+        titleEl.textContent = `${winner.name} Mencapai Garis Finis! 🏁`;
+      }
+
+      // Render Standings List
+      const lbContainer = document.getElementById('finish-leaderboard');
+      const sorted = [...gameState.runners].sort((a, b) => a.rank - b.rank);
+      lbContainer.innerHTML = sorted.map((r) => {
+        const pct = Math.round(r.progress * 100);
+        const rc = RANK_COLORS[r.rank] || RANK_COLORS[1];
+        const rowHighlight = r.isPlayer
+          ? 'bg-emerald-950/60 border-emerald-500/60'
+          : 'bg-[#091526]/90 border-slate-700/70';
+        return `
+          <div class="flex items-center justify-between px-3.5 py-2 rounded-xl border ${rowHighlight}">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-sm text-white" style="background:${rc.bg}">
+                ${r.rank}
+              </span>
+              <span class="font-bold text-sm ${r.isPlayer ? 'text-emerald-300' : 'text-white'}">${r.name} ${r.isPlayer ? '(Kamu)' : ''}</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono-num text-xs sm:text-sm">
+              <span class="text-slate-300">${pct}% Lintasan</span>
+              <span class="font-extrabold text-[#4cd93c] w-20 text-right">${r.wpm} WPM</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const modal = document.getElementById('finish-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // Menu / Keluar Modal Controls
+    function openMenuModal() {
+      if (gameState.status === 'racing') {
+        gameState.elapsedBeforePause = getElapsedSeconds();
+        gameState.status = 'paused';
+      }
+      syncMenuButtonsUI();
+      const modal = document.getElementById('menu-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeMenuModal() {
+      const modal = document.getElementById('menu-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      if (gameState.status === 'paused') {
+        gameState.startTime = performance.now();
+        gameState.status = 'racing';
+      }
+    }
+
+    function setDifficulty(level) {
+      gameConfig.difficulty = level;
+      syncMenuButtonsUI();
+    }
+
+    function setTotalLaps(laps) {
+      gameConfig.totalLaps = laps;
+      syncMenuButtonsUI();
+    }
+
+    function syncMenuButtonsUI() {
+      ['easy', 'medium', 'pro'].forEach((d) => {
+        const btn = document.getElementById(`diff-${d}`);
+        if (!btn) return;
+        const active = gameConfig.difficulty === d;
+        btn.className = active
+          ? 'py-2 px-3 rounded-xl text-xs font-bold border-2 border-[#4cd93c] bg-[#173a2b] text-white shadow'
+          : 'py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300 hover:bg-slate-800';
+      });
+
+      [1, 3].forEach((l) => {
+        const btn = document.getElementById(`lap-btn-${l}`);
+        if (!btn) return;
+        const active = gameConfig.totalLaps === l;
+        btn.className = active
+          ? 'py-2 px-3 rounded-xl text-xs font-bold border-2 border-[#4cd93c] bg-[#173a2b] text-white shadow'
+          : 'py-2 px-3 rounded-xl text-xs font-bold border border-slate-600 bg-[#0d1f3a] text-slate-300 hover:bg-slate-800';
+      });
+    }
+
+    // =========================================================================
+    // INITIALIZE ON WINDOW LOAD
+    // =========================================================================
+    window.onload = function () {
+      gameState.lastFrameTime = performance.now();
+      startNewRace();
+      requestAnimationFrame(stepSimulation);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+{
+  "customers": [
+    {
+      "kunnr": "10001001",
+      "partner": "10001001",
+      "name1": "PT MITRA FURNITUR NUSANTARA",
+      "name2": "Divisi Retail & Showroom",
+      "search_term": "MITRA-FUR",
+      "street": "Jl. Boulevard Artha Gading No. 88",
+      "house_num": "88",
+      "postal_code": "14240",
+      "city": "Jakarta Utara",
+      "country": "ID",
+      "region": "01",
+      "region_name": "DKI Jakarta",
+      "telephone": "021-45879900",
+      "fax": "021-45879901",
+      "email": "purchasing@mitrafurnitur.co.id",
+      "tax_num": "01.345.678.9-041.000",
+      "tax_type": "01",
+      "banks": "ID",
+      "bankl": "0140012",
+      "bank_name": "BANK CENTRAL ASIA (BCA)",
+      "bankn": "5420988712",
+      "koinh": "PT MITRA FURNITUR NUSANTARA",
+      "zterm": "NT30",
+      "bu_group": "CUST",
+      "bp_role": "FLCU01",
+      "vkorg": "1000",
+      "vtweg": "10",
+      "spart": "01",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    },
+    {
+      "kunnr": "10001002",
+      "partner": "10001002",
+      "name1": "GLOBAL LIVING RETAIL PTE LTD",
+      "name2": "Southeast Asia Procurement Hub",
+      "search_term": "GLO-LIV",
+      "street": "10 Marina Boulevard #28-01 Marina Bay Financial Centre",
+      "house_num": "#28-01",
+      "postal_code": "018983",
+      "city": "Singapore",
+      "country": "SG",
+      "region": "SG",
+      "region_name": "Singapore",
+      "telephone": "+65-6789-1122",
+      "fax": "+65-6789-1123",
+      "email": "procurement@globalliving.sg",
+      "tax_num": "201829910E",
+      "tax_type": "00",
+      "banks": "SG",
+      "bankl": "DBS001",
+      "bank_name": "DBS BANK LTD",
+      "bankn": "003-902812-4",
+      "koinh": "GLOBAL LIVING RETAIL PTE LTD",
+      "zterm": "NT60",
+      "bu_group": "CUST",
+      "bp_role": "FLCU01",
+      "vkorg": "1000",
+      "vtweg": "20",
+      "spart": "01",
+      "waers": "USD",
+      "status": "ACTIVE"
+    },
+    {
+      "kunnr": "10001003",
+      "partner": "10001003",
+      "name1": "CV KREASI INTERIOR MANDIRI",
+      "name2": "Studio Desain & Kontraktor",
+      "search_term": "KREASI-INT",
+      "street": "Jl. Pemuda No. 142",
+      "house_num": "142",
+      "postal_code": "50132",
+      "city": "Semarang",
+      "country": "ID",
+      "region": "03",
+      "region_name": "Jawa Tengah",
+      "telephone": "024-3589110",
+      "fax": "",
+      "email": "finance@kreasi-interior.com",
+      "tax_num": "02.889.123.4-501.000",
+      "tax_type": "01",
+      "banks": "ID",
+      "bankl": "0080031",
+      "bank_name": "BANK MANDIRI (PERSERO)",
+      "bankn": "1360019283741",
+      "koinh": "CV KREASI INTERIOR MANDIRI",
+      "zterm": "NT14",
+      "bu_group": "CUST",
+      "bp_role": "FLCU00",
+      "vkorg": "1000",
+      "vtweg": "10",
+      "spart": "01",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    },
+    {
+      "kunnr": "10001004",
+      "partner": "10001004",
+      "name1": "HOTEL GRAND MAJESTIC BALI",
+      "name2": "PT Bali Resort Development",
+      "search_term": "GRD-MAJ",
+      "street": "Jl. Pantai Kuta No. 99X",
+      "house_num": "99X",
+      "postal_code": "80361",
+      "city": "Badung",
+      "country": "ID",
+      "region": "08",
+      "region_name": "Bali",
+      "telephone": "0361-754890",
+      "fax": "0361-754891",
+      "email": "asset@grandmajesticbali.com",
+      "tax_num": "01.992.345.1-901.000",
+      "tax_type": "01",
+      "banks": "ID",
+      "bankl": "0090015",
+      "bank_name": "BANK NEGARA INDONESIA (BNI)",
+      "bankn": "0892341567",
+      "koinh": "PT BALI RESORT DEVELOPMENT",
+      "zterm": "NT30",
+      "bu_group": "CUST",
+      "bp_role": "FLCU01",
+      "vkorg": "1000",
+      "vtweg": "10",
+      "spart": "01",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    }
+  ],
+  "vendors": [
+    {
+      "lifnr": "20001001",
+      "partner": "20001001",
+      "name1": "PT RIMBA PERKASA TEAK",
+      "name2": "Konsesi Kayu Legal FSC & SVLK",
+      "search_term": "RIMBA-TEAK",
+      "street": "Jl. Raya Randublatung KM 5",
+      "house_num": "KM 5",
+      "postal_code": "58382",
+      "city": "Blora",
+      "country": "ID",
+      "region": "03",
+      "region_name": "Jawa Tengah",
+      "telephone": "0296-421890",
+      "fax": "0296-421891",
+      "email": "sales@rimbaperkasa.co.id",
+      "tax_num": "01.234.567.8-508.000",
+      "banks": "ID",
+      "bankl": "0080031",
+      "bank_name": "BANK MANDIRI (PERSERO)",
+      "bankn": "1350098765432",
+      "koinh": "PT RIMBA PERKASA TEAK",
+      "zterm": "NT30",
+      "bu_group": "VEND",
+      "bp_role": "FLVN01",
+      "ekorg": "1000",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    },
+    {
+      "lifnr": "20001002",
+      "partner": "20001002",
+      "name1": "PT CAHAYA KIMIA ABADI",
+      "name2": "Distributor Lem PU & Wood Coating",
+      "search_term": "CAHAYA-KIM",
+      "street": "Kawasan Industri MM2100 Blok C-12",
+      "house_num": "Blok C-12",
+      "postal_code": "17530",
+      "city": "Bekasi",
+      "country": "ID",
+      "region": "02",
+      "region_name": "Jawa Barat",
+      "telephone": "021-8980112",
+      "fax": "021-8980113",
+      "email": "order@cahayakimia.com",
+      "tax_num": "01.765.432.1-413.000",
+      "banks": "ID",
+      "bankl": "0140012",
+      "bank_name": "BANK CENTRAL ASIA (BCA)",
+      "bankn": "5220199283",
+      "koinh": "PT CAHAYA KIMIA ABADI",
+      "zterm": "NT30",
+      "bu_group": "VEND",
+      "bp_role": "FLVN01",
+      "ekorg": "1000",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    },
+    {
+      "lifnr": "20001003",
+      "partner": "20001003",
+      "name1": "CV LOGAM PRESISI NUSANTARA",
+      "name2": "Engsel & Rel Laci Presisi",
+      "search_term": "LOGAM-PRES",
+      "street": "Jl. Industri Raya No. 45",
+      "house_num": "45",
+      "postal_code": "61254",
+      "city": "Sidoarjo",
+      "country": "ID",
+      "region": "04",
+      "region_name": "Jawa Timur",
+      "telephone": "031-8912340",
+      "fax": "031-8912341",
+      "email": "commercial@logampresisi.com",
+      "tax_num": "02.445.678.9-617.000",
+      "banks": "ID",
+      "bankl": "0020088",
+      "bank_name": "BANK RAKYAT INDONESIA (BRI)",
+      "bankn": "034101009876502",
+      "koinh": "CV LOGAM PRESISI NUSANTARA",
+      "zterm": "NT14",
+      "bu_group": "VEND",
+      "bp_role": "FLVN00",
+      "ekorg": "1000",
+      "waers": "IDR",
+      "status": "ACTIVE"
+    }
+  ],
+  "banks": [
+    {
+      "banks": "ID",
+      "bankl": "0140012",
+      "banka": "BANK CENTRAL ASIA (BCA)",
+      "swift": "CENAIDJA",
+      "ort01": "Jakarta Pusat",
+      "stras": "Jl. M.H. Thamrin No. 1"
+    },
+    {
+      "banks": "ID",
+      "bankl": "0080031",
+      "banka": "BANK MANDIRI (PERSERO)",
+      "swift": "BMRIIDJA",
+      "ort01": "Jakarta Selatan",
+      "stras": "Jl. Gatot Subroto Kav. 36-38"
+    },
+    {
+      "banks": "ID",
+      "bankl": "0090015",
+      "banka": "BANK NEGARA INDONESIA (BNI)",
+      "swift": "BNINIDJA",
+      "ort01": "Jakarta Pusat",
+      "stras": "Jl. Jenderal Sudirman Kav. 1"
+    },
+    {
+      "banks": "ID",
+      "bankl": "0020088",
+      "banka": "BANK RAKYAT INDONESIA (BRI)",
+      "swift": "BRINIDJA",
+      "ort01": "Jakarta Pusat",
+      "stras": "Jl. Jenderal Sudirman No. 44-46"
+    },
+    {
+      "banks": "ID",
+      "bankl": "0220045",
+      "banka": "BANK CIMB NIAGA",
+      "swift": "BNIAIDJA",
+      "ort01": "Jakarta Selatan",
+      "stras": "Graha CIMB Niaga Jl. Jend. Sudirman Kav. 58"
+    },
+    {
+      "banks": "ID",
+      "bankl": "0130099",
+      "banka": "BANK PERMATA",
+      "swift": "BBBAIDJA",
+      "ort01": "Jakarta Pusat",
+      "stras": "Bintaro Jaya Sektor 7"
+    },
+    {
+      "banks": "SG",
+      "bankl": "DBS001",
+      "banka": "DBS BANK LTD",
+      "swift": "DBSSSGSG",
+      "ort01": "Singapore",
+      "stras": "12 Marina Boulevard"
+    },
+    {
+      "banks": "SG",
+      "bankl": "OCBC01",
+      "banka": "OCBC BANK SINGAPORE",
+      "swift": "OCBCSGSG",
+      "ort01": "Singapore",
+      "stras": "65 Chulia Street"
+    }
+  ],
+  "regions": [
+    {
+      "land1": "ID",
+      "bland": "01",
+      "bezei": "DKI Jakarta"
+    },
+    {
+      "land1": "ID",
+      "bland": "02",
+      "bezei": "Jawa Barat"
+    },
+    {
+      "land1": "ID",
+      "bland": "03",
+      "bezei": "Jawa Tengah"
+    },
+    {
+      "land1": "ID",
+      "bland": "04",
+      "bezei": "Jawa Timur"
+    },
+    {
+      "land1": "ID",
+      "bland": "05",
+      "bezei": "DI Yogyakarta"
+    },
+    {
+      "land1": "ID",
+      "bland": "06",
+      "bezei": "Banten"
+    },
+    {
+      "land1": "ID",
+      "bland": "07",
+      "bezei": "Sumatera Utara"
+    },
+    {
+      "land1": "ID",
+      "bland": "08",
+      "bezei": "Bali"
+    },
+    {
+      "land1": "SG",
+      "bland": "SG",
+      "bezei": "Singapore Central"
+    }
+  ],
+  "config": {
+    "customerGroups": [
+      {
+        "bu_group": "CUST",
+        "desc": "Commercial & Retail Customers"
+      },
+      {
+        "bu_group": "CEXP",
+        "desc": "Export Overseas Customers"
+      },
+      {
+        "bu_group": "CGVT",
+        "desc": "Government & Institutional"
+      }
+    ],
+    "vendorGroups": [
+      {
+        "bu_group": "VEND",
+        "desc": "Raw Materials & Hardware Suppliers"
+      },
+      {
+        "bu_group": "VSRV",
+        "desc": "Service & Subcontractor Vendors"
+      },
+      {
+        "bu_group": "VEXP",
+        "desc": "Import Overseas Suppliers"
+      }
+    ],
+    "roles": [
+      {
+        "role": "FLCU00",
+        "desc": "FI Customer (Accounting Only)"
+      },
+      {
+        "role": "FLCU01",
+        "desc": "Customer (Sales & Distribution + FI)"
+      },
+      {
+        "role": "FLVN00",
+        "desc": "FI Vendor (Accounting Only)"
+      },
+      {
+        "role": "FLVN01",
+        "desc": "Vendor (Purchasing + FI)"
+      }
+    ],
+    "paymentTerms": [
+      {
+        "zterm": "NT00",
+        "desc": "Cash on Delivery (Immediate Net)"
+      },
+      {
+        "zterm": "NT14",
+        "desc": "Net 14 Days"
+      },
+      {
+        "zterm": "NT30",
+        "desc": "Net 30 Days"
+      },
+      {
+        "zterm": "NT60",
+        "desc": "Net 60 Days"
+      },
+      {
+        "zterm": "NT90",
+        "desc": "Net 90 Days Letter of Credit"
+      }
+    ],
+    "incoterms": [
+      {
+        "inco": "EXW",
+        "desc": "Ex Works"
+      },
+      {
+        "inco": "FOB",
+        "desc": "Free on Board"
+      },
+      {
+        "inco": "CIF",
+        "desc": "Cost, Insurance & Freight"
+      },
+      {
+        "inco": "CFR",
+        "desc": "Cost & Freight"
+      },
+      {
+        "inco": "DDP",
+        "desc": "Delivered Duty Paid"
+      }
+    ]
+  }
+}

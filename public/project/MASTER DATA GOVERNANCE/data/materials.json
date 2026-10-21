@@ -1,0 +1,561 @@
+{
+  "materials": [
+    {
+      "matnr": "10000001",
+      "maktx": "KAYU JATI SOLID GRADE A PERHUTANI 400x20x5 CM",
+      "mtart": "ROH",
+      "matkl": "RAW01",
+      "matkl_desc": "Solid Timber & Hardwood",
+      "meins": "M3",
+      "bismt": "TEAK-SOL-01",
+      "groes": "400 x 20 x 5 cm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 12500000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000002",
+      "maktx": "PAPAN MDF ULTRA LIGHT E1 MOISTURE RESIST 18MM",
+      "mtart": "ROH",
+      "matkl": "RAW02",
+      "matkl_desc": "Engineered Wood & Board",
+      "meins": "PC",
+      "bismt": "MDF-E1-18MM",
+      "groes": "2440 x 1220 x 18 mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 345000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000003",
+      "maktx": "PLYWOOD HARDWOOD MERANTI GRADE BB/CC 12MM",
+      "mtart": "ROH",
+      "matkl": "RAW02",
+      "matkl_desc": "Engineered Wood & Board",
+      "meins": "PC",
+      "bismt": "PLY-MRT-12MM",
+      "groes": "2440 x 1220 x 12 mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 215000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000004",
+      "maktx": "LEM KAYU POLYURETHANE D4 WATERPROOF 20 KG PAIL",
+      "mtart": "ROH",
+      "matkl": "RAW03",
+      "matkl_desc": "Adhesives & Chemicals",
+      "meins": "PAI",
+      "bismt": "GLUE-PU-D4",
+      "groes": "20 KG Pail",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1003",
+      "lgort_name": "Chemical & Coating Whs",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 1850000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000005",
+      "maktx": "FINISHING TOP COAT WATERBASED SATIN CLEAR 20L",
+      "mtart": "ROH",
+      "matkl": "RAW03",
+      "matkl_desc": "Adhesives & Chemicals",
+      "meins": "DRU",
+      "bismt": "COAT-WB-SATIN",
+      "groes": "20 Liter Drum",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1003",
+      "lgort_name": "Chemical & Coating Whs",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 2400000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000006",
+      "maktx": "ENGSEL SENDOK SLOW MOTION SOFT-CLOSE 110 DEGREE",
+      "mtart": "ROH",
+      "matkl": "HDW01",
+      "matkl_desc": "Fittings & Metal Hardware",
+      "meins": "PR",
+      "bismt": "HINGE-SC-110",
+      "groes": "Nickel Plated Steel",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 100,
+      "stprs": 1750000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000007",
+      "maktx": "REL LACI TANDEM UNDERMOUNT FULL EXTENSION 45 CM",
+      "mtart": "ROH",
+      "matkl": "HDW01",
+      "matkl_desc": "Fittings & Metal Hardware",
+      "meins": "SET",
+      "bismt": "RUNNER-FE-45",
+      "groes": "450 mm Length 35kg Capacity",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 135000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000008",
+      "maktx": "KULIT SINTETIS PREMIUM FAUX LEATHER COGNAC BROWN",
+      "mtart": "ROH",
+      "matkl": "UPH01",
+      "matkl_desc": "Upholstery & Fabrics",
+      "meins": "M",
+      "bismt": "UPH-LEATH-CGN",
+      "groes": "Lebar 140cm Ketebalan 1.2mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 95000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "20000001",
+      "maktx": "SUB-ASSY RANGKA MEJA MAKAN SOLID TEAK 6 SEATER",
+      "mtart": "HALB",
+      "matkl": "SEMI01",
+      "matkl_desc": "Wood Sub-Assembly",
+      "meins": "SET",
+      "bismt": "SA-TBL-6S-TK",
+      "groes": "1800 x 900 x 720 mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1004",
+      "lgort_name": "WIP Sub-Assembly Whs",
+      "bklas": "7900",
+      "bklas_desc": "Semi-Finished Goods",
+      "peinh": 1,
+      "stprs": 2850000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "20000002",
+      "maktx": "SUB-ASSY KAKI KURSI CAFE BENTWOOD PLYWOOD",
+      "mtart": "HALB",
+      "matkl": "SEMI01",
+      "matkl_desc": "Wood Sub-Assembly",
+      "meins": "SET",
+      "bismt": "SA-LEG-CAFE",
+      "groes": "Tinggi 450 mm Finish Natural",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1004",
+      "lgort_name": "WIP Sub-Assembly Whs",
+      "bklas": "7900",
+      "bklas_desc": "Semi-Finished Goods",
+      "peinh": 1,
+      "stprs": 450000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "20000003",
+      "maktx": "DUDUKAN KURSI BUSA HIGH DENSITY + FABRIC GREY",
+      "mtart": "HALB",
+      "matkl": "SEMI02",
+      "matkl_desc": "Upholstered Sub-Assembly",
+      "meins": "PC",
+      "bismt": "SA-CUSH-GRY",
+      "groes": "480 x 480 x 80 mm Foam D30",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1004",
+      "lgort_name": "WIP Sub-Assembly Whs",
+      "bklas": "7900",
+      "bklas_desc": "Semi-Finished Goods",
+      "peinh": 1,
+      "stprs": 310000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "30000001",
+      "maktx": "DINING TABLE SCANDINAVIAN 6-SEATER SOLID TEAK",
+      "mtart": "FERT",
+      "matkl": "FG01",
+      "matkl_desc": "Dining Room Furniture",
+      "meins": "UNIT",
+      "bismt": "DT-SCAN-6S",
+      "groes": "200 x 100 x 75 cm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1002",
+      "lgort_name": "Finished Goods Central Whs",
+      "bklas": "7920",
+      "bklas_desc": "Finished Products Commercial",
+      "peinh": 1,
+      "stprs": 6750000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "30000002",
+      "maktx": "ERGONOMIC OFFICE CHAIR VERONA V2 MESH BLACK",
+      "mtart": "FERT",
+      "matkl": "FG02",
+      "matkl_desc": "Office & Commercial Seating",
+      "meins": "UNIT",
+      "bismt": "CH-VRN-V2-BLK",
+      "groes": "650 x 650 x 1150-1250 mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1002",
+      "lgort_name": "Finished Goods Central Whs",
+      "bklas": "7920",
+      "bklas_desc": "Finished Products Commercial",
+      "peinh": 1,
+      "stprs": 3200000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "30000003",
+      "maktx": "CREDENZA SIDEBOARD MINIMALIS 3-DOOR WALNUT OAK",
+      "mtart": "FERT",
+      "matkl": "FG03",
+      "matkl_desc": "Living Room Storage",
+      "meins": "UNIT",
+      "bismt": "CRD-3D-WNT",
+      "groes": "160 x 45 x 78 cm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1002",
+      "lgort_name": "Finished Goods Central Whs",
+      "bklas": "7920",
+      "bklas_desc": "Finished Products Commercial",
+      "peinh": 1,
+      "stprs": 5400000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "30000004",
+      "maktx": "KING SIZE BED FRAME TEAK HEADBOARD CANE WEAVE",
+      "mtart": "FERT",
+      "matkl": "FG04",
+      "matkl_desc": "Bedroom Furniture",
+      "meins": "UNIT",
+      "bismt": "BED-KS-TEAK-CANE",
+      "groes": "200 x 180 x 110 cm",
+      "spart": "01",
+      "werks": "2000",
+      "werks_name": "Plant Semarang Export Division",
+      "lgort": "2001",
+      "lgort_name": "Finished Goods Export Whs",
+      "bklas": "7920",
+      "bklas_desc": "Finished Products Commercial",
+      "peinh": 1,
+      "stprs": 9800000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "40000001",
+      "maktx": "CORRUGATED CARTON BOX DOUBLE WALL 205x105x15 CM",
+      "mtart": "VERP",
+      "matkl": "PKG01",
+      "matkl_desc": "Corrugated Packaging",
+      "meins": "PC",
+      "bismt": "BOX-DW-205",
+      "groes": "2050 x 1050 x 150 mm K200/M150x3/K200",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1005",
+      "lgort_name": "Packaging Materials Whs",
+      "bklas": "3050",
+      "bklas_desc": "Packaging Materials",
+      "peinh": 100,
+      "stprs": 4500000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "40000002",
+      "maktx": "BUBBLE WRAP HEAVY DUTY ANTI STATIC 125 CM X 50 M",
+      "mtart": "VERP",
+      "matkl": "PKG02",
+      "matkl_desc": "Cushioning & Protective",
+      "meins": "ROL",
+      "bismt": "BBL-AS-125X50",
+      "groes": "Lebar 1.25m Panjang 50m",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1005",
+      "lgort_name": "Packaging Materials Whs",
+      "bklas": "3050",
+      "bklas_desc": "Packaging Materials",
+      "peinh": 1,
+      "stprs": 165000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "40000003",
+      "maktx": "CORNER PROTECTOR KARTON SUDUT HARD BOARD 1 M",
+      "mtart": "VERP",
+      "matkl": "PKG02",
+      "matkl_desc": "Cushioning & Protective",
+      "meins": "PC",
+      "bismt": "CRN-PROT-1M",
+      "groes": "50 x 50 x 4 mm Panjang 1000 mm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1005",
+      "lgort_name": "Packaging Materials Whs",
+      "bklas": "3050",
+      "bklas_desc": "Packaging Materials",
+      "peinh": 100,
+      "stprs": 620000,
+      "status": "ACTIVE"
+    },
+    {
+      "matnr": "10000099",
+      "maktx": "KAYU JATI SOLID PERHUTANI GRADE SPECIAL 500x25x6 CM",
+      "mtart": "ROH",
+      "matkl": "RAW01",
+      "matkl_desc": "Solid Timber & Hardwood",
+      "meins": "M3",
+      "bismt": "TEAK-SPEC-01",
+      "groes": "500 x 25 x 6 cm",
+      "spart": "01",
+      "werks": "1000",
+      "werks_name": "Plant Cikarang Main Factory",
+      "lgort": "1001",
+      "lgort_name": "Raw Material Storage Yard",
+      "bklas": "3000",
+      "bklas_desc": "Raw Materials Domestic",
+      "peinh": 1,
+      "stprs": 16500000,
+      "status": "ACTIVE"
+    }
+  ],
+  "config": {
+    "materialTypes": [
+      {
+        "mtart": "ROH",
+        "mtbez": "Raw Materials (Bahan Baku Kayu & Kimia)",
+        "count": 8
+      },
+      {
+        "mtart": "HALB",
+        "mtbez": "Semi-Finished Goods (Sub-Assembly)",
+        "count": 3
+      },
+      {
+        "mtart": "FERT",
+        "mtbez": "Finished Goods (Produk Furnitur Jadi)",
+        "count": 4
+      },
+      {
+        "mtart": "VERP",
+        "mtbez": "Packaging Materials (Karton & Proteksi)",
+        "count": 3
+      },
+      {
+        "mtart": "HIBE",
+        "mtbez": "Operating Supplies (Alat Kerja & Amplas)",
+        "count": 2
+      },
+      {
+        "mtart": "DIEN",
+        "mtbez": "Services (Jasa Finishing / Subkontrak)",
+        "count": 1
+      }
+    ],
+    "materialGroups": [
+      {
+        "matkl": "RAW01",
+        "desc": "Solid Timber & Hardwood"
+      },
+      {
+        "matkl": "RAW02",
+        "desc": "Engineered Wood & Board"
+      },
+      {
+        "matkl": "RAW03",
+        "desc": "Adhesives & Chemicals"
+      },
+      {
+        "matkl": "HDW01",
+        "desc": "Fittings & Metal Hardware"
+      },
+      {
+        "matkl": "UPH01",
+        "desc": "Upholstery & Fabrics"
+      },
+      {
+        "matkl": "SEMI01",
+        "desc": "Wood Sub-Assembly"
+      },
+      {
+        "matkl": "SEMI02",
+        "desc": "Upholstered Sub-Assembly"
+      },
+      {
+        "matkl": "FG01",
+        "desc": "Dining Room Furniture"
+      },
+      {
+        "matkl": "FG02",
+        "desc": "Office & Commercial Seating"
+      },
+      {
+        "matkl": "FG03",
+        "desc": "Living Room Storage"
+      },
+      {
+        "matkl": "FG04",
+        "desc": "Bedroom Furniture"
+      },
+      {
+        "matkl": "PKG01",
+        "desc": "Corrugated Packaging"
+      },
+      {
+        "matkl": "PKG02",
+        "desc": "Cushioning & Protective"
+      }
+    ],
+    "plants": [
+      {
+        "werks": "1000",
+        "name": "Plant Cikarang Main Factory",
+        "city": "Bekasi",
+        "country": "ID"
+      },
+      {
+        "werks": "2000",
+        "name": "Plant Semarang Export Division",
+        "city": "Semarang",
+        "country": "ID"
+      }
+    ],
+    "storageLocations": [
+      {
+        "werks": "1000",
+        "lgort": "1001",
+        "name": "Raw Material Storage Yard"
+      },
+      {
+        "werks": "1000",
+        "lgort": "1002",
+        "name": "Finished Goods Central Whs"
+      },
+      {
+        "werks": "1000",
+        "lgort": "1003",
+        "name": "Chemical & Coating Whs"
+      },
+      {
+        "werks": "1000",
+        "lgort": "1004",
+        "name": "WIP Sub-Assembly Whs"
+      },
+      {
+        "werks": "1000",
+        "lgort": "1005",
+        "name": "Packaging Materials Whs"
+      },
+      {
+        "werks": "2000",
+        "lgort": "2001",
+        "name": "Finished Goods Export Whs"
+      },
+      {
+        "werks": "2000",
+        "lgort": "2002",
+        "name": "Export Staging Area"
+      }
+    ],
+    "units": [
+      {
+        "meins": "M3",
+        "desc": "Cubic Meter"
+      },
+      {
+        "meins": "M",
+        "desc": "Meter"
+      },
+      {
+        "meins": "PC",
+        "desc": "Piece / Lembar"
+      },
+      {
+        "meins": "SET",
+        "desc": "Set"
+      },
+      {
+        "meins": "UNIT",
+        "desc": "Unit"
+      },
+      {
+        "meins": "PAI",
+        "desc": "Pail"
+      },
+      {
+        "meins": "DRU",
+        "desc": "Drum"
+      },
+      {
+        "meins": "ROL",
+        "desc": "Roll"
+      },
+      {
+        "meins": "KG",
+        "desc": "Kilogram"
+      }
+    ]
+  }
+}

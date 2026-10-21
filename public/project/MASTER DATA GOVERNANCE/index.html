@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>SAP MDG - PT Kayu Mebel Indonesia</title>
+  <meta http-equiv="refresh" content="0; url=login.html">
+  <script>
+    const session = localStorage.getItem('mdg_current_session');
+    if (session) {
+      window.location.replace('MATERIAL MASTER/landing/landing_page.htm');
+    } else {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+<body style="background:#0f172a; color:#fff; font-family:sans-serif; text-align:center; padding-top:20vh;">
+  <p>Mengalihkan ke SAP MDG Portal...</p>
+</body>
+</html>

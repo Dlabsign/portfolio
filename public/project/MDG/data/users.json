@@ -1,0 +1,67 @@
+[
+  {
+    "username": "DANIEL",
+    "password": "password123",
+    "name": "Daniel Siahaan",
+    "fullName": "Daniel Siahaan, S.Kom",
+    "role": "requestor",
+    "roleLabel": "MDG Requestor (Engineering & R&D)",
+    "email": "daniel@kmi.co.id",
+    "department": "Furniture Engineering & R&D",
+    "plant": "1000",
+    "companyCode": "1000",
+    "avatar": "D"
+  },
+  {
+    "username": "DATA_STEWARD",
+    "password": "password123",
+    "name": "Budi Santoso",
+    "fullName": "Budi Santoso, S.T (Master Data Lead)",
+    "role": "datasteward",
+    "roleLabel": "MDG Data Steward (Technical & Classification)",
+    "email": "budi.steward@kmi.co.id",
+    "department": "Master Data Governance Center",
+    "plant": "1000",
+    "companyCode": "1000",
+    "avatar": "B"
+  },
+  {
+    "username": "BANK_STEWARD",
+    "password": "password123",
+    "name": "Siti Rahma",
+    "fullName": "Siti Rahma, S.E (Treasury & Finance)",
+    "role": "banksteward",
+    "roleLabel": "MDG Bank Steward (Treasury & Bank Verification)",
+    "email": "siti.finance@kmi.co.id",
+    "department": "Corporate Treasury & Accounting",
+    "plant": "1000",
+    "companyCode": "1000",
+    "avatar": "S"
+  },
+  {
+    "username": "APPROVER",
+    "password": "password123",
+    "name": "Hendra Wijaya",
+    "fullName": "Ir. Hendra Wijaya, M.M (Operations Director)",
+    "role": "approver",
+    "roleLabel": "MDG Final Approver (Management & Posting)",
+    "email": "hendra.manager@kmi.co.id",
+    "department": "Operations & Supply Chain Governance",
+    "plant": "1000",
+    "companyCode": "1000",
+    "avatar": "H"
+  },
+  {
+    "username": "ADMIN",
+    "password": "adminpassword",
+    "name": "Administrator MDG",
+    "fullName": "SAP MDG System Administrator",
+    "role": "admin",
+    "roleLabel": "SAP MDG System Administrator (Superuser)",
+    "email": "admin.mdg@kmi.co.id",
+    "department": "Enterprise IT SAP Center of Excellence",
+    "plant": "1000",
+    "companyCode": "1000",
+    "avatar": "A"
+  }
+]
