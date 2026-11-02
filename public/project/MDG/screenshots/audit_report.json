@@ -1,0 +1,137 @@
+[
+  {
+    "route": "landing_page.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "login.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "mm_request_material.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "mm_datasteward.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "mm_approval.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "bp_create_vendor.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "bp_create_customer.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "bp_banksteward.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "bp_approval.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "part_request.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "part_approval.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "ir_create_request.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "ir_approval.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "history_approved.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  },
+  {
+    "route": "history_rejected.html",
+    "status": 200,
+    "hasTheme": true,
+    "hasInter": true,
+    "emojisFound": false,
+    "consoleErrorsCount": 0,
+    "errors": []
+  }
+]

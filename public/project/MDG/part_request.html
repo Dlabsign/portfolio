@@ -52,11 +52,8 @@
         <style>
             body {
                 font-family: 'Inter', system-ui, sans-serif;
-                background-color: #eef2f6;
-                background-image:
-                    radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.08) 0px, transparent 40%),
-                    radial-gradient(at 90% 15%, rgba(100, 116, 139, 0.08) 0px, transparent 45%),
-                    radial-gradient(at 50% 85%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+                background-color: var(--mdg-canvas);
+                background: var(--mdg-canvas);
                 background-attachment: fixed;
                 color: #0f172a;
             }
@@ -97,7 +94,7 @@
             #partTable input[type=text]:focus,
             #partTable input[type=number]:focus {
                 outline: none;
-                border-color: #059669;
+                border-color: var(--mdg-border-focus);
                 box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
                 background: #ffffff;
             }
@@ -129,8 +126,9 @@
             }
         </style>
       <script src="js/mdg-runtime.js"></script>
+  <link rel="stylesheet" href="css/mdg-theme.css">
 </head>
-    <body class="text-[13px] font-sans leading-relaxed m-0 p-0 antialiased min-h-screen selection:bg-emerald-100 selection:text-emerald-900">
+    <body class="text-[13px] font-sans leading-relaxed m-0 p-0 antialiased min-h-screen selection:bg-neutral-100 dark:bg-neutral-800 selection:text-emerald-900">
 
         <!-- TOP NAVIGATION BAR -->
         <header class="bg-white/70 backdrop-blur-xl h-14 border-b border-white/60 sticky top-0 z-50 px-6 lg:px-10 flex items-center justify-between shadow-xs">
@@ -140,7 +138,7 @@
                 </div>
                 <div>
                     <span class="font-extrabold text-sm text-slate-900 block leading-none">Material Master Governance</span>
-                    <span class="text-[10px] text-emerald-700 font-semibold tracking-wide">Wood Part Staging Platform (R&amp;D)</span>
+                    <span class="text-[10px] text-neutral-600 dark:text-neutral-400 font-semibold tracking-wide">Wood Part Staging Platform (R&amp;D)</span>
                 </div>
             </div>
 
@@ -151,7 +149,7 @@
                 </div>
                 <a
                   href="?OnInputProcessing=LOGOUT"
-                  class="text-xs font-semibold text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-full border border-slate-200/80 bg-white/50 hover:bg-white transition"
+                  class="text-xs font-semibold text-slate-600 hover:text-neutral-600 dark:text-neutral-400 px-3 py-1 rounded-full border border-slate-200/80 bg-white/50 hover:bg-white transition"
                   >Sign Out</a>
             </div>
         </header>
@@ -191,7 +189,7 @@
                                 Search Material
                                 <span
 
-                                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20"
+                                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/10 text-emerald-800 border border-neutral-400 dark:border-neutral-600/20"
                                   >
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>LIVE TABLE
                                 </span>
@@ -200,7 +198,7 @@
                         </div>
                     </div>
                     <button
-                      type="button" onclick="resetFilter()" class="text-xs text-slate-600 hover:text-emerald-700 font-bold
+                      type="button" onclick="resetFilter()" class="text-xs text-slate-600 hover:text-neutral-600 dark:text-neutral-400 font-bold
                       px-3.5 py-1.5 rounded-full border border-slate-200/80 bg-white/60 hover:bg-white transition
                       inline-flex items-center gap-1
 cursor-pointer">
@@ -218,7 +216,7 @@ cursor-pointer">
                     <div class="lg:col-span-4 glass-subpanel rounded-2xl p-5 flex flex-col justify-between">
                         <div>
                             <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200/70 pb-2.5">
-                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M
                                       3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013
 6.586V4z" />
@@ -283,7 +281,7 @@ hover:shadow transition-all inline-flex items-center justify-center gap-2 cursor
                         <div>
                             <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-slate-200/70 flex-wrap gap-2">
                                 <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M
                                           9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
@@ -346,7 +344,7 @@ hover:shadow transition-all inline-flex items-center justify-center gap-2 cursor
                         <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">02</span>
                         <h2 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
                             PART SPECIFICATIONS &amp; DYNAMIC GROUPING
-                            <span class="text-xs font-extrabold text-emerald-700 bg-emerald-100/80 px-3 py-0.5 rounded-full border border-emerald-200" id="rowCounterChip">1 Line</span>
+                            <span class="text-xs font-extrabold text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800/80 px-3 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-700" id="rowCounterChip">1 Line</span>
                         </h2>
                     </div>
                     <div class="flex items-center gap-2.5 flex-wrap">
@@ -363,7 +361,7 @@ hover:shadow transition-all inline-flex items-center justify-center gap-2 cursor
                         <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" class="hidden" onchange="parseStandardExcelRD(this)">
                         <button
                                type="button"
-                               class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full font-extrabold text-xs transition shadow-2xs cursor-pointer flex items-center gap-1.5"
+                               class="bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white px-4 py-2 rounded-full font-extrabold text-xs transition shadow-2xs cursor-pointer flex items-center gap-1.5"
 onclick="document.getElementById('excelFileInput').click()">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M
                               7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0
@@ -397,7 +395,7 @@ onclick="document.getElementById('excelFileInput').click()">
                                       >ROUGH SIZE (MM)</th>
                                     <th
                                       colspan="3"
-                                      class="p-1.5 border-b border-r border-emerald-300 bg-emerald-100/80 text-center text-[10.5px] text-emerald-900 tracking-wider"
+                                      class="p-1.5 border-b border-r border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800/80 text-center text-[10.5px] text-emerald-900 tracking-wider"
                                       >FINISH SIZE (MM)</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">QTY ITEM</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">QTY ORDER</th>
@@ -405,32 +403,32 @@ onclick="document.getElementById('excelFileInput').click()">
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 sticky top-0 z-10 min-w-[140px]">Material</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 sticky top-0 z-10 min-w-[160px]">Note</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 sticky top-0 z-10 min-w-[200px]">DESCRIPTION</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/90 text-center text-amber-950 min-w-[90px]">MRP GROUP ⚡</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">MRP CTRL ⚡</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">SLOC 1 ⚡</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">SLOC 2 ⚡</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">PLANT ⚡</th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold min-w-[90px]">MRP GROUP </th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">MRP CTRL </th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">SLOC 1 </th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">SLOC 2 </th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">PLANT </th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">M3</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">M2</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">ACTIVITY</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">SATUAN</th>
-                                    <th colspan="3" class="p-1.5 border-b border-r border-blue-300 bg-blue-100/80 text-center text-[10.5px] text-blue-900 tracking-wider">UOM KONVERSI</th>
+                                    <th colspan="3" class="p-1.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-[10.5px] text-slate-800 font-semibold tracking-wider">UOM KONVERSI</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10 min-w-[110px]">rough size</th>
                                     <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">SLOC DEF</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">MATERIAL TYPE ⚡</th>
-                                    <th rowspan="2" class="p-2.5 border-b border-r border-amber-300 bg-amber-100/70 text-center text-amber-950">MATERIAL GROUP ⚡</th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">MATERIAL TYPE </th>
+                                    <th rowspan="2" class="p-2.5 border-b border-r border-slate-200 bg-slate-100/95 text-center text-slate-800 font-semibold">MATERIAL GROUP </th>
                                     <th rowspan="2" class="p-2.5 border-b border-slate-200 text-center bg-slate-100/95 sticky top-0 z-10">Action</th>
                                 </tr>
                                 <tr class="text-center text-[10px] uppercase font-bold tracking-wider">
-                                    <th class="p-1 border-b border-r border-amber-200 bg-amber-50/70 text-amber-900">T1</th>
-                                    <th class="p-1 border-b border-r border-amber-200 bg-amber-50/70 text-amber-900">T2</th>
-                                    <th class="p-1 border-b border-r border-amber-200 bg-amber-50/70 text-amber-900">W1</th>
-                                    <th class="p-1 border-b border-r border-amber-200 bg-amber-50/70 text-amber-900">W2</th>
-                                    <th class="p-1 border-b border-r border-amber-200 bg-amber-50/70 text-amber-900">L1</th>
+                                    <th class="p-1 border-b border-r border-slate-200 bg-slate-50/90 text-slate-700 font-medium">T1</th>
+                                    <th class="p-1 border-b border-r border-slate-200 bg-slate-50/90 text-slate-700 font-medium">T2</th>
+                                    <th class="p-1 border-b border-r border-slate-200 bg-slate-50/90 text-slate-700 font-medium">W1</th>
+                                    <th class="p-1 border-b border-r border-slate-200 bg-slate-50/90 text-slate-700 font-medium">W2</th>
+                                    <th class="p-1 border-b border-r border-slate-200 bg-slate-50/90 text-slate-700 font-medium">L1</th>
                                     <th class="p-1 border-b border-r border-amber-300 bg-amber-50/70 text-amber-900">L2</th>
-                                    <th class="p-1 border-b border-r border-emerald-200 bg-emerald-50/70 text-emerald-900">T</th>
-                                    <th class="p-1 border-b border-r border-emerald-200 bg-emerald-50/70 text-emerald-900">W</th>
-                                    <th class="p-1 border-b border-r border-emerald-300 bg-emerald-50/70 text-emerald-900">L</th>
+                                    <th class="p-1 border-b border-r border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/70 text-emerald-900">T</th>
+                                    <th class="p-1 border-b border-r border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/70 text-emerald-900">W</th>
+                                    <th class="p-1 border-b border-r border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/70 text-emerald-900">L</th>
                                     <th class="p-1 border-b border-r border-blue-200 bg-blue-50/70 text-blue-900">KONVERSI</th>
                                     <th class="p-1 border-b border-r border-blue-200 bg-blue-50/70 text-blue-900">UNIT</th>
                                     <th class="p-1 border-b border-r border-blue-300 bg-blue-50/70 text-blue-900">ACT CODE</th>
@@ -496,8 +494,8 @@ onclick="document.getElementById('excelFileInput').click()">
                         </div>
                         <div class="flex items-center gap-2">
                             <button type="button" onclick="exportApprovedHistoryToExcel()"
-                                class="text-xs text-emerald-800 font-extrabold bg-emerald-50 hover:bg-emerald-100
-                                    border border-emerald-200 px-4 py-2 rounded-full transition flex items-center
+                                class="text-xs text-emerald-800 font-extrabold bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800
+                                    border border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-full transition flex items-center
                                     gap-1.5 cursor-pointer shadow-2xs">
                                 <span>Export Excel List</span>
                             </button>
@@ -538,12 +536,12 @@ onclick="document.getElementById('excelFileInput').click()">
                             <span class="text-xs font-black text-blue-800 bg-blue-100/80 px-3 py-1 rounded-full border border-blue-200 shadow-2xs">CHECKED</span>
                         </div>
 
-                        <div class="glass-subpanel p-4 rounded-2xl border border-emerald-500/20 flex items-center justify-between hover:border-emerald-500/40 transition">
+                        <div class="glass-subpanel p-4 rounded-2xl border border-neutral-400 dark:border-neutral-600/20 flex items-center justify-between hover:border-neutral-400 dark:border-neutral-600/40 transition">
                             <div>
                                 <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Approved Requests</p>
                                 <h3 class="text-xl font-black text-slate-900 mt-0.5" id="approvedCountCard">0 Request</h3>
                             </div>
-                            <span class="text-xs font-black text-emerald-800 bg-emerald-100/80 px-3 py-1 rounded-full border border-emerald-200 shadow-2xs">APPROVED</span>
+                            <span class="text-xs font-black text-emerald-800 bg-neutral-100 dark:bg-neutral-800/80 px-3 py-1 rounded-full border border-neutral-200 dark:border-neutral-700 shadow-2xs">APPROVED</span>
                         </div>
 
                         <div class="glass-subpanel p-4 rounded-2xl border border-rose-500/20 flex items-center justify-between hover:border-rose-500/40 transition">
@@ -595,7 +593,7 @@ onclick="document.getElementById('excelFileInput').click()">
         <!-- LOADING OVERLAY -->
         <div id="loadingOverlay" class="hidden fixed inset-0 z-[20000] flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-md transition-all">
             <div class="glass-panel p-7 rounded-3xl shadow-2xl flex flex-col items-center max-w-sm w-full mx-4 border border-white/80 text-center">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex items-center justify-center mb-4 shadow-2xs">
+                <div class="w-14 h-14 rounded-2xl bg-neutral-50 dark:bg-neutral-850/80 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center mb-4 shadow-2xs">
                     <div class="w-7 h-7 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 <h4 class="text-sm font-black text-slate-900 uppercase tracking-wide">Memproses Request</h4>
@@ -620,7 +618,7 @@ onclick="document.getElementById('excelFileInput').click()">
                       text-xs border border-slate-200/80 rounded-2xl focus:outline-none focus:border-emerald-600
 focus:ring-2 focus:ring-emerald-500/10 bg-white/80 text-slate-800 resize-none font-sans shadow-2xs transition"></textarea>
                     <p id="submitReasonError" class="hidden mt-2 text-[11px] font-bold text-rose-600">
-                        ⚠️ Alasan upload wajib diisi sebelum melakukan Submit Request.
+                         Alasan upload wajib diisi sebelum melakukan Submit Request.
                     </p>
                 </div>
                 <div class="glass-subpanel px-6 py-3.5 border-t border-slate-200/60 flex justify-end gap-2.5">
@@ -646,7 +644,7 @@ transition">
             <div class="glass-panel border border-white/80 rounded-3xl shadow-2xl max-w-md w-full overflow-hidden text-center">
                 <div class="bg-gradient-to-br from-emerald-600 to-emerald-800 p-7 text-white flex flex-col items-center">
                     <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-3 backdrop-blur-xs">
-                        <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-emerald-600 text-2xl font-bold shadow-xs">✓</div>
+                        <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-neutral-600 dark:text-neutral-400 text-2xl font-bold shadow-xs"></div>
                     </div>
                     <h3 class="text-base font-black text-white">Data Berhasil Di-upload!</h3>
                     <p class="text-xs text-emerald-100 mt-1 font-medium">Permintaan BOM R&amp;D Anda telah tersimpan di staging SAP.</p>
@@ -655,7 +653,7 @@ transition">
                     <div class="glass-subpanel p-4 rounded-2xl border border-slate-200/80 text-left space-y-2 text-xs">
                         <div class="flex items-center justify-between border-b border-slate-200/60 pb-2">
                             <span class="text-slate-500 font-semibold">No. Request:</span>
-                            <span id="successModalReqId" class="font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">UPL-0000</span>
+                            <span id="successModalReqId" class="font-mono font-bold text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850 px-2.5 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-700">UPL-0000</span>
                         </div>
                         <p class="text-[11px] text-slate-600 leading-relaxed">
                             Data kini berada dalam status <strong class="text-amber-700">SUBMITTED (Pending)</strong> dan akan diproses untuk verifikasi approval.
@@ -679,7 +677,7 @@ transition">
                 <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-700 flex items-center justify-center font-extrabold text-white text-sm shadow-xs">
-                            📊
+                            <svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <div>
                             <h2 class="font-extrabold text-sm text-white flex items-center gap-2">
@@ -1454,7 +1452,7 @@ transition">
 
                 // STEP 1: SUBMITTED
                 html += '<div data-req-id="' + safeUidAttr + '" data-step="1" onclick="handleTrackerCardClick(this)" ';
-                html += 'class="bg-slate-800/90 hover:bg-slate-800 border border-emerald-500/40 rounded-xl p-3.5 ';
+                html += 'class="bg-slate-800/90 hover:bg-slate-800 border border-neutral-400 dark:border-neutral-600/40 rounded-xl p-3.5 ';
                 html += 'transition cursor-pointer group shadow-2xs relative overflow-hidden">';
                 html += '  <div class="flex items-center justify-between mb-2">';
                 html += '    <div class="flex items-center gap-2">';
@@ -1463,7 +1461,7 @@ transition">
                 html += '      <span class="text-xs font-bold text-emerald-300">Pengajuan Material</span>';
                 html += '    </div>';
                 html += '    <span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 ';
-                html += 'text-emerald-300 border border-emerald-500/30">SUBMITTED</span>';
+                html += 'text-emerald-300 border border-neutral-400 dark:border-neutral-600/30">SUBMITTED</span>';
                 html += '  </div>';
                 html += '  <p class="text-[11px] text-slate-300 font-medium truncate">User: ' + safeErnam + '</p>';
                 html += '  <p class="text-[10px] text-slate-400 font-mono mt-0.5">' + s1Time + '</p>';
@@ -1505,7 +1503,7 @@ transition">
 
                 // STEP 3: APPROVED / REJECTED
                 var step3Border = isApproved
-                    ? 'border-emerald-500/60 bg-slate-800/90'
+                    ? 'border-neutral-400 dark:border-neutral-600/60 bg-slate-800/90'
                     : (isRejected
                         ? 'border-rose-500/60 bg-slate-800/90'
                         : 'border-slate-700/60 bg-slate-900/60 opacity-80');
@@ -1514,7 +1512,7 @@ transition">
                     : (isRejected ? 'Data Tidak di Approve' : 'Approved / Rejected');
                 var step3Badge = isApproved
                     ? '<span class="text-[9px] font-black px-2 py-0.5 rounded-full ' +
-                      'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">APPROVED</span>'
+                      'bg-emerald-500/20 text-emerald-300 border border-neutral-400 dark:border-neutral-600/30">APPROVED</span>'
                     : (isRejected
                         ? '<span class="text-[9px] font-black px-2 py-0.5 rounded-full ' +
                           'bg-rose-500/20 text-rose-300 border border-rose-500/30">REJECTED</span>'
@@ -1601,11 +1599,11 @@ transition">
                 html += '<div class="relative group">';
                 html += '  <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-emerald-600 text-white ';
                 html += 'font-black text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&check;</div>';
-                html += '  <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-emerald-500/50 transition">';
+                html += '  <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-neutral-400 dark:border-neutral-600/50 transition">';
                 html += '    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">';
                 html += '      <h4 class="text-xs font-black text-slate-900 uppercase">Tahap 1: Pengajuan Material (Submitted)</h4>';
-                html += '      <span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border ';
-                html += 'border-emerald-300 px-2.5 py-0.5 rounded-full font-mono">' + s1Time + '</span>';
+                html += '      <span class="text-[10px] font-extrabold bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border ';
+                html += 'border-neutral-300 dark:border-neutral-700 px-2.5 py-0.5 rounded-full font-mono">' + s1Time + '</span>';
                 html += '    </div>';
                 html += '    <p class="text-xs text-slate-700 font-medium">Requestor <b>' + escapeHtml(reqDisplayName) + '</b> ';
                 html += 'telah mengunggah file <b>' + escapeHtml(item.filename || '-') + '</b> (' + (item.total_row || 0) + ' item) ke staging system.</p>';
@@ -1637,13 +1635,13 @@ transition">
                     html += 'font-black text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&check;</div>';
                 } else if (isRejected) {
                     html += '  <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-rose-600 text-white ';
-                    html += 'font-black text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&#10005;</div>';
+                    html += 'font-black text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&times; </div>';
                 } else {
                     html += '  <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-slate-300 text-slate-600 ';
                     html += 'font-black text-xs flex items-center justify-center ring-4 ring-white">3</div>';
                 }
                 var step3BorderClr = isApproved
-                    ? 'border-emerald-200 bg-emerald-50/20'
+                    ? 'border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/20'
                     : (isRejected ? 'border-rose-200 bg-rose-50/20' : 'border-slate-200/80');
                 html += '  <div class="bg-white border ' + step3BorderClr + ' rounded-xl p-4 shadow-2xs transition">';
                 html += '    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">';
@@ -1652,7 +1650,7 @@ transition">
                     : (isRejected ? 'Tahap 3: Data Tidak di Approve' : 'Tahap 3: Menunggu Keputusan Approval');
                 html += '      <h4 class="text-xs font-black text-slate-900 uppercase">' + step3TitleTxt + '</h4>';
                 var s3BadgeClr = isApproved
-                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                    ? 'bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border border-neutral-300 dark:border-neutral-700'
                     : (isRejected
                         ? 'bg-rose-100 text-rose-800 border border-rose-300'
                         : 'bg-slate-100 text-slate-500 border border-slate-200');
@@ -1709,7 +1707,7 @@ transition">
                         pRows += '  <td class="p-2.5 font-semibold text-slate-800">' + escapeHtml(it.maktx || '-') + '</td>';
                         pRows += '  <td class="p-2.5 text-slate-600">' + escapeHtml(it.groes || '-') + '</td>';
                         pRows += '  <td class="p-2.5 text-slate-600">' + escapeHtml(it.groes_fin || '-') + '</td>';
-                        pRows += '  <td class="p-2.5 text-center font-extrabold text-emerald-800 bg-emerald-50/50">' + (it.vol_m3 || '1') + '</td>';
+                        pRows += '  <td class="p-2.5 text-center font-extrabold text-emerald-800 bg-neutral-50 dark:bg-neutral-850/50">' + (it.vol_m3 || '1') + '</td>';
                         pRows += '  <td class="p-2.5 font-mono text-slate-600">' + escapeHtml(it.wrkst || '-') + '</td>';
                         pRows += '  <td class="p-2.5 font-semibold text-slate-700">' + escapeHtml(it.werks || '-') + '</td>';
                         pRows += '  <td class="p-2.5 font-mono text-slate-600">' + escapeHtml(it.lgort1 || '-') + '</td>';
@@ -1804,7 +1802,7 @@ transition">
 
                 globalHistoryData.forEach(function(item, idx) {
                     const tr = document.createElement("tr");
-                    tr.className = "hover:bg-emerald-50/40 transition-colors border-b border-slate-100 cursor-pointer";
+                    tr.className = "hover:bg-neutral-50 dark:bg-neutral-850/40 transition-colors border-b border-slate-100 cursor-pointer";
 
                     const formattedDate = formatSapDate(item.erdat);
                     const formattedTime = formatSapTime(item.ertim);
@@ -1813,8 +1811,8 @@ transition">
                     const stUpper = (item.status || 'DRAFT').toUpperCase();
                     let statusBadge = '';
                     if (stUpper === 'APPROVED') {
-                        statusBadge = '<span class="bg-emerald-100/80 text-emerald-800 text-[10px] font-extrabold px-3 py-0.5 ' +
-                            'rounded-full border border-emerald-200 uppercase">APPROVED</span>';
+                        statusBadge = '<span class="bg-neutral-100 dark:bg-neutral-800/80 text-emerald-800 text-[10px] font-extrabold px-3 py-0.5 ' +
+                            'rounded-full border border-neutral-200 dark:border-neutral-700 uppercase">APPROVED</span>';
                     } else if (stUpper === 'REJECTED' || stUpper === 'FAILED') {
                         statusBadge = '<span class="bg-rose-100/80 text-rose-800 text-[10px] font-extrabold px-3 py-0.5 ' +
                             'rounded-full border border-rose-200 uppercase">REJECTED</span>';
@@ -1833,7 +1831,7 @@ transition">
                     rowHtml += '<td class="p-3 font-mono text-slate-800 font-semibold">' + safeUid + '</td>';
                     rowHtml += '<td class="p-3 font-semibold text-slate-800">' + safeFn + '</td>';
                     rowHtml += '<td class="p-3 text-center text-slate-600 font-mono text-[11px]">' + dateTimeStr + '</td>';
-                    rowHtml += '<td class="p-3 text-center font-extrabold text-emerald-800 bg-emerald-50/50">' + (item.total_row || 0) + ' Line</td>';
+                    rowHtml += '<td class="p-3 text-center font-extrabold text-emerald-800 bg-neutral-50 dark:bg-neutral-850/50">' + (item.total_row || 0) + ' Line</td>';
                     rowHtml += '<td class="p-3 text-slate-700 font-medium text-[11px] ';
                     rowHtml += 'max-w-[200px] truncate" title="' + escapeHtml(subReasonText) + '">';
                     rowHtml += escapeHtml(subReasonText) + '</td>';
@@ -1847,7 +1845,7 @@ transition">
                     rowHtml += 'rounded-full transition cursor-pointer shadow-2xs flex items-center ';
                     rowHtml += 'gap-1 shrink-0">Tracker</button>';
                     rowHtml += '    <button type="button" class="btn-view-detail text-[10px] ';
-                    rowHtml += 'font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white ';
+                    rowHtml += 'font-extrabold bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white ';
                     rowHtml += 'px-2.5 py-1 rounded-full shadow-2xs transition inline-flex ';
                     rowHtml += 'items-center gap-1 cursor-pointer shrink-0">Detail</button>';
                     rowHtml += '  </div>';
@@ -2097,7 +2095,7 @@ transition">
                 let codeClass = "bg-slate-100/80 text-slate-700 border-slate-200/80";
 
                 if (codeNumVal === 'PF') {
-                    trClass = "bg-emerald-50/70 hover:bg-emerald-100/70 font-semibold transition-colors border-t-2 border-emerald-300";
+                    trClass = "bg-neutral-50 dark:bg-neutral-850/70 hover:bg-neutral-100 dark:bg-neutral-800/70 font-semibold transition-colors border-t-2 border-neutral-300 dark:border-neutral-700";
                     maktxClass = "font-bold text-emerald-950";
                     codeClass = "bg-emerald-700 text-white border-emerald-800 font-bold";
                 } else if (codeNumVal === 'CMB') {
@@ -2145,7 +2143,7 @@ oninput="this.value = this.value.toUpperCase()">
                                    class="row-maktx w-full p-1 border border-slate-200/80 rounded-lg text-xs outline-none bg-white/90 text-slate-800 focus:border-emerald-600 ${maktxClass}"
                                    placeholder="Part name (max 40 chars)" value="${maktxVal}" required
                                    onblur="validateRowField(this)" oninput="clearRowFieldError(this)" >
-                            <span class="mini-error text-[10px] text-rose-600 font-bold hidden">⚠ Nama Part wajib diisi</span>
+                            <span class="mini-error text-[10px] text-rose-600 font-bold hidden"> Nama Part wajib diisi</span>
                         </div>
                     </td>
                     <td class="p-1 border-r border-amber-200/50 bg-amber-50/20 align-top" style="width: 44px; min-width: 44px;">
@@ -2184,21 +2182,21 @@ oninput="this.value = this.value.toUpperCase()">
                                class="row-rl2 w-full px-0.5 py-1 border border-slate-200/80 rounded text-xs text-center font-mono font-bold text-slate-800 outline-none focus:border-emerald-600"
                                placeholder="-" value="${rl2Val}" >
                     </td>
-                    <td class="p-1 border-r border-emerald-200 bg-emerald-50/20 align-top" style="width: 52px; min-width: 52px;">
+                    <td class="p-1 border-r border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/20 align-top" style="width: 52px; min-width: 52px;">
                         <input
                                type="text"
                                class="row-ft w-full px-0.5 py-1 border border-slate-200/80 rounded text-xs text-center font-mono outline-none focus:border-emerald-600 font-semibold"
                                placeholder="-" value="${ftVal}"
 oninput="updateFinishSizeAndMatnr(this)">
                     </td>
-                    <td class="p-1 border-r border-emerald-200 bg-emerald-50/20 align-top" style="width: 60px; min-width: 60px;">
+                    <td class="p-1 border-r border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/20 align-top" style="width: 60px; min-width: 60px;">
                         <input
                                type="text"
                                class="row-fw w-full px-0.5 py-1 border border-slate-200/80 rounded text-xs text-center font-mono outline-none focus:border-emerald-600 font-semibold"
                                placeholder="-" value="${fwVal}"
 oninput="updateFinishSizeAndMatnr(this)">
                     </td>
-                    <td class="p-1 border-r border-emerald-300 bg-emerald-50/30 align-top" style="width: 72px; min-width: 72px;">
+                    <td class="p-1 border-r border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/30 align-top" style="width: 72px; min-width: 72px;">
                         <input
                                type="text"
                                class="row-fl w-full px-0.5 py-1 border border-slate-200/80 rounded text-xs text-center outline-none focus:border-emerald-600 font-semibold"
@@ -2327,13 +2325,13 @@ placeholder="ZGW1" value="${disgrVal}">
                     <td class="p-1.5 border-r border-amber-200 bg-amber-50/30 align-top text-center" style="min-width: 70px;">
                         <input
                                type="text"
-                               class="row-mtart w-full p-1 border border-slate-200/80 rounded-lg text-xs text-center outline-none focus:border-emerald-600 font-bold text-emerald-700"
+                               class="row-mtart w-full p-1 border border-slate-200/80 rounded-lg text-xs text-center outline-none focus:border-emerald-600 font-bold text-neutral-600 dark:text-neutral-400"
                                placeholder="HALB" value="${mtartVal}" >
                     </td>
                     <td class="p-1.5 border-r border-amber-200 bg-amber-50/30 align-top text-center" style="min-width: 80px;">
                         <input
                                type="text"
-                               class="row-matkl w-full p-1 border border-slate-200/80 rounded-lg text-xs text-center outline-none focus:border-emerald-600 font-bold text-emerald-700"
+                               class="row-matkl w-full p-1 border border-slate-200/80 rounded-lg text-xs text-center outline-none focus:border-emerald-600 font-bold text-neutral-600 dark:text-neutral-400"
                                placeholder="HSF004" value="${matklVal}" >
                     </td>
                     <td class="p-1.5 align-top text-center" style="min-width: 50px;">
@@ -2351,7 +2349,7 @@ placeholder="ZGW1" value="${disgrVal}">
                         <div class="flex gap-1 justify-center items-center">
                             <button
                                    type="button"
-                                   class="w-5 h-5 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center transition shadow-2xs cursor-pointer"
+                                   class="w-5 h-5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white font-bold text-xs flex items-center justify-center transition shadow-2xs cursor-pointer"
                                    title="Add Line"
 onclick="addNewRow()">+</button>
                             <button
@@ -2372,7 +2370,7 @@ onclick="deleteRow(this)">-</button>
                 const codeVal = input.value.trim().toUpperCase();
 
                 if (codeVal === 'PF') {
-                    tr.className = "bg-emerald-50/70 hover:bg-emerald-100/70 font-semibold transition-colors border-t-2 border-emerald-300";
+                    tr.className = "bg-neutral-50 dark:bg-neutral-850/70 hover:bg-neutral-100 dark:bg-neutral-800/70 font-semibold transition-colors border-t-2 border-neutral-300 dark:border-neutral-700";
                     input.className = "row-code-num w-full p-1 border border-emerald-800 rounded-lg " +
                         "text-xs text-center font-bold uppercase outline-none focus:border-emerald-600 bg-emerald-700 text-white shadow-2xs";
                 } else if (codeVal === 'CMB') {
@@ -2767,7 +2765,7 @@ onclick="deleteRow(this)">-</button>
                 var badge = document.getElementById("maraResultBadge");
 
                 if (tbody) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-emerald-700 font-bold animate-pulse">' +
+                    tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-neutral-600 dark:text-neutral-400 font-bold animate-pulse">' +
                         '<div class="inline-flex items-center gap-2">' +
                         '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">' +
                         '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>' +
@@ -2879,7 +2877,7 @@ onclick="deleteRow(this)">-</button>
 
                 if (badge) {
                     badge.innerText = totalItems + " Record(s) Found";
-                    badge.className = "text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200";
+                    badge.className = "text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border border-neutral-200 dark:border-neutral-700";
                 }
 
                 var startIndex = (maraCurrentPage - 1) * maraPageSize;
@@ -2904,11 +2902,11 @@ onclick="deleteRow(this)">-</button>
                     var meins = item.meins || item.MEINS || '';
 
                     var tr = document.createElement('tr');
-                    tr.className = 'hover:bg-emerald-50/40 transition-colors border-b border-slate-100';
+                    tr.className = 'hover:bg-neutral-50 dark:bg-neutral-850/40 transition-colors border-b border-slate-100';
 
                     var html = '';
                     html += '  <td class="p-2 text-center font-bold text-slate-500 text-[11px]">' + (globalIdx + 1) + '</td>';
-                    html += '  <td class="p-2 font-mono font-bold text-emerald-700 text-[11px]">' + (matnrDisplay ? escapeHtml(matnrDisplay) : '-') + '</td>';
+                    html += '  <td class="p-2 font-mono font-bold text-neutral-600 dark:text-neutral-400 text-[11px]">' + (matnrDisplay ? escapeHtml(matnrDisplay) : '-') + '</td>';
 html += '  <td class="p-2 font-medium text-slate-800 text-[11px] max-w-[200px] truncate" title="' + escapeHtml(maktx) + '">' + (maktx ? escapeHtml(maktx) : '-') + '</td>';
                     html += '  <td class="p-2 text-center font-mono font-bold text-slate-700 text-[11px]">' + (werks ? escapeHtml(werks) : '-') + '</td>';
                     html += '  <td class="p-2 text-center text-[10px] font-bold">' +
@@ -2924,8 +2922,8 @@ html += '  <td class="p-2 font-medium text-slate-800 text-[11px] max-w-[200px] t
                     html += '  <td class="p-2 text-center font-mono text-[11px] text-slate-600">' + (meins ? escapeHtml(meins) : '-') + '</td>';
                     html += '  <td class="p-2 text-center">';
                     html += '    <button type="button" class="btn-use-ref px-2.5 py-1 text-[10px] font-extrabold ' +
-                            'text-emerald-700 hover:text-white bg-emerald-50 hover:bg-emerald-600 border ' +
-                            'border-emerald-300 hover:border-emerald-600 rounded-md transition shadow-2xs ' +
+                            'text-neutral-600 dark:text-neutral-400 hover:text-white bg-neutral-50 dark:bg-neutral-850 hover:bg-emerald-600 border ' +
+                            'border-neutral-300 dark:border-neutral-700 hover:border-emerald-600 rounded-md transition shadow-2xs ' +
                             'inline-flex items-center gap-1 cursor-pointer">';
                     html += '      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" ' +
@@ -2991,7 +2989,7 @@ html += '  <td class="p-2 font-medium text-slate-800 text-[11px] max-w-[200px] t
                                         pBtn.className = "px-2.5 py-1 rounded-lg border text-[11px] font-extrabold transition " +
                                             (pageNum === maraCurrentPage
                                                 ? "bg-emerald-600 text-white border-emerald-600 shadow-2xs"
-                                                : "bg-white text-slate-700 hover:bg-emerald-50 border-slate-300 cursor-pointer");
+                                                : "bg-white text-slate-700 hover:bg-neutral-50 dark:bg-neutral-850 border-slate-300 cursor-pointer");
                                         pBtn.innerText = pageNum;
                                         pBtn.onclick = function () { changeMaraPage(pageNum); };
                                         paginationControls.appendChild(pBtn);
@@ -3144,12 +3142,12 @@ html += '  <td class="p-2 font-medium text-slate-800 text-[11px] max-w-[200px] t
             function showToast(message, type) {
                 type = type || "info";
                 const icons = {
-                    success: '<span class="text-emerald-400 font-bold">&#10003;</span>',
-                    error: '<span class="text-rose-400 font-bold">&#10005;</span>',
+                    success: '<span class="text-emerald-400 font-bold"></span>',
+                    error: '<span class="text-rose-400 font-bold">&times; </span>',
                     info: '<span class="text-blue-400 font-bold">&#8505;</span>'
                 };
                 const bgClasses = {
-                    success: "bg-slate-900/90 backdrop-blur-md border-l-4 border-emerald-500",
+                    success: "bg-slate-900/90 backdrop-blur-md border-l-4 border-neutral-400 dark:border-neutral-600",
                     error: "bg-slate-900/90 backdrop-blur-md border-l-4 border-rose-500",
                     info: "bg-slate-900/90 backdrop-blur-md border-l-4 border-blue-500"
                 };

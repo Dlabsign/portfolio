@@ -33,6 +33,7 @@ export interface DetailedProject {
   sourceUrl?: string;
   isGame?: boolean;
   gameUrl?: string;
+  controlsHint?: LocalizedText;
 }
 
 export const CATEGORIES_CONFIG: {
@@ -112,10 +113,65 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
     isGame: true,
     gameUrl: "/project/super_smash_badminton_arcade.html",
     liveUrl: "/project/super_smash_badminton_arcade.html",
+    controlsHint: {
+      EN: "Controls: Arrow Keys / WASD to move • Space to smash • Up / W to lob",
+      ID: "Kontrol: Panah / WASD untuk bergerak • Spasi untuk smash • Panah Atas / W untuk lob",
+    },
+  },
+  {
+    id: "type-racing-stadium",
+    number: "02",
+    title: "Type Racing Stadium Edition",
+    subtitle: {
+      EN: "Interactive Stadium Typing Sprint & Real-Time WPM Race Engine",
+      ID: "Game Balap Ketik Ceria di Stadion & Simulasi WPM Real-Time",
+    },
+    category: "Website",
+    categoryKey: "website",
+    year: "2025",
+    client: "Personal Project",
+    role: {
+      EN: "Game Design & Frontend Engineering",
+      ID: "Desain Game & Rekayasa Frontend",
+    },
+    summary: {
+      EN: "Fast-paced arcade stadium typing race featuring animated sprinters, dynamic lane physics, procedural crowd cheers, and real-time WPM/accuracy tracking.",
+      ID: "Game balap ketik arcade di stadion dengan pelari beranimasi, fisika lintasan dinamis, sorak penonton prosedural, dan kalkulasi WPM serta akurasi real-time.",
+    },
+    description: {
+      EN: "An exhilarating stadium sprint typing race engineered directly with vanilla HTML5, CSS animations, and JavaScript with zero external runtime dependencies. Players race against competitive AI sprinters across a vibrant athletic track by typing on-screen prompts accurately. Features interactive virtual keyboard visual feedback, dynamic runner limb mechanics, audio synthesizer sound effects, crowd excitement surges, and real-time WPM calculation. Playable directly in the browser.",
+      ID: "Game balap ketik atletik penuh aksi yang dibangun murni dengan HTML5, animasi CSS, dan JavaScript tanpa pustaka eksternal. Pemain beradu kecepatan melawan pelari AI kompetitif di lintasan lari stadion dengan mengetikkan kata-kata target secara akurat. Dilengkapi visualisasi tombol keyboard interaktif, animasi anggota tubuh pelari dinamis, efek suara synthesizer audio, sorak penonton, serta kalkulasi WPM dan akurasi langsung. Dapat dimainkan seketika di peramban.",
+    },
+    caseStudy: {
+      problem: {
+        EN: "Traditional typing test platforms are monotonous, relying on dry text blocks and sterile interfaces that fail to engage users or provide satisfying visual feedback during typing practice.",
+        ID: "Platform latihan mengetik konvensional umumnya monoton, berbasis blok teks kaku dan antarmuka hampa yang kurang memotivasi serta minim kepuasan visual saat melatih kecepatan jari.",
+      },
+      trustPositioning: {
+        EN: "Transformed typing speed measurement into an electrifying stadium championship experience, using expressive character animations, realistic track ambiance, responsive virtual keys, and real-time feedback loops.",
+        ID: "Mengubah pengukuran kecepatan mengetik menjadi turnamen lari atletik stadion yang seru dan penuh warna, dengan animasi karakter ekspresif, atmosfer stadion hidup, serta respons tombol virtual yang memuaskan.",
+      },
+      whatChanged: {
+        EN: "Engineered an instant zero-latency browser race game featuring multi-lane AI athletes, live WPM telemetries, adaptive countdown states, and immersive crowd soundscapes all running at a buttery 60 FPS.",
+        ID: "Menghadirkan pengalaman balap ketik 60 FPS instan tanpa latensi di peramban dengan lintasan multi-jalur, lawan AI adaptif, telemetri WPM & akurasi seketika, dan atmosfer stadion interaktif yang adiktif.",
+      },
+    },
+    stack: ["HTML5", "CSS3 Animation", "JavaScript", "Web Audio API", "Tailwind CSS"],
+    heroImage: "/project/type_racing_stadium.png",
+    gallery: [
+      "/project/type_racing_stadium.png",
+    ],
+    isGame: true,
+    gameUrl: "/project/type_racing_stadium_edition.html",
+    liveUrl: "/project/type_racing_stadium_edition.html",
+    controlsHint: {
+      EN: "Controls: Type the highlighted letters/words on your keyboard to sprint towards the finish line",
+      ID: "Kontrol: Ketik huruf/kata yang disorot pada keyboard fisik untuk berlari kencang menuju garis finis",
+    },
   },
   {
     id: "icy-goat",
-    number: "02",
+    number: "03",
     title: "ICY - GOAT",
     subtitle: {
       EN: "Holiday Package Discovery & Travel Platform",
@@ -162,7 +218,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "kabaabs",
-    number: "03",
+    number: "04",
     title: "Kabaabs",
     subtitle: {
       EN: "Street Food Ordering & Culinary Brand Experience",
@@ -210,7 +266,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "movie-app",
-    number: "04",
+    number: "05",
     title: "Movie Ticketing Mobile App",
     subtitle: {
       EN: "Cinematic Dark Mode Ticket Booking Experience",
@@ -258,7 +314,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "smart-vending",
-    number: "05",
+    number: "06",
     title: "Smart Fruit Salad & Vending Machine",
     subtitle: {
       EN: "IoT-Integrated Fresh Food Mobile Ordering System",
@@ -307,7 +363,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "sap-mdg",
-    number: "06",
+    number: "07",
     title: "SAP Master Data Governance (MDG) Platform",
     subtitle: {
       EN: "Enterprise Staging Platform & Multi-Level Workflow Engine",
@@ -353,7 +409,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "church-social-media",
-    number: "07",
+    number: "08",
     title: "Church Social Media Design",
     subtitle: {
       EN: "Visual Communications & Community Ministry Branding",
@@ -403,7 +459,7 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
   },
   {
     id: "kedai-nihao",
-    number: "08",
+    number: "09",
     title: "Kedai Nihao",
     subtitle: {
       EN: "Promotional Poster Series & Brand Identity",

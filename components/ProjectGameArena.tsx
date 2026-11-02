@@ -7,9 +7,13 @@ import { useLanguage } from "@/context/LanguageContext";
 interface ProjectGameArenaProps {
   gameUrl: string;
   title: string;
+  controlsHint?: {
+    EN: string;
+    ID: string;
+  };
 }
 
-export default function ProjectGameArena({ gameUrl, title }: ProjectGameArenaProps) {
+export default function ProjectGameArena({ gameUrl, title, controlsHint }: ProjectGameArenaProps) {
   const { lang } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [iframeKey, setIframeKey] = useState(0);
@@ -110,12 +114,14 @@ export default function ProjectGameArena({ gameUrl, title }: ProjectGameArenaPro
       {/* Understated Controls Hint */}
       <div className="flex flex-wrap items-center justify-between gap-2 px-1 type-caption text-[#96958f]">
         <span>
-          {lang === "EN"
-            ? "Controls: Arrow Keys / WASD to move • Space to smash • Up / W to lob"
-            : "Kontrol: Panah / WASD untuk bergerak • Spasi untuk smash • Panah Atas / W untuk lob"}
+          {controlsHint
+            ? controlsHint[lang]
+            : (lang === "EN"
+                ? "Controls: Arrow Keys / WASD to move • Space to smash • Up / W to lob"
+                : "Kontrol: Panah / WASD untuk bergerak • Spasi untuk smash • Panah Atas / W untuk lob")}
         </span>
         <span className="text-[#96958f]">
-          {lang === "EN" ? "Click canvas to enable sound" : "Klik arena untuk aktifkan suara"}
+          {lang === "EN" ? "Click arena to enable sound" : "Klik arena untuk aktifkan suara"}
         </span>
       </div>
     </div>

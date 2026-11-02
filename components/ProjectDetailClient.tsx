@@ -165,12 +165,13 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
           </div>
 
           <motion.div style={{ y: yContent }}>
-            {/* Special Game Arena for Super Smash Badminton Arcade */}
+            {/* Special Game Arena for Playable Browser Games */}
             {project.isGame && project.gameUrl && (
               <section className="pt-8">
                 <ProjectGameArena
                   gameUrl={project.gameUrl}
                   title={project.title}
+                  controlsHint={project.controlsHint}
                 />
               </section>
             )}

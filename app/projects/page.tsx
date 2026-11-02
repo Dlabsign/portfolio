@@ -384,7 +384,7 @@ function ProjectCard({
       <Link
         href={`/projects/${project.id}`}
         data-cursor-interactive="true"
-        className="group block bg-white border border-[#E5E4E0] hover:border-[#2d2d2a] rounded-xl overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+        className="group flex flex-col h-full bg-white border border-[#E5E4E0] hover:border-[#2d2d2a] rounded-xl overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
       >
         {/* Visual Preview Container - Prominently Displayed on Work Page */}
         <div className="relative w-full aspect-[16/10] bg-[#EFEFEF] overflow-hidden">
@@ -418,7 +418,7 @@ function ProjectCard({
         </div>
 
         {/* Project Information with Gray to Graphite Hover Animation */}
-        <div className="p-6 sm:p-7 flex flex-col justify-between">
+        <div className="p-6 sm:p-7 flex flex-col justify-between flex-1">
           <div>
             <div className="flex items-center justify-between gap-4">
               <span className="type-caption text-[#6e6e69]/80 group-hover:text-[#2d2d2a] transition-colors duration-300">
@@ -437,16 +437,6 @@ function ProjectCard({
                 <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
             </div>
-
-            {project.subtitle && (
-              <p className="type-caption text-[#6e6e69]/80 group-hover:text-[#2d2d2a] mt-1 transition-colors duration-300">
-                {project.subtitle[lang]}
-              </p>
-            )}
-
-            <p className="type-small text-[#6e6e69] group-hover:text-[#2d2d2a] mt-3 line-clamp-3 transition-colors duration-300">
-              {project.summary[lang]}
-            </p>
           </div>
 
           {/* Tech Stack Pills & Action Link in Scarlet on Hover */}

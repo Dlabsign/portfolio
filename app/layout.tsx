@@ -1,17 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Configure Space Grotesk from Google Fonts for all headlines
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
-// Configure PP Neue Montreal locally for body & general typography
+// Configure PP Neue Montreal locally for body & headline typography
 const ppNeueMontreal = localFont({
   src: [
     {
@@ -53,10 +44,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://danielkurnia.vercel.app"),
   title: "Daniel Kurnia — Minimalist Editorial & Typography",
   description:
-    "Portfolio of Daniel Kurnia (@danielkuptr). Minimalist editorial interface, high-contrast typography in Space Grotesk & PP Neue Montreal, and digital systems architecture.",
+    "Portfolio of Daniel Kurnia (@danielkuptr). Minimalist editorial interface, high-contrast typography in PP Neue Montreal, and digital systems architecture.",
   keywords: [
     "Daniel Kurnia",
-    "Space Grotesk",
     "PP Neue Montreal",
     "danielkuptr",
     "dlabsign.ID",
@@ -87,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ppNeueMontreal.variable} ${spaceGrotesk.variable} ${ppNeueMontreal.className} bg-[#FAFAFA] text-[#2d2d2a]`}
+      className={`${ppNeueMontreal.variable} ${ppNeueMontreal.className} bg-[#FAFAFA] text-[#2d2d2a]`}
     >
       <body
         className={`${ppNeueMontreal.className} font-sans antialiased bg-[#FAFAFA] text-[#2d2d2a] selection:bg-[#bfe100] selection:text-[#2d2d2a]`}

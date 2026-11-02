@@ -56,7 +56,7 @@
                     body {
                         width: 100%;
                         min-height: 100vh;
-                        background-color: #f8fafc;
+                        background-color: var(--mdg-canvas);
                         font-family: 'Inter', sans-serif !important;
                         color: #0f172a;
                         -webkit-font-smoothing: antialiased;
@@ -126,7 +126,7 @@
                         width: 42px;
                         height: 42px;
                         border-radius: 12px;
-                        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+                        background: var(--mdg-btn-primary-bg); color: var(--mdg-btn-primary-text);
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -134,7 +134,7 @@
                         font-weight: 800;
                         font-size: 14px;
                         letter-spacing: 0.05em;
-                        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+                        box-shadow: none;
                     }
 
                     .brand-text-wrap {
@@ -175,8 +175,7 @@
                         width: 7px;
                         height: 7px;
                         border-radius: 9999px;
-                        background: #0284c7;
-                        box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
+                        background: var(--mdg-text-secondary); box-shadow: 0 0 0 1px var(--mdg-border);
                         animation: devPulse 1.8s infinite;
                     }
 
@@ -239,13 +238,16 @@
 
                     /* 2. HERO BANNER */
                     .hero-banner {
-                        width: 100%;
-                        background: linear-gradient(135deg, #184434 0%, #0f382a 60%, #0b2b20 100%);
-                        padding: 28px 40px;
-                        display: flex;
-                        flex-direction: column;
-                        box-shadow: 0 4px 20px rgba(15, 56, 42, 0.12);
-                    }
+                width: 100%;
+                background: var(--mdg-surface-subtle);
+                border-bottom: 1px solid var(--mdg-border);
+                padding: 32px 24px 28px 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-shadow: none;
+            }
 
                     .hero-section {
                         display: flex;
@@ -258,14 +260,12 @@
                         font-size: 32px;
                         font-weight: 800;
                         letter-spacing: -1px;
-                        color: #ffffff !important;
-                        margin: 0;
-                        line-height: 1.2;
+                        color: var(--mdg-text-primary) !important; margin: 0; line-height: 1.25;
                     }
 
                     .hero-section p {
                         font-size: 14px;
-                        color: #74c69d !important;
+                        color: var(--mdg-text-muted) !important;
                         font-weight: 500;
                         letter-spacing: 0.02em;
                         margin: 0;
@@ -395,7 +395,7 @@
 
                     .ds-input:focus {
                         background: #ffffff;
-                        border-color: #059669;
+                        border-color: var(--mdg-border-focus);
                         box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
                     }
 
@@ -425,7 +425,7 @@
                     }
 
                     .ds-select:focus {
-                        border-color: #059669;
+                        border-color: var(--mdg-border-focus);
                         box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
                     }
 
@@ -528,7 +528,7 @@
                     }
 
                     .ds-table tr:hover td {
-                        background-color: #f8fafc;
+                        background-color: var(--mdg-canvas);
                     }
 
                     .ds-table tr:last-child td {
@@ -699,6 +699,7 @@
                     }
                 </style>
               <script src="js/mdg-runtime.js"></script>
+  <link rel="stylesheet" href="css/mdg-theme.css">
 </head>
 
             <body>
@@ -923,7 +924,7 @@
                                 class="status-tab-btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                 <span>Approved</span>
-                                <span class="px-2 py-0.5 rounded-full text-xs font-mono bg-emerald-50 text-emerald-700 font-bold border border-emerald-200"
+                                <span class="px-2 py-0.5 rounded-full text-xs font-mono bg-neutral-50 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 font-bold border border-neutral-200 dark:border-neutral-700"
                                     id="statApprovedCount">0</span>
                             </button>
                             <button type="button" id="tabBtn_REJECTED" role="tab" aria-selected="false" onclick="setFilterStatusTab('REJECTED')"
@@ -947,7 +948,7 @@
                                     <span class="text-xs uppercase tracking-wider text-slate-400 font-medium">Urutan Tanggal</span>
                                     <span class="w-px h-3.5 bg-slate-200"></span>
                                     <span id="dateSortLabel" class="font-bold text-slate-800">Terbaru &rarr; Terlama</span>
-                                    <svg id="dateSortIcon" class="w-3.5 h-3.5 text-emerald-600 transition-transform duration-200"
+                                    <svg id="dateSortIcon" class="w-3.5 h-3.5 text-neutral-600 dark:text-neutral-400 transition-transform duration-200"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                                     </svg>
@@ -1023,8 +1024,7 @@
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center font-extrabold text-white text-sm shadow-xs">
-                                    &#10003;
-                                </div>
+                                    </div>
                                 <div>
                                     <h2 class="font-extrabold text-base text-white flex items-center gap-2">
                                         <span>Request Review</span>
@@ -1099,7 +1099,7 @@
                             <div id="drawerAttachmentSection" class="hidden mb-5 bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs">
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                                     <div class="flex items-center gap-2">
-                                        <span class="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">📎</span>
+                                        <span class="w-6 h-6 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 flex items-center justify-center font-bold text-xs"><svg class="w-3.5 h-3.5 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></span>
                                         <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider">File Attachment Pendukung Requester</h3>
                                     </div>
                                     <span id="drawerAttBadge" class="text-[10px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200 px-2.5 py-0.5 rounded-full">0 File Attachment</span>
@@ -1165,8 +1165,7 @@
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center font-black text-white text-sm shadow-xs">
-                                    &#9998;
-                                </div>
+                                    </div>
                                 <div>
                                     <h2 class="font-extrabold text-base text-white flex items-center gap-2">
                                         <span>Change Request Review</span>
@@ -1215,7 +1214,7 @@
                             </div>
 
                             <!-- Material Description Comparison Banner -->
-                            <div class="bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-2xs flex flex-col gap-1.5"
+                            <div class="bg-white p-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-2xs flex flex-col gap-1.5"
                                 id="chgModalDescDiffBox">
                                 <span
                                     class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
@@ -1226,9 +1225,9 @@
                                     <span
                                         class="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-600 border border-slate-200 line-through"
                                         id="chgModalOldDesc">-</span>
-                                    <span class="text-emerald-700 font-bold">&rarr;</span>
+                                    <span class="text-neutral-600 dark:text-neutral-400 font-bold">&rarr;</span>
                                     <span
-                                        class="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-950 font-extrabold border border-emerald-300"
+                                        class="px-2.5 py-1 rounded-xl bg-neutral-50 dark:bg-neutral-850 text-emerald-950 font-extrabold border border-neutral-300 dark:border-neutral-700"
                                         id="chgModalNewDesc">-</span>
                                 </div>
                             </div>
@@ -1398,14 +1397,14 @@
                 <div id="checkConfirmModal" class="ds-modal-backdrop hidden" style="z-index:10000;" role="dialog" aria-modal="true" aria-labelledby="checkConfirmTitle">
                     <div class="ds-modal-card max-w-md p-7 text-center" style="border-radius:28px;">
                         <div
-                            class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center text-3xl bg-emerald-100 text-emerald-600 border border-emerald-200 shadow-xs">
+                            class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center text-3xl bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 shadow-xs">
                             &#128203;
                         </div>
                         <h3 id="checkConfirmTitle" class="text-base font-black text-slate-900 mb-2 leading-snug">
                             Konfirmasi Pengecekan Data
                         </h3>
                         <p
-                            class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-3 shadow-2xs">
+                            class="text-xs font-bold text-emerald-800 bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-3.5 mb-3 shadow-2xs">
                             Apakah Anda yakin ingin melakukan pengecekan data ini?
                         </p>
                         <p class="text-xs font-semibold text-slate-500 mb-6">
@@ -1433,7 +1432,7 @@
                         <div class="relative w-16 h-16 mx-auto mb-5 flex items-center justify-center">
                             <div class="absolute inset-0 rounded-2xl bg-emerald-500/20 animate-ping"></div>
                             <div
-                                class="w-14 h-14 rounded-2xl border-4 border-emerald-200 border-t-emerald-600 animate-spin">
+                                class="w-14 h-14 rounded-2xl border-4 border-neutral-200 dark:border-neutral-700 border-t-emerald-600 animate-spin">
                             </div>
                         </div>
                         <h3 id="checkProcessingTitle" class="text-base font-black text-slate-900 mb-1">
@@ -1453,9 +1452,8 @@
                 <div id="checkSuccessModal" class="ds-modal-backdrop hidden" style="z-index:10002;" role="dialog" aria-modal="true" aria-labelledby="checkSuccessTitle">
                     <div class="ds-modal-card max-w-md p-7 text-center" style="border-radius:28px;">
                         <div
-                            class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl bg-emerald-100 text-emerald-600 border-4 border-emerald-200 shadow-md">
-                            &#10003;
-                        </div>
+                            class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border-4 border-neutral-200 dark:border-neutral-700 shadow-md">
+                            </div>
                         <h3 id="checkSuccessTitle" class="text-base font-black text-emerald-900 mb-1">
                             Pengecekan Data Berhasil!
                         </h3>
@@ -1463,7 +1461,7 @@
                             Proses pengecekan data material telah berhasil dilaksanakan.
                         </p>
                         <div
-                            class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-6 text-left shadow-2xs">
+                            class="bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-3.5 mb-6 text-left shadow-2xs">
                             <div class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1">Status
                                 Pengecekan</div>
                             <div class="text-xs font-semibold text-emerald-900 flex items-center gap-2">
@@ -1700,7 +1698,7 @@
                             var txt = document.createTextNode("Checked");
                             span.appendChild(txt);
                         } else if (st === 'APPROVED') {
-                            span.className = "bg-emerald-500/10 text-emerald-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-500/20 inline-flex items-center gap-1.5";
+                            span.className = "bg-emerald-500/10 text-emerald-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-neutral-400 dark:border-neutral-600/20 inline-flex items-center gap-1.5";
                             var dot = document.createElement("span");
                             dot.className = "w-1.5 h-1.5 rounded-full bg-emerald-500";
                             span.appendChild(dot);
@@ -1925,7 +1923,7 @@
                                 renderMaraResults(maraSearchResults, 1);
 
                                 if (maraSearchResults.length > 0) {
-                                    badge.className = "text-[11px] font-extrabold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
+                                    badge.className = "text-[11px] font-extrabold px-3 py-1 rounded-full bg-neutral-50 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700";
                                     badge.innerText = `${maraSearchResults.length} Record(s) Found`;
                                 } else {
                                     tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 font-medium">No matching records found for criteria.</td></tr>`;
@@ -1941,7 +1939,7 @@
                                 renderMaraResults(maraSearchResults, 1);
 
                                 if (localResults.length > 0) {
-                                    badge.className = "text-[11px] font-extrabold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200";
+                                    badge.className = "text-[11px] font-extrabold px-3 py-1 rounded-full bg-neutral-50 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700";
                                     badge.innerText = `${localResults.length} Record(s) Found`;
                                 } else {
                                     tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 font-medium">No matching SAP MARA records found.</td></tr>`;
@@ -2015,7 +2013,7 @@
                         <td class="p-2.5 text-center font-mono text-slate-600 text-[11px]">${meinsClean || '-'}</td>
                         <td class="p-2.5 text-center">
                             <button type="button" onclick="useMaraIndex(${rowIdx})"
-                                class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700"
+                                class="px-2.5 py-1 bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
                                 style="border:1px solid #a7f3d0; border-radius:8px; font-size:10px; font-weight:800; display:inline-flex; align-items:center; gap:4px;">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -2136,7 +2134,7 @@
                             } else if (tab === 'APPROVED') {
                                 btn.className = "status-tab-btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 flex items-center gap-2";
                                 const badge = btn.querySelector('span[id^="stat"]');
-                                if (badge) badge.className = "px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-emerald-700 font-bold border border-emerald-200";
+                                if (badge) badge.className = "px-2 py-0.5 rounded-full text-[10px] font-mono bg-neutral-50 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 font-bold border border-neutral-200 dark:border-neutral-700";
                             } else if (tab === 'REJECTED') {
                                 btn.className = "status-tab-btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 flex items-center gap-2";
                                 const badge = btn.querySelector('span[id^="stat"]');
@@ -2416,9 +2414,9 @@
 
                                 if (isDescChanged) {
                                     detailColHtml += '<div class="mt-1 inline-flex items-center gap-1.5 ' +
-                                        'px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px]">' +
+                                        'px-2 py-0.5 rounded-lg bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 text-[11px]">' +
                                         '<span class="text-slate-500 line-through">' + oldMaktxEsc + '</span>' +
-                                        '<span class="text-emerald-700 font-bold">&rarr;</span>' +
+                                        '<span class="text-neutral-600 dark:text-neutral-400 font-bold">&rarr;</span>' +
                                         '<span class="font-extrabold text-emerald-900">' + newMaktxEsc + '</span>' +
                                         '</div>';
                                 }
@@ -2459,16 +2457,16 @@
                             if (isActionable) {
                                 actionBtnHtml += ' <button onclick="markAsCheckedDirect(\'' + reqNoEsc + '\')" ' +
                                     'class="ds-btn-primary" style="padding:5px 12px; font-size:11px; border-radius:9999px;">' +
-                                    '&#10003; Checked</button>' +
+                                    'Checked</button>' +
                                     ' <button onclick="openReturnModal(\'' + reqNoEsc + '\', \'' + reqType + '\')" ' +
                                     'class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 ' +
                                     'px-3 py-1 rounded-full font-extrabold text-[11px] transition shadow-2xs ' +
-                                    'flex items-center gap-1 cursor-pointer">&#10007; Reject</button>';
+                                    'flex items-center gap-1 cursor-pointer">Reject</button>';
                             } else if (r.status === 'CHECKED') {
                                 actionBtnHtml += ' <button disabled class="px-2.5 py-1 rounded-full text-[11px] ' +
                                     'font-bold bg-slate-100 text-slate-400 border border-slate-200 ' +
                                     'cursor-not-allowed inline-flex items-center gap-1 opacity-75" ' +
-                                    'title="Data sudah di-Checked, menunggu Approval Material">&#10003; Checked</button>';
+                                    'title="Data sudah di-Checked, menunggu Approval Material">Checked</button>';
                             }
 
                             var tr = document.createElement('tr');
@@ -2526,7 +2524,7 @@
 
                         for (let p = startPage; p <= endPage; p++) {
                             const isCurrent = (p === currentPage);
-                            const activeStyle = isCurrent ? 'style="background:#059669; color:#ffffff; border-color:#059669; font-weight:700;"' : '';
+                            const activeStyle = isCurrent ? 'style="background:#059669; color:#ffffff; border-color: var(--mdg-border-focus); font-weight:700;"' : '';
                             ctrlHtml += '<button type="button" ' + activeStyle + ' onclick="changeRequestPage(' + p + ')">' + p + '</button> ';
                         }
 
@@ -2570,9 +2568,9 @@
                                 '<div>' + escapeHtml(fldLabel) + '</div><div class="text-[10px] font-mono text-slate-400">' + escapeHtml(fldName) + '</div></td>';
                             rows += '<td class="p-3 font-mono text-slate-600 bg-rose-50/30 border-r border-slate-200">' +
                                 '<div class="px-2.5 py-1 rounded-lg bg-white border border-rose-200 text-rose-800 font-medium">' + oldVal + '</div></td>';
-                            rows += '<td class="p-3 text-center font-bold text-emerald-700 border-r border-slate-200">&rarr;</td>';
-                            rows += '<td class="p-3 font-mono text-slate-900 bg-emerald-50/30">' +
-                                '<div class="px-2.5 py-1 rounded-lg bg-white border border-emerald-300 text-emerald-950 font-bold">' + newVal + '</div></td>';
+                            rows += '<td class="p-3 text-center font-bold text-neutral-600 dark:text-neutral-400 border-r border-slate-200">&rarr;</td>';
+                            rows += '<td class="p-3 font-mono text-slate-900 bg-neutral-50 dark:bg-neutral-850/30">' +
+                                '<div class="px-2.5 py-1 rounded-lg bg-white border border-neutral-300 dark:border-neutral-700 text-emerald-950 font-bold">' + newVal + '</div></td>';
                             rows += '</tr>';
                         });
                         tbody.innerHTML = rows;
@@ -2616,7 +2614,7 @@
                         if (statusEl) {
                             let badgeColor = 'bg-slate-500/10 text-slate-700 border-slate-500/20';
                             if (req.status === 'APPROVED') {
-                                badgeColor = 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20';
+                                badgeColor = 'bg-emerald-500/10 text-neutral-600 dark:text-neutral-400 border-neutral-400 dark:border-neutral-600/20';
                             } else if (req.status === 'REJECTED') {
                                 badgeColor = 'bg-rose-500/10 text-rose-700 border-rose-500/20';
                             } else if (req.status === 'CHECKED') {
@@ -2833,9 +2831,9 @@
                                 html += '    </div>';
                                 html += '  </div>';
                             } else {
-                                html += '  <div class="h-24 w-full bg-emerald-50/80 rounded-lg flex flex-col ';
+                                html += '  <div class="h-24 w-full bg-neutral-50 dark:bg-neutral-850/80 rounded-lg flex flex-col ';
                                 html += '              items-center justify-center p-2 mb-2 border border-emerald-100">';
-                                html += '    <svg class="w-8 h-8 text-emerald-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
+                                html += '    <svg class="w-8 h-8 text-neutral-600 dark:text-neutral-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
                                 html += '      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" ';
                                 html += '            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293';
                                 html += '               l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>';
@@ -3170,7 +3168,7 @@
                         ALL_COLUMNS.forEach((col, idx) => {
                             let extraClass = '';
                             if (idx === 0) {
-                                extraClass = 'text-emerald-950 font-black bg-emerald-100 border-r border-emerald-200 min-w-[180px]';
+                                extraClass = 'text-emerald-950 font-black bg-neutral-100 dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 min-w-[180px]';
                             } else if (col.field === 'maktx') {
                                 extraClass = 'min-w-[260px] font-extrabold text-slate-800 border-r border-slate-200';
                             } else {
@@ -3229,7 +3227,7 @@
 
                                 if (colIdx === 0) {
                                     html += `
-                            <td class="p-2.5 bg-emerald-50 border-r border-emerald-200 font-mono font-extrabold text-emerald-900">
+                            <td class="p-2.5 bg-neutral-50 dark:bg-neutral-850 border-r border-neutral-200 dark:border-neutral-700 font-mono font-extrabold text-emerald-900">
                                 ${displayVal}
                             </td>
                         `;
@@ -3284,12 +3282,12 @@
                         if (isHold) {
                             if (titleEl) titleEl.innerText = 'Validation Result: Document On Hold';
                             if (subtitleEl) subtitleEl.innerText = 'Validation failed based on rules.';
-                            if (iconEl) iconEl.innerText = '⚠️';
+                            if (iconEl) iconEl.innerText = '[WARN]';
                             if (noteEl) noteEl.innerHTML = 'Document is <strong>On Hold</strong> in system for review and not returned.';
                         } else {
                             if (titleEl) titleEl.innerText = 'Validation Result: Rejected';
                             if (subtitleEl) subtitleEl.innerText = 'Data validation rules failed.';
-                            if (iconEl) iconEl.innerText = '✕';
+                            if (iconEl) iconEl.innerText = 'X';
                             if (noteEl) noteEl.innerHTML = 'Document is <strong>returned to Requestor</strong> with reasons above.';
                         }
 
@@ -3354,7 +3352,7 @@
                     function markAsCheckedDirect(reqNo) {
                         if (!reqNo) return;
                         pendingCheckReqNo = reqNo;
-                        console.log("🔍 [CHECKED PROCESS] Step 1: Data Steward clicked 'Mark as Checked' for REQ_NO:", reqNo);
+                        console.log("<svg class="w-3.5 h-3.5 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> [CHECKED PROCESS] Step 1: Data Steward clicked 'Mark as Checked' for REQ_NO:", reqNo);
 
                         const reqIdEl = document.getElementById('checkConfirmReqId');
                         if (reqIdEl) reqIdEl.innerText = reqNo;
@@ -3372,7 +3370,7 @@
                         if (!pendingCheckReqNo) return;
                         const reqNo = pendingCheckReqNo;
 
-                        console.log("📋 [CHECKED PROCESS] Step 2: User confirmed check process for REQ_NO:", reqNo);
+                        console.log("<svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> [CHECKED PROCESS] Step 2: User confirmed check process for REQ_NO:", reqNo);
                         closeCheckConfirmModal();
                         showCheckProcessingModal();
 
@@ -3382,15 +3380,15 @@
                         formData.append('REQ_NO', reqNo);
                         formData.append('REQ_ID', reqNo);
 
-                        console.log("📤 [CHECKED PROCESS] Step 3: Sending POST AJAX request to backend (?OnInputProcessing=CHECK_AND_FORWARD) for REQ_NO:", reqNo);
+                        console.log("[SEND] [CHECKED PROCESS] Step 3: Sending POST AJAX request to backend (?OnInputProcessing=CHECK_AND_FORWARD) for REQ_NO:", reqNo);
 
                         safeFetchJson('?OnInputProcessing=CHECK_AND_FORWARD&action=CHECK_AND_FORWARD', { method: 'POST', body: formData })
                             .then(data => {
                                 hideCheckProcessingModal();
-                                console.log("📦 [CHECKED PROCESS] Step 5: Parsed Backend JSON Data:", data);
+                                console.log("[PAYLOAD] [CHECKED PROCESS] Step 5: Parsed Backend JSON Data:", data);
 
                                 if (data && data.status === 'SUCCESS') {
-                                    console.log("✅ [CHECKED PROCESS] Step 6: SUCCESS - Request", reqNo, "passed all SAP master validations!");
+                                    console.log("[OK] [CHECKED PROCESS] Step 6: SUCCESS - Request", reqNo, "passed all SAP master validations!");
                                     const trg = allRequests.find(r => r.req_no === reqNo);
                                     if (trg) trg.status = 'CHECKED';
                                     try { localStorage.setItem('MDG_MM_STATUS_' + reqNo, 'CHECKED'); } catch(e) {}
@@ -3399,15 +3397,15 @@
                                     updateKpis();
                                     applyFilter();
                                 } else if (data.status === 'HOLD') {
-                                    console.warn("⚠️ [CHECKED PROCESS] Step 6: HOLD - Request", reqNo, "has invalid data. Reasons:", data.rej_reason || data.message);
+                                    console.warn("[WARN] [CHECKED PROCESS] Step 6: HOLD - Request", reqNo, "has invalid data. Reasons:", data.rej_reason || data.message);
                                     showToast(data.message || 'Dokumen status On Hold.', 'warning');
                                     showValResultModal(reqNo, data.rej_reason || data.message, true);
                                 } else if (data.status === 'REJECTED') {
-                                    console.error("❌ [CHECKED PROCESS] Step 6: REJECTED - Request", reqNo, "failed validation:", data.rej_reason || data.message);
+                                    console.error("[FAIL] [CHECKED PROCESS] Step 6: REJECTED - Request", reqNo, "failed validation:", data.rej_reason || data.message);
                                     showToast(data.message || 'Dokumen gagal validasi dan ditolak.', 'error');
                                     showValResultModal(reqNo, data.rej_reason || data.message, false);
                                 } else {
-                                    console.error("🚨 [CHECKED PROCESS] Step 6: ERROR - Unexpected status:", data);
+                                    console.error("[ALERT] [CHECKED PROCESS] Step 6: ERROR - Unexpected status:", data);
                                     let errMsg = data.message || 'Terjadi kesalahan saat pengecekan data.';
                                     showToast(errMsg, 'error');
                                     showValResultModal(reqNo, errMsg, false);
@@ -3415,7 +3413,7 @@
                             })
                             .catch(err => {
                                 hideCheckProcessingModal();
-                                console.error("💥 [CHECKED PROCESS] Step 6: EXCEPTION / SERVER ERROR:", err);
+                                console.error("[ERROR] [CHECKED PROCESS] Step 6: EXCEPTION / SERVER ERROR:", err);
                                 const errMsg = err.message || 'Terjadi kesalahan koneksi atau respon server SAP.';
                                 showToast('Gagal memproses permohonan.', 'error');
                                 showValResultModal(reqNo, 'Proses gagal: ' + errMsg, false);
@@ -3583,13 +3581,13 @@
                         <!-- HEADER BAR: TITLE & TOP CLOSE BUTTON -->
                         <div class="w-full flex items-center justify-between pb-3 mb-3 border-b border-slate-800 flex-wrap gap-2">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg font-bold shadow-xs">
-                                    🔍
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-neutral-400 dark:border-neutral-600/30 flex items-center justify-center text-emerald-400 text-lg font-bold shadow-xs">
+                                    <svg class="w-3.5 h-3.5 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                 </div>
                                 <div>
                                     <h2 class="text-base sm:text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
                                         <span>Pratinjau Dokumen Attachment</span>
-                                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">Zoom Active</span>
+                                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-neutral-400 dark:border-neutral-600/30">Zoom Active</span>
                                     </h2>
                                     <p class="text-xs text-slate-400 font-medium">Gunakan tombol di bawah untuk memperbesar/memperkecil agar teks dokumen mudah dibaca.</p>
                                 </div>
@@ -3621,7 +3619,7 @@
                                 </button>
                                 
                                 <span id="dsImageZoomLevel"
-                                    class="text-sm font-mono font-black text-emerald-400 bg-slate-900 border border-emerald-500/30"
+                                    class="text-sm font-mono font-black text-emerald-400 bg-slate-900 border border-neutral-400 dark:border-neutral-600/30"
                                     style="padding:6px 14px; border-radius:12px; min-width:75px; text-align:center;">100%</span>
 
                                 <button type="button" onclick="changeDsImageZoom(0.25)"
@@ -3668,14 +3666,14 @@
                             <div class="absolute bottom-3 left-3 bg-slate-900/90 border border-slate-700 text-slate-300"
                                 style="font-size:11px; font-weight:600; padding:6px 12px; border-radius:12px; display:flex; align-items:center; gap:8px;">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span>💡 Scroll mouse untuk zoom • Klik &amp; tahan mouse untuk menggeser</span>
+                                <span><svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Scroll mouse untuk zoom • Klik &amp; tahan mouse untuk menggeser</span>
                             </div>
                         </div>
 
                         <!-- FOOTER BAR: CAPTION & BOTTOM CLOSE BUTTON -->
                         <div class="w-full flex items-center justify-between mt-3 pt-2 border-t border-slate-800 flex-wrap gap-2">
                             <div class="flex items-center gap-2 max-w-[70%]">
-                                <span class="text-emerald-400 text-sm">📄</span>
+                                <span class="text-emerald-400 text-sm"><svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span>
                                 <p id="dsImagePreviewCaption" class="text-xs sm:text-sm font-bold text-emerald-300 font-mono truncate max-w-full"></p>
                             </div>
 

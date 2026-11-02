@@ -5,157 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SAP MDG Logon - PT Kayu Mebel Indonesia</title>
   
-  <!-- Fonts -->
+  <!-- Inter Font & Master Stylesheet -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/mdg-theme.css">
 
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e293b 45%, #0f172a 100%);
-      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
-      color: #f8fafc;
+      background-color: var(--mdg-canvas);
+      color: var(--mdg-text-primary);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Ambient glow elements */
-    .glow-circle-1 {
-      position: absolute;
-      top: -150px;
-      left: -150px;
-      width: 450px;
-      height: 450px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, transparent 70%);
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .glow-circle-2 {
-      position: absolute;
-      bottom: -150px;
-      right: -150px;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);
-      filter: blur(60px);
-      pointer-events: none;
     }
 
     .login-container {
       width: 100%;
-      max-width: 480px;
-      background: rgba(30, 41, 59, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 40px 36px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      position: relative;
-      z-index: 10;
+      max-width: 440px;
+      background: var(--mdg-surface);
+      border: 1px solid var(--mdg-border);
+      border-radius: 12px;
+      padding: 36px 32px;
+      box-shadow: var(--mdg-shadow-subtle);
     }
 
     .brand-header {
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .sap-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(14, 165, 233, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 5px 14px;
+      background: var(--mdg-surface-subtle);
+      border: 1px solid var(--mdg-border);
+      padding: 3px 10px;
       border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #38bdf8;
-      letter-spacing: 0.05em;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--mdg-text-secondary);
+      letter-spacing: 0.04em;
       margin-bottom: 12px;
       text-transform: uppercase;
     }
 
     .brand-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mdg-text-primary);
       letter-spacing: -0.02em;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .brand-subtitle {
       font-size: 13px;
-      color: #94a3b8;
-      line-height: 1.5;
+      color: var(--mdg-text-secondary);
+      line-height: 1.4;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .form-label {
       display: block;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 8px;
-      letter-spacing: 0.02em;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
+      color: var(--mdg-text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .form-input {
       width: 100%;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 14px;
-      color: #f8fafc;
-      font-family: inherit;
-      transition: all 0.2s ease;
+      background: var(--mdg-surface);
+      border: 1px solid var(--mdg-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--mdg-text-primary);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .form-input:focus {
-      outline: none;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-      background: rgba(15, 23, 42, 0.9);
+      border-color: var(--mdg-border-focus);
+      box-shadow: 0 0 0 1px var(--mdg-border-focus);
     }
 
     .btn-login {
       width: 100%;
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #ffffff;
+      background: var(--mdg-btn-primary-bg);
+      color: var(--mdg-btn-primary-text);
       border: none;
-      border-radius: 10px;
-      padding: 13px;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -164,22 +118,22 @@
     }
 
     .btn-login:hover {
-      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+      background: var(--mdg-btn-primary-hover);
+      transform: translateY(-0.5px);
     }
 
-    .btn-login:active {
-      transform: translateY(0);
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .role-pills-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--mdg-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin: 28px 0 12px 0;
+      margin: 24px 0 12px 0;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -189,29 +143,28 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--mdg-border);
     }
 
     .quick-roles-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
     }
 
     .role-card {
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 10px 12px;
+      background: var(--mdg-surface-subtle);
+      border: 1px solid var(--mdg-border);
+      border-radius: 6px;
+      padding: 8px 10px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.12s ease;
       text-align: left;
     }
 
     .role-card:hover {
-      background: rgba(56, 189, 248, 0.1);
-      border-color: rgba(56, 189, 248, 0.4);
-      transform: translateY(-1px);
+      background: var(--mdg-surface-hover);
+      border-color: var(--mdg-border-strong);
     }
 
     .role-card.span-2 {
@@ -219,72 +172,62 @@
     }
 
     .role-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #f1f5f9;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--mdg-text-primary);
     }
 
     .role-desc {
       font-size: 10px;
-      color: #94a3b8;
-      margin-top: 2px;
+      color: var(--mdg-text-muted);
+      margin-top: 1px;
     }
 
     .alert-error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-      padding: 10px 14px;
-      border-radius: 8px;
+      background: var(--mdg-surface-subtle);
+      border: 1px solid var(--mdg-border-strong);
+      color: var(--mdg-text-primary);
+      padding: 9px 12px;
+      border-radius: 6px;
       font-size: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: none;
       align-items: center;
       gap: 8px;
     }
 
     .footer-text {
-      margin-top: 28px;
+      margin-top: 24px;
       text-align: center;
       font-size: 11px;
-      color: #64748b;
+      color: var(--mdg-text-muted);
     }
   </style>
 </head>
 <body>
 
-  <div class="glow-circle-1"></div>
-  <div class="glow-circle-2"></div>
-
   <div class="login-container">
     <div class="brand-header">
       <div class="sap-badge">
-        <span>⚡</span> SAP ERP MDG Enterprise
+        SAP ERP MDG Enterprise
       </div>
       <h1 class="brand-title">PT Kayu Mebel Indonesia</h1>
-      <p class="brand-subtitle">Master Data Governance &middot; Standalone Portal</p>
+      <p class="brand-subtitle">Master Data Governance Portal</p>
     </div>
 
     <div id="loginError" class="alert-error">
-      <span>⚠️</span> <span id="errorText">Username atau Password salah!</span>
+      <span id="errorText">Username atau Password salah!</span>
     </div>
 
     <form id="loginForm">
       <div class="form-group">
-        <label class="form-label" for="username">SAP USER ID / USERNAME</label>
-        <div class="input-wrapper">
-          <input type="text" id="username" class="form-input" placeholder="e.g. DANIEL" required autocomplete="username">
-        </div>
+        <label class="form-label" for="username">SAP User ID / Username</label>
+        <input type="text" id="username" class="form-input" placeholder="Contoh: DANIEL" required autocomplete="username">
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="password">PASSWORD</label>
-        <div class="input-wrapper">
-          <input type="password" id="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
-        </div>
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
       </div>
 
       <button type="submit" id="btnLogin" class="btn-login">
@@ -293,41 +236,31 @@
       </button>
     </form>
 
-    <div class="role-pills-title">Akses Cepat Pengujian Role (Demo)</div>
+    <div class="role-pills-title">Simulasi Role (Demo Akses Cepat)</div>
 
     <div class="quick-roles-grid">
       <div class="role-card" data-user="DANIEL" data-pass="password123">
-        <div class="role-name">
-          <span style="color:#38bdf8;">👤</span> Daniel (Requestor)
-        </div>
+        <div class="role-name">Daniel (Requestor)</div>
         <div class="role-desc">Engineering &amp; Permohonan</div>
       </div>
 
       <div class="role-card" data-user="DATA_STEWARD" data-pass="password123">
-        <div class="role-name">
-          <span style="color:#10b981;">🔍</span> Budi (Data Steward)
-        </div>
+        <div class="role-name">Budi (Data Steward)</div>
         <div class="role-desc">Verifikasi Teknis &amp; Kodifikasi</div>
       </div>
 
       <div class="role-card" data-user="BANK_STEWARD" data-pass="password123">
-        <div class="role-name">
-          <span style="color:#fbbf24;">🏦</span> Siti (Bank Steward)
-        </div>
+        <div class="role-name">Siti (Bank Steward)</div>
         <div class="role-desc">Treasury &amp; Validasi Bank BP</div>
       </div>
 
       <div class="role-card" data-user="APPROVER" data-pass="password123">
-        <div class="role-name">
-          <span style="color:#f43f5e;">👑</span> Hendra (Approver)
-        </div>
+        <div class="role-name">Hendra (Approver)</div>
         <div class="role-desc">Persetujuan &amp; Posting ke SAP</div>
       </div>
 
       <div class="role-card span-2" data-user="ADMIN" data-pass="adminpassword">
-        <div class="role-name">
-          <span style="color:#c084fc;">⚙️</span> Administrator MDG (Superuser)
-        </div>
+        <div class="role-name">Administrator MDG (Superuser)</div>
         <div class="role-desc">Akses Penuh Seluruh Modul Master Data</div>
       </div>
     </div>
@@ -355,7 +288,6 @@
           const p = card.getAttribute('data-pass');
           usernameInput.value = u;
           passwordInput.value = p;
-          // Auto submit
           form.dispatchEvent(new Event('submit', { cancelable: true }));
         });
       });
@@ -374,8 +306,8 @@
           if (res.success) {
             btnLogin.innerHTML = '<span>Login Berhasil! Mengalihkan...</span>';
             setTimeout(() => {
-              window.location.href = 'MATERIAL MASTER/landing/landing_page.html';
-            }, 400);
+              window.location.href = 'landing_page.html';
+            }, 300);
           } else {
             errorText.textContent = res.message || 'Username atau password salah!';
             errorDiv.style.display = 'flex';

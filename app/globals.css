@@ -1,8 +1,6 @@
 /* ==========================================================================
-   PP NEUE MONTREAL LOCAL FONT & SPACE GROTESK GOOGLE FONT INTEGRATION
+   PP NEUE MONTREAL LOCAL FONT TYPOGRAPHY INTEGRATION
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @font-face {
   font-family: 'PP Neue Montreal';
@@ -131,9 +129,10 @@
   --text-secondary: #6e6e69;
   --text-hover: #2d2d2a;
 
-  /* Typography Design Tokens */
+  /* Typography Design Tokens - PP Neue Montreal for all typography */
   --font-family-primary: var(--font-pp-neue-montreal), 'PP Neue Montreal', 'PP Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-headline: var(--font-space-grotesk), 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-headline: var(--font-pp-neue-montreal), 'PP Neue Montreal', 'PP Neue', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-space-grotesk: var(--font-pp-neue-montreal), 'PP Neue Montreal', 'PP Neue', sans-serif;
 
   /* Typography Scales */
   --font-size-h1-desktop: 48px;
@@ -167,10 +166,10 @@
 }
 
 /* ==========================================================================
-   Standardized Typography Classes (Headlines use Space Grotesk with 0 padding)
+   Standardized Typography Classes (All using PP Neue Montreal with 0 padding for precision)
    ========================================================================== */
 @layer components {
-  /* H1: 48px desktop, 36px mobile, Space Grotesk, tight padding */
+  /* H1: 48px desktop, 36px mobile, PP Neue Montreal, tight padding */
   .type-h1 {
     font-family: var(--font-family-headline);
     font-size: var(--font-size-h1-mobile);
@@ -186,7 +185,7 @@
     }
   }
 
-  /* H2: 36px desktop, 28px mobile, Space Grotesk, tight padding */
+  /* H2: 36px desktop, 28px mobile, PP Neue Montreal, tight padding */
   .type-h2 {
     font-family: var(--font-family-headline);
     font-size: var(--font-size-h2-mobile);
@@ -202,7 +201,7 @@
     }
   }
 
-  /* H3: 24px desktop, 22px mobile, Space Grotesk, tight padding */
+  /* H3: 24px desktop, 22px mobile, PP Neue Montreal, tight padding */
   .type-h3 {
     font-family: var(--font-family-headline);
     font-size: var(--font-size-h3-mobile);
@@ -218,7 +217,7 @@
     }
   }
 
-  /* H4: 20px, Space Grotesk, tight padding */
+  /* H4: 20px, PP Neue Montreal, tight padding */
   .type-h4 {
     font-family: var(--font-family-headline);
     font-size: var(--font-size-h4);
@@ -312,7 +311,7 @@ h1, h2, h3, h4, h5, h6, p, a, button, span, li, th, td {
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Enforce Space Grotesk on ALL Headlines with 0 padding for precision */
+/* Enforce PP Neue Montreal on ALL Headlines with 0 padding for precision */
 h1, h2, h3, h4, h5, h6,
 .font-headline,
 .type-h1, .type-h2, .type-h3, .type-h4 {

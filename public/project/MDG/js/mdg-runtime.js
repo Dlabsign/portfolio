@@ -182,77 +182,36 @@
     },
 
     renderToolbar() {
-      const user = this.getCurrentUser();
-      if (!user || window.location.pathname.endsWith('login.html')) return;
-
+      // Floating control bar / bottom badge navbar removed per user request
       let existing = document.getElementById('mdg-standalone-control-bar');
       if (existing) existing.remove();
-
-      const bar = document.createElement('div');
-      bar.id = 'mdg-standalone-control-bar';
-      bar.style.cssText = `
-        position: fixed;
-        bottom: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(15, 23, 42, 0.92);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        color: #fff;
-        padding: 8px 18px;
-        border-radius: 9999px;
-        font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        z-index: 99999;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-      `;
-
-      bar.innerHTML = `
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-          <span style="font-weight:700; color:#38bdf8; letter-spacing:0.02em;">SAP MDG STANDALONE</span>
-        </div>
-        <div style="width:1px; height:16px; background:rgba(255,255,255,0.2);"></div>
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span style="color:#94a3b8;">Active User:</span>
-          <span style="background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:12px; font-weight:600; color:#f8fafc;">
-            ${user.name} (${user.role.toUpperCase()})
-          </span>
-        </div>
-        <div style="width:1px; height:16px; background:rgba(255,255,255,0.2);"></div>
-        <div style="display:flex; align-items:center; gap:4px;">
-          <span style="color:#94a3b8; margin-right:4px;">Switch Role:</span>
-          <button type="button" data-role="requestor" style="background:${user.role === 'requestor' ? '#0284c7' : 'rgba(255,255,255,0.1)'}; color:#fff; border:none; padding:3px 9px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:500;">Requestor</button>
-          <button type="button" data-role="datasteward" style="background:${user.role === 'datasteward' ? '#0284c7' : 'rgba(255,255,255,0.1)'}; color:#fff; border:none; padding:3px 9px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:500;">Data Steward</button>
-          <button type="button" data-role="banksteward" style="background:${user.role === 'banksteward' ? '#0284c7' : 'rgba(255,255,255,0.1)'}; color:#fff; border:none; padding:3px 9px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:500;">Bank Steward</button>
-          <button type="button" data-role="approver" style="background:${user.role === 'approver' ? '#0284c7' : 'rgba(255,255,255,0.1)'}; color:#fff; border:none; padding:3px 9px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:500;">Approver</button>
-        </div>
-        <div style="width:1px; height:16px; background:rgba(255,255,255,0.2);"></div>
-        <a href="${ROOT_PATH}/landing_page.html" style="color:#cbd5e1; text-decoration:none; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,0.08); font-size:11px;" title="Back to Landing Page">🏠 Hub</a>
-        <button type="button" id="mdg-btn-logout-toolbar" style="background:#ef4444; color:#fff; border:none; padding:3px 10px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:600;">Logout</button>
-      `;
-
-      document.body.appendChild(bar);
-
-      bar.querySelectorAll('button[data-role]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          MDG_AUTH.switchRole(btn.getAttribute('data-role'));
-        });
-      });
-
-      const logoutBtn = bar.querySelector('#mdg-btn-logout-toolbar');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          MDG_AUTH.logout();
-        });
-      }
     }
+  };
+
+  // Sync saved theme on document initialization
+  try {
+    const savedTheme = localStorage.getItem('mdg_theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {}
+
+  window.toggleMdgTheme = function() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+    try { localStorage.setItem('mdg_theme', newTheme); } catch(e) {}
+    MDG_AUTH.renderToolbar();
   };
 
   // =====================================================================================

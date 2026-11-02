@@ -71,20 +71,21 @@
             }
 
             body {
-                background-color: #f7f9f8;
+                background-color: var(--mdg-canvas);
                 color: #0f172a;
             }
 
             /* TOP HERO BANNER (DEEP FOREST GREEN AS PER DESIGN) */
             .hero-banner {
                 width: 100%;
-                background: #184434;
-                padding: 32px 24px 34px 24px;
+                background: var(--mdg-surface-subtle);
+                border-bottom: 1px solid var(--mdg-border);
+                padding: 32px 24px 28px 24px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 4px 20px rgba(10, 35, 25, 0.12);
+                box-shadow: none;
             }
 
             /* HERO TITLE SECTION */
@@ -101,14 +102,12 @@
                 font-size: 34px;
                 font-weight: 800;
                 letter-spacing: -1px;
-                color: #ffffff !important;
-                margin: 0;
-                line-height: 1.25;
+                color: var(--mdg-text-primary) !important; margin: 0; line-height: 1.25;
             }
 
             .hero-section p {
                 font-size: 13.5px;
-                color: #52b788 !important;
+                color: var(--mdg-text-muted) !important;
                 font-weight: 700;
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
@@ -164,8 +163,8 @@
             #partTable input[type=text]:focus,
             #partTable input[type=number]:focus {
                 outline: none;
-                border-color: #059669;
-                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+                border-color: var(--mdg-border-focus);
+                box-shadow: 0 0 0 1px var(--mdg-border-focus);
                 background: #ffffff;
             }
 
@@ -200,6 +199,7 @@
             }
         </style>
       <script src="js/mdg-runtime.js"></script>
+  <link rel="stylesheet" href="css/mdg-theme.css">
 </head>
 
     <body class="text-[13px] font-sans leading-relaxed m-0 p-0 antialiased min-h-screen">
@@ -208,30 +208,30 @@
         <header
             class="bg-white/90 backdrop-blur-md h-14 border-b border-slate-200 sticky top-0 z-50 px-6 lg:px-10 flex items-center justify-between shadow-xs">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-xl bg-[#184434] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                <div class="w-8 h-8 rounded-xl bg-neutral-900 text-white border border-neutral-700 dark:bg-white dark:text-neutral-900 flex items-center justify-center font-bold text-xs rounded-md">
                     MM
                 </div>
                 <div>
                     <span class="font-extrabold text-sm text-slate-900 block leading-none">Material Master Governance</span>
-                    <span class="text-[10px] text-emerald-700 font-semibold tracking-wide">SAP S/4HANA Staging Platform</span>
+                    <span class="text-[10px] text-neutral-600 dark:text-neutral-400 font-semibold tracking-wide">SAP S/4HANA Staging Platform</span>
                 </div>
             </div>
 
             <div class="flex items-center gap-3">
                 <button type="button" onclick="openUserGuideModal()"
                     class="flex items-center gap-1.5 text-xs font-bold text-emerald-800
-                        bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-1.5
+                        bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 px-3.5 py-1.5
                         rounded-xl transition cursor-pointer">
                     <span>Panduan Penggunaan</span>
                 </button>
                 <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl">
-                    <div class="w-5 h-5 rounded-full bg-[#184434] text-white flex items-center justify-center font-bold text-[10px]" id="userAvatarInitial">?</div>
+                    <div class="w-5 h-5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 flex items-center justify-center font-bold text-[10px]" id="userAvatarInitial">?</div>
                     <span class="text-xs font-bold text-slate-800" id="userNameLabel">
                         Daniel Siahaan
                     </span>
                 </div>
                 <a href="?OnInputProcessing=LOGOUT"
-                    class="text-xs font-semibold text-slate-600 hover:text-emerald-700 px-3 py-1.5
+                    class="text-xs font-semibold text-slate-600 hover:text-neutral-600 dark:text-neutral-400 px-3 py-1.5
                         rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition">
                     Sign Out
                 </a>
@@ -246,7 +246,7 @@
                 <div class="mt-3">
                     <button type="button" onclick="openUserGuideModal()"
                         class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold
-                            bg-white/10 hover:bg-white/20 text-emerald-200 border border-emerald-400/30
+                            bg-neutral-900/5 hover:bg-neutral-900/10 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700
                             transition cursor-pointer backdrop-blur-md">
                         <span>Lihat Panduan Pengajuan &amp; Status</span>
                     </button>
@@ -265,13 +265,13 @@
                 <!-- HEADER CONTAINER 1 -->
                 <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200/80 flex-wrap gap-3">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-[#184434] text-white font-extrabold text-xs flex items-center justify-center shadow-xs">01</span>
+                        <span class="w-8 h-8 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-extrabold text-xs flex items-center justify-center">01</span>
                         <div>
                             <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                                 Search Material
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full
-                                    text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>MASTER MATERIAL SAP
+                                    text-[10px] font-bold bg-neutral-50 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-neutral-600 dark:bg-neutral-400 animate-pulse"></span>MASTER MATERIAL SAP
                                 </span>
                             </h2>
                             <p class="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -280,7 +280,7 @@
                         </div>
                     </div>
                     <button type="button" onclick="resetFilter()"
-                        class="text-xs text-slate-600 hover:text-emerald-700 font-semibold px-3.5 py-1.5
+                        class="text-xs text-slate-600 hover:text-neutral-600 dark:text-neutral-400 font-semibold px-3.5 py-1.5
                             rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition
                             inline-flex items-center gap-1 cursor-pointer">
                         Clear Filters
@@ -302,7 +302,7 @@
                                     <input type="text" id="filterMatnr" placeholder="Cari Kode Material (contoh: 50025217, 500*)..."
                                         onkeyup="handleFilterKeyup(event)"
                                         class="w-full p-2.5 text-xs border border-slate-200 rounded-xl
-                                            focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/15
+                                            focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-400
                                             bg-white text-slate-800 font-mono transition shadow-2xs">
                                 </div>
 
@@ -312,7 +312,7 @@
                                         placeholder="Cari deskripsi (contoh: OTTO*, *OTTO*, OTTO*MASTER)..."
                                         onkeyup="handleFilterKeyup(event)"
                                         class="w-full p-2.5 text-xs border border-slate-200 rounded-xl
-                                            focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/15
+                                            focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-400
                                             bg-white text-slate-800 font-medium transition shadow-2xs">
                                 </div>
 
@@ -323,7 +323,7 @@
                                             onclick="openSearchableDropdown('mtart', this, event)"
                                             onkeyup="handleFilterKeyup(event)"
                                             class="w-full p-2.5 text-xs border border-slate-200 rounded-xl
-                                                focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/15
+                                                focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-400
                                                 bg-white text-slate-800 font-mono uppercase transition shadow-2xs">
                                     </div>
                                     <div>
@@ -332,7 +332,7 @@
                                             onclick="openSearchableDropdown('matkl', this, event)"
                                             onkeyup="handleFilterKeyup(event)"
                                             class="w-full p-2.5 text-xs border border-slate-200 rounded-xl
-                                                focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/15
+                                                focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-400
                                                 bg-white text-slate-800 font-mono uppercase transition shadow-2xs">
                                     </div>
                                 </div>
@@ -341,7 +341,7 @@
 
                         <div class="mt-6 pt-3.5 border-t border-slate-200/80">
                             <button type="button" onclick="searchMaraSAP()"
-                                class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white
+                                class="w-full py-2.5 px-4 bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white
                                     font-bold text-xs rounded-xl shadow-xs hover:shadow-md transition-all
                                     inline-flex items-center justify-center gap-2 cursor-pointer">
                                 <span>Cari Material SAP</span>
@@ -404,7 +404,7 @@
                 <!-- HEADER CONTAINER 2 -->
                 <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200/80 flex-wrap gap-3">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-[#184434] text-white font-extrabold text-xs flex items-center justify-center shadow-xs">02</span>
+                        <span class="w-8 h-8 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-extrabold text-xs flex items-center justify-center">02</span>
                         <div>
                             <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Dokumen Pendukung</h2>
                             <p class="text-[11px] text-slate-500 font-medium mt-0.5">Upload file lampiran penunjang request (PDF / JPG).</p>
@@ -420,15 +420,15 @@
                                 2. Dokumen Pendukung
                             </h3>
                             <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full
-                                bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                bg-neutral-50 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
                                 id="attCounterBadge">0 Files</span>
                         </div>
 
                         <!-- DROPZONE ATTACHMENT CARD -->
                         <div id="attachmentDropzoneArea"
                             onclick="document.getElementById('attachmentFileInput').click()"
-                            class="relative border-2 border-dashed border-emerald-300
-                                hover:border-emerald-600 rounded-2xl bg-white hover:bg-emerald-50/30
+                            class="relative border-2 border-dashed border-neutral-300 dark:border-neutral-700
+                                hover:border-emerald-600 rounded-2xl bg-white hover:bg-neutral-50 dark:bg-neutral-850/30
                                 transition-all duration-200 cursor-pointer p-6 text-center group
                                 overflow-hidden shadow-2xs">
                             <input type="file" id="attachmentFileInput" accept=".pdf, .jpg, .jpeg"
@@ -439,7 +439,7 @@
                                     <p class="text-[10px] text-emerald-800 font-semibold mt-0.5">Format: PDF (.pdf) &amp; JPG (.jpg, .jpeg) &mdash; Max 5 MB / file</p>
                                 </div>
                                 <button type="button"
-                                    class="mt-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white
+                                    class="mt-1 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white
                                         font-bold text-xs px-5 py-2 shadow-xs transition-all
                                         inline-flex items-center gap-1.5 cursor-pointer">
                                     <span>Upload File (PDF/JPG)</span>
@@ -462,7 +462,7 @@
                 <!-- HEADER CONTAINER 3 -->
                 <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200/80 flex-wrap gap-3">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-[#184434] text-white font-extrabold text-xs flex items-center justify-center shadow-xs">03</span>
+                        <span class="w-8 h-8 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-extrabold text-xs flex items-center justify-center">03</span>
                         <div>
                             <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Input Data Material</h2>
                             <p class="text-[11px] text-slate-500 font-medium mt-0.5">Input data material master.</p>
@@ -500,7 +500,7 @@
                                     <span class="text-xs font-bold text-slate-700">Input Field Dinamis (Tabel)</span>
                                     <span id="dynamicFormRowCountBadge"
                                         class="text-[10px] font-bold px-2.5 py-0.5 rounded-full
-                                            bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                            bg-neutral-50 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700">
                                         1 Baris Input
                                     </span>
                                 </div>
@@ -540,7 +540,7 @@
 
                             <div class="pt-1">
                                 <button type="button" onclick="submitDynamicFormRows()"
-                                    class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700
+                                    class="w-full py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900
                                         text-white font-bold text-xs shadow-xs hover:shadow transition-all
                                         flex items-center justify-center gap-2 cursor-pointer">
                                     <span>+ Tambah Material ke Tabel Preview</span>
@@ -551,8 +551,8 @@
                         <!-- MODE 2: UPLOAD EXCEL FILE DROPZONE -->
                         <div id="ingestionExcelContainer" class="hidden">
                             <div id="dropzoneArea" onclick="document.getElementById('excelFileInput').click()"
-                                class="relative border-2 border-dashed border-emerald-300
-                                    hover:border-emerald-600 rounded-2xl bg-white hover:bg-emerald-50/30
+                                class="relative border-2 border-dashed border-neutral-300 dark:border-neutral-700
+                                    hover:border-emerald-600 rounded-2xl bg-white hover:bg-neutral-50 dark:bg-neutral-850/30
                                     transition-all duration-200 cursor-pointer p-6 text-center group
                                     overflow-hidden shadow-2xs">
                                 <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv"
@@ -563,7 +563,7 @@
                                         <p class="text-[10px] text-slate-500 font-medium mt-0.5">Format: .xlsx, .xls, .csv</p>
                                     </div>
                                     <button type="button"
-                                        class="mt-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white
+                                        class="mt-1 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white
                                             font-bold text-xs px-5 py-2 shadow-xs transition-all
                                             inline-flex items-center gap-1.5 cursor-pointer">
                                         <span>Select File</span>
@@ -597,7 +597,7 @@
                 <!-- HEADER CONTAINER 4 -->
                 <div class="bg-white px-6 py-4 border-b border-slate-200 flex items-center justify-between flex-wrap gap-3">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-xl bg-[#184434] text-white font-extrabold text-xs flex items-center justify-center shadow-xs">04</span>
+                        <span class="w-8 h-8 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-extrabold text-xs flex items-center justify-center">04</span>
                         <div>
                             <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
                                 PREVIEW DATA TABLE
@@ -618,7 +618,7 @@
                             </h3>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <button type="button"
-                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2
+                                    class="bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white px-4 py-2
                                         rounded-xl font-bold text-xs transition shadow-xs cursor-pointer
                                         inline-flex items-center gap-1.5"
                                     onclick="addNewRow()">
@@ -632,8 +632,8 @@
                                     <span>AI Copilot Audit</span>
                                 </button>
                                 <button type="button"
-                                    class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border
-                                        border-emerald-200 px-4 py-2 rounded-xl font-bold text-xs
+                                    class="bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border
+                                        border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-xl font-bold text-xs
                                         transition cursor-pointer inline-flex items-center gap-1.5"
                                     onclick="downloadPreviewDataExcel()">
                                     <span>Download Excel Data</span>
@@ -952,7 +952,7 @@
                             Save Draft
                         </button>
                         <button type="button"
-                            class="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold
+                            class="rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white font-bold
                                 text-xs px-7 py-2.5 shadow-xs hover:shadow-md transition-all
                                 inline-flex items-center gap-2 cursor-pointer"
                             onclick="openSubmitReasonModal()">
@@ -968,7 +968,7 @@
                 <div class="p-6 border-b border-slate-200/60 bg-white/40">
                     <div class="flex items-center justify-between gap-3 mb-5 flex-wrap">
                         <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-xl bg-[#184434] text-white font-extrabold text-xs flex items-center justify-center shadow-xs">05</span>
+                            <span class="w-8 h-8 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-extrabold text-xs flex items-center justify-center">05</span>
                             <div>
                                 <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Request History &amp; Approval Stepper</h2>
                                 <p class="text-[11px] text-slate-500 font-medium">
@@ -979,8 +979,8 @@
 
                         <div class="flex items-center gap-2">
                             <button type="button" onclick="exportApprovedHistoryToExcel()"
-                                class="text-xs text-emerald-800 font-bold bg-emerald-50 hover:bg-emerald-100
-                                    border border-emerald-200 px-4 py-2 rounded-xl transition
+                                class="text-xs text-emerald-800 font-bold bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800
+                                    border border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-xl transition
                                     flex items-center gap-1.5 cursor-pointer shadow-2xs">
                                 <span>Export Excel List</span>
                             </button>
@@ -1120,8 +1120,8 @@
                             <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">No.
                                 Request:</span>
                             <span id="successModalReqId"
-                                class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border
-                                    border-emerald-200 font-mono">UPL-0000</span>
+                                class="text-xs font-black text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850 px-3 py-1 rounded-full border
+                                    border-neutral-200 dark:border-neutral-700 font-mono">UPL-0000</span>
                         </div>
                         <div>
                             <span
@@ -1135,7 +1135,7 @@
 
                     <!-- Automatic Process Status Badge -->
                     <div id="successModalEmailStatus"
-                        class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs
+                        class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 text-emerald-800 text-xs
                             font-semibold flex items-center justify-center gap-2">
 
                         <span>Data request berhasil diproses dan tersimpan di sistem SAP.</span>
@@ -1314,14 +1314,14 @@
                     <div class="flex items-center gap-3">
                         <div id="reqModalHeaderIcon"
                             class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white text-sm shadow-xs">
-                            📋
+                            <svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <div>
                             <h2 class="font-extrabold text-sm text-white flex items-center gap-2">
                                 <span>Detail Pengajuan Material</span>
                                 <span
                                     class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-0.5 rounded
-                                        border border-emerald-500/30 uppercase font-mono"
+                                        border border-neutral-400 dark:border-neutral-600/30 uppercase font-mono"
                                     id="reqModalReqId">REQ-0000</span>
                             </h2>
                             <p class="text-[11px] text-slate-400 font-medium mt-0.5" id="reqModalSubLabel">File: - |
@@ -1365,8 +1365,8 @@
 
                     <!-- Approved Success Banner (Shown prominently if APPROVED) -->
                     <div id="reqModalApprovedBanner"
-                        class="hidden mb-5 bg-emerald-50/90 backdrop-blur-xs border border-emerald-300 rounded-xl p-4.5 shadow-2xs">
-                        <div class="flex items-center justify-between border-b border-emerald-200 pb-2 mb-2.5">
+                        class="hidden mb-5 bg-neutral-50 dark:bg-neutral-850/90 backdrop-blur-xs border border-neutral-300 dark:border-neutral-700 rounded-xl p-4.5 shadow-2xs">
+                        <div class="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-700 pb-2 mb-2.5">
                             <div class="flex items-center gap-2 text-emerald-900 font-extrabold text-xs">
                                 <div
                                     class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center
@@ -1377,11 +1377,11 @@
                             </div>
                             <span
 
-     class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border
-         border-emerald-300 px-3 py-0.5 rounded-full uppercase tracking-wider">APPROVED
+     class="text-[10px] font-extrabold bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border
+         border-neutral-300 dark:border-neutral-700 px-3 py-0.5 rounded-full uppercase tracking-wider">APPROVED
                                 BY DATA STEWARD</span>
                         </div>
-                        <div class="text-xs text-emerald-950 bg-white/80 p-3.5 rounded-lg border border-emerald-200/80 leading-relaxed font-semibold"
+                        <div class="text-xs text-emerald-950 bg-white/80 p-3.5 rounded-lg border border-neutral-200 dark:border-neutral-700/80 leading-relaxed font-semibold"
                             id="reqModalApprovedText">
                             Pengajuan material master ini telah berhasil diverifikasi dan disetujui secara resmi oleh
                             Data Steward.
@@ -1415,7 +1415,7 @@
                     <div id="reqModalAttachmentSection" class="hidden mb-5 bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
                             <div class="flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">📎</span>
+                                <span class="w-6 h-6 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 flex items-center justify-center font-bold text-xs"><svg class="w-3.5 h-3.5 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></span>
                                 <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider">File Attachment Pendukung Requester</h3>
                             </div>
                             <span id="reqModalAttBadge"
@@ -1695,7 +1695,7 @@
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-700 flex
                             items-center justify-center font-extrabold text-white text-sm shadow-xs">
-                            📊
+                            <svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <div>
                             <h2 class="font-extrabold text-sm text-white flex items-center gap-2">
@@ -1735,7 +1735,7 @@
 
 
 
-     class="text-xs font-extrabold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 px-4 py-2
+     class="text-xs font-extrabold text-emerald-800 bg-neutral-100 dark:bg-neutral-800 hover:bg-emerald-200 border border-neutral-300 dark:border-neutral-700 px-4 py-2
          rounded-full transition flex items-center gap-1.5
     cursor-pointer shadow-2xs">
 
@@ -1757,8 +1757,8 @@
                 class="glass-panel border border-white/80 rounded-3xl p-7 shadow-2xl max-w-sm w-full
                     text-center flex flex-col items-center justify-center gap-3.5">
                 <div
-                    class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex
-                        items-center justify-center text-emerald-600 shadow-xs">
+                    class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-neutral-400 dark:border-neutral-600/30 flex
+                        items-center justify-center text-neutral-600 dark:text-neutral-400 shadow-xs">
 
                 </div>
                 <div>
@@ -2025,7 +2025,7 @@
                     dropzone.addEventListener(eventName, function (e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        dropzone.classList.add("border-emerald-500", "bg-emerald-50/70");
+                        dropzone.classList.add("border-neutral-400 dark:border-neutral-600", "bg-neutral-50 dark:bg-neutral-850/70");
                     }, false);
                 });
 
@@ -2033,7 +2033,7 @@
                     dropzone.addEventListener(eventName, function (e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        dropzone.classList.remove("border-emerald-500", "bg-emerald-50/70");
+                        dropzone.classList.remove("border-neutral-400 dark:border-neutral-600", "bg-neutral-50 dark:bg-neutral-850/70");
                     }, false);
                 });
 
@@ -2130,7 +2130,7 @@
  function showToast(message, type) {
                 type = type || "info";
  var bgClasses = {
-                    success: "bg-white/90 backdrop-blur-md border-l-4 border-emerald-500 text-slate-800",
+                    success: "bg-white/90 backdrop-blur-md border-l-4 border-neutral-400 dark:border-neutral-600 text-slate-800",
 error: "bg-white/90 backdrop-blur-md border-l-4 border-rose-500 text-slate-800",
 info: "bg-white/90 backdrop-blur-md border-l-4 border-blue-500 text-slate-800"
                 };
@@ -2773,8 +2773,8 @@ info: "bg-white/90 backdrop-blur-md border-l-4 border-blue-500 text-slate-800"
                         if (progressBar) progressBar.style.width = "100%";
  if (progressPercent) progressPercent.innerText = "100%";
  if (statusBadge) {
-                            statusBadge.className = "text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border" +
-                              "border-emerald-200 shadow-xs";
+                            statusBadge.className = "text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border" +
+                              "border-neutral-200 dark:border-neutral-700 shadow-xs";
                             statusBadge.innerText = "Success";
                         }
  var lineCount = document.querySelectorAll("#tableBody tr").length;
@@ -2809,8 +2809,8 @@ info: "bg-white/90 backdrop-blur-md border-l-4 border-blue-500 text-slate-800"
  var excelTab = document.getElementById("ingestionExcelContainer");
  var btnForm = document.getElementById("btnTabFormInput");
  var btnExcel = document.getElementById("btnTabExcelUpload");
- var activeClass = "px-3 py-1 text-[10px] font-extrabold rounded-lg text-emerald-800 bg-emerald-100 border" +
-   "border-emerald-300 shadow-2xs transition cursor-pointer";
+ var activeClass = "px-3 py-1 text-[10px] font-extrabold rounded-lg text-emerald-800 bg-neutral-100 dark:bg-neutral-800 border" +
+   "border-neutral-300 dark:border-neutral-700 shadow-2xs transition cursor-pointer";
  var inactiveClass = "px-3 py-1 text-[10px] font-extrabold rounded-lg text-slate-600 hover:text-slate-900 bg-white/50" +
    "border border-slate-200 transition cursor-pointer";
  if (mode === 'EXCEL') {
@@ -3519,7 +3519,7 @@ info: "bg-white/90 backdrop-blur-md border-l-4 border-blue-500 text-slate-800"
     var mvgr4 = p.mvgr4 || "";
     var meins = p.meins || "";
     var tr = document.createElement("tr");
-    tr.className = "hover:bg-emerald-50/40 transition dynamic-input-row";
+    tr.className = "hover:bg-neutral-50 dark:bg-neutral-850/40 transition dynamic-input-row";
     var rowIdx = tbody.children.length + 1;
     var tdNum = '<td class="p-2 text-center font-bold text-slate-500 bg-slate-50/50 dyn-row-num">' +
         rowIdx + '</td>';
@@ -3568,8 +3568,8 @@ info: "bg-white/90 backdrop-blur-md border-l-4 border-blue-500 text-slate-800"
     var tdAct = '<td class="p-1.5 text-center">' +
         '<div class="flex items-center justify-center gap-1">' +
         '<button type="button" onclick="duplicateDynamicFormInputRow(this)" title="Duplikat baris" ' +
-        'class="w-6 h-6 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 ' +
-        'hover:text-white border border-emerald-300 flex items-center justify-center ' +
+        'class="w-6 h-6 rounded-lg bg-neutral-50 dark:bg-neutral-850 hover:bg-emerald-600 text-neutral-600 dark:text-neutral-400 ' +
+        'hover:text-white border border-neutral-300 dark:border-neutral-700 flex items-center justify-center ' +
         'font-extrabold text-xs transition cursor-pointer">+</button>' +
         '<button type="button" onclick="removeDynamicFormInputRow(this)" title="Hapus baris" ' +
         'class="w-6 h-6 rounded-lg bg-rose-50 hover:bg-rose-600 text-rose-700 ' +
@@ -3809,7 +3809,7 @@ sernp: "" };
  var placeholder = document.getElementById("emptyTablePlaceholder");
  if (placeholder) placeholder.remove(); rowCounter++;
  var tr = document.createElement("tr");
- tr.className = "hover:bg-emerald-50/40 transition-colors border-b border-slate-100";
+ tr.className = "hover:bg-neutral-50 dark:bg-neutral-850/40 transition-colors border-b border-slate-100";
  var html = '';
  html += '<td class="p-1.5 border-r border-slate-200 text-center font-bold text-slate-700 row-item-no align-middle">' + rowCounter + '</td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="18"' +
@@ -3824,7 +3824,7 @@ sernp: "" };
    + (data.bismt || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="4"' +
-   'list="dl_mtart" onchange="onRowMtartChange(this)" class="row-mtart w-full text-center font-mono font-bold text-emerald-700" value="'
+   'list="dl_mtart" onchange="onRowMtartChange(this)" class="row-mtart w-full text-center font-mono font-bold text-neutral-600 dark:text-neutral-400" value="'
    + cleanCode(data.mtart || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"><input type="text" maxlength="9"' +
@@ -3832,13 +3832,13 @@ sernp: "" };
    + cleanCode(data.matkl || '')
    + '"></td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="3"' +
-   'list="dl_meins" class="row-meins w-full text-center font-mono font-bold text-emerald-700" value="'
+   'list="dl_meins" class="row-meins w-full text-center font-mono font-bold text-neutral-600 dark:text-neutral-400" value="'
    + cleanCode(data.meins || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 relative">';
  html += '  <div class="flex items-center justify-between gap-1 mb-1">';
  html += '<span class="row-ai-status-badge cursor-pointer text-[10px] font-extrabold px-1.5 py-0.5 rounded' +
-   'text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 transition shadow-2xs' +
+   'text-emerald-800 bg-neutral-50 dark:bg-neutral-850 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:bg-neutral-800 transition shadow-2xs' +
    'font-mono">Unique</span>';
  html += '  </div>';
  html += '  <input type="text" maxlength="40" class="row-maktx w-full font-medium text-slate-900 uppercase" value="'
@@ -3875,12 +3875,12 @@ sernp: "" };
   var rowWerks = cleanCode(data.werks || '');
   var rowLgort = data.lgort ? cleanCode(data.lgort) : getSlocForPlant(rowWerks);
   html += '<td class="p-1.5 border-r border-slate-200 text-center"><select ' +
-    'class="row-werks w-full text-center font-mono font-bold text-emerald-700 bg-emerald-50/30 border border-slate-200 rounded p-1 text-xs" ' +
+    'class="row-werks w-full text-center font-mono font-bold text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850/30 border border-slate-200 rounded p-1 text-xs" ' +
     'onchange="updateRowSloc(this)">' +
     buildSelectOptions('werks', rowWerks, '-- Plant --') +
     '</select></td>';
   html += '<td class="p-1.5 border-r border-slate-200 text-center"><select ' +
-    'class="row-lgort w-full text-center font-mono font-bold text-emerald-700 bg-emerald-50/30 border border-slate-200 rounded p-1 text-xs">' +
+    'class="row-lgort w-full text-center font-mono font-bold text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850/30 border border-slate-200 rounded p-1 text-xs">' +
     buildSlocOptions(rowWerks, rowLgort) +
     '</select></td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" list="dl_ekorg" class="row-vkorg w-full text-center font-mono" value="'
@@ -3945,7 +3945,7 @@ sernp: "" };
   data.xchpf === 'on' || data.xchpf === 'ON' ||
   data.xchpf === '1' || data.xchpf === true);
  html += '<td class="p-1.5 border-r border-slate-200 text-center align-middle"> <input type="checkbox"' +
-   'value="X" class="row-xchpf w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500' +
+   'value="X" class="row-xchpf w-4 h-4 text-neutral-600 dark:text-neutral-400 rounded border-slate-300 focus:ring-emerald-500' +
    'cursor-pointer"'
    + (isXchpfChecked ? 'checked="checked"' : '')
    + '></td>';
@@ -3974,7 +3974,7 @@ sernp: "" };
    + (data.peinh || '1')
    + '"></td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="1"' +
-   'class="row-vprsv w-full text-center font-bold text-emerald-700 font-mono" value="'
+   'class="row-vprsv w-full text-center font-bold text-neutral-600 dark:text-neutral-400 font-mono" value="'
    + (rowInitialVprsv || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="5"' +
@@ -4143,11 +4143,11 @@ sernp: "" };
    + (data.ueetk || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="1"' +
-   'class="row-hkmat w-full text-center font-bold text-emerald-700" value="'
+   'class="row-hkmat w-full text-center font-bold text-neutral-600 dark:text-neutral-400" value="'
    + (data.hkmat || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" maxlength="1"' +
-   'class="row-ekalr w-full text-center font-bold text-emerald-700" value="'
+   'class="row-ekalr w-full text-center font-bold text-neutral-600 dark:text-neutral-400" value="'
    + (data.ekalr || '')
    + '"> </td>';
  html += '<td class="p-1.5 border-r border-slate-200 text-center"> <input type="text" class="row-losgr w-full text-center font-mono" value="'
@@ -4291,7 +4291,7 @@ var maktxInput = tr.querySelector('.row-maktx');
         try {
             return JSON.parse(cleanText);
         } catch (e) {
-            console.error("💥 [JSON-Parse-Error] Failed payload snippet:", text.substring(0, 300));
+            console.error("[ERROR] [JSON-Parse-Error] Failed payload snippet:", text.substring(0, 300));
             throw e;
         }
     });
@@ -4519,7 +4519,7 @@ meins: meins || "-"
                 })
                 .catch(function (err) {
                     hideLoadingOverlay();
-                    console.error("💥 [MDG-Fetch-Error] Network or JSON parse error:", err);
+                    console.error("[ERROR] [MDG-Fetch-Error] Network or JSON parse error:", err);
                     showToast("Network error: " + err.message, "error");
                 });
             }
@@ -4579,7 +4579,7 @@ meins: meins || "-"
                   + safeUidAttr
 
                     + '" data-step="1" onclick="handleTrackerCardClick(this)" ' +
-  'class="bg-slate-800/90 hover:bg-slate-800 border border-emerald-500/40 ' +
+  'class="bg-slate-800/90 hover:bg-slate-800 border border-neutral-400 dark:border-neutral-600/40 ' +
   'rounded-xl p-3.5 transition cursor-pointer group shadow-2xs relative overflow-hidden">';
                 html += '  <div class="flex items-center justify-between mb-2">';
                 html += '    <div class="flex items-center gap-2">';
@@ -4588,7 +4588,7 @@ meins: meins || "-"
                 html += '      <span class="text-xs font-bold text-emerald-300">Pending / Submitted</span>';
                 html += '    </div>';
                 html += '<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300' +
-                  'border border-emerald-500/30">SUBMITTED</span>';
+                  'border border-neutral-400 dark:border-neutral-600/30">SUBMITTED</span>';
                 html += '  </div>';
                 html += '  <p class="text-[11px] text-slate-300 font-medium truncate">User: ' + safeErnam + '</p>';
                 html += '  <p class="text-[10px] text-slate-400 font-mono mt-0.5">' + s1Time + '</p>';
@@ -4628,13 +4628,13 @@ meins: meins || "-"
 
                 // STEP 3: APPROVED / REJECTED / HOLD
                 var step3Border = isApproved
-                  ? 'border-emerald-500/60 bg-slate-800/90'
+                  ? 'border-neutral-400 dark:border-neutral-600/60 bg-slate-800/90'
                   : (isRejected
                     ? 'border-rose-500/60 bg-slate-800/90'
                     : (isHold ? 'border-amber-500/60 bg-slate-800/90' : 'border-slate-700/60 bg-slate-900/60 opacity-80'));
                 var step3Title = isApproved ? 'Approved (SAP)' : (isRejected ? 'Rejected' : (isHold ? 'On Hold' : 'Approved / Rejected'));
                 var step3Badge = isApproved
-                  ? '<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">APPROVED</span>'
+                  ? '<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-neutral-400 dark:border-neutral-600/30">APPROVED</span>'
                   : (isRejected
                     ? '<span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">REJECTED</span>'
                     : (isHold
@@ -4712,10 +4712,10 @@ meins: meins || "-"
                 html += '<div class="relative group">';
                 html += '<div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-emerald-600 text-white font-black' +
                   'text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&check;</div>';
-                html += '  <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-emerald-500/50 transition">';
+                html += '  <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:border-neutral-400 dark:border-neutral-600/50 transition">';
                 html += '    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">';
                 html += '      <h4 class="text-xs font-black text-slate-900 uppercase">Tahap 1: Pengajuan Material (Submitted)</h4>';
-                html += '<span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300' +
+                html += '<span class="text-[10px] font-extrabold bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border border-neutral-300 dark:border-neutral-700' +
                   'px-2.5 py-0.5 rounded-full font-mono">'
                   + s1Time
                   + '</span>';
@@ -4777,7 +4777,7 @@ meins: meins || "-"
                       'text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&check;</div>';
                 } else if (isRejected) {
                     html += '<div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-rose-600 text-white font-black' +
-                      'text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&#10005;</div>';
+                      'text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">&times; </div>';
                 } else if (isHold) {
                     html += '<div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-amber-500 text-white font-black' +
                       'text-xs flex items-center justify-center ring-4 ring-white shadow-2xs">!</div>';
@@ -4786,7 +4786,7 @@ meins: meins || "-"
                       'text-xs flex items-center justify-center ring-4 ring-white">3</div>';
                 }
                 var step3BorderClr = isApproved
-                  ? 'border-emerald-200 bg-emerald-50/20'
+                  ? 'border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-850/20'
                   : (isRejected ? 'border-rose-200 bg-rose-50/20' : (isHold ? 'border-amber-200 bg-amber-50/20' : 'border-slate-200/80'));
                 html += '  <div class="bg-white border ' + step3BorderClr + ' rounded-xl p-4 shadow-2xs transition">';
                 html += '    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">';
@@ -4795,7 +4795,7 @@ meins: meins || "-"
                   : (isRejected ? 'Tahap 3: Ditolak (Rejected)' : (isHold ? 'Tahap 3: Ditangguhkan (Hold)' : 'Tahap 3: Keputusan Final (Pending)'));
                 html += '      <h4 class="text-xs font-black text-slate-900 uppercase">' + step3TitleTxt + '</h4>';
                 var s3BadgeClr = isApproved
-                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                  ? 'bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border border-neutral-300 dark:border-neutral-700'
                   : (isRejected
                     ? 'bg-rose-100 text-rose-800 border border-rose-300'
                     : (isHold ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-slate-100 text-slate-500 border border-slate-200'));
@@ -4863,7 +4863,7 @@ meins: meins || "-"
  if (!filtered || filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="p-5 text-center text-slate-400 italic">Belum ada riwayat pengajuan' +
    'material.</td></tr>';
  return; } filtered.forEach(function (item, idx) { var tr = document.createElement("tr");
- tr.className = "hover:bg-emerald-50/40 transition-colors border-b border-slate-100 cursor-pointer";
+ tr.className = "hover:bg-neutral-50 dark:bg-neutral-850/40 transition-colors border-b border-slate-100 cursor-pointer";
  var targetDate = item.erdat;
  var targetTime = item.ertim;
  var isProc = (item.status === 'APPROVED' || item.status === 'CHECKED' || item.status === 'REJECTED' || item.status === 'FAILED');
@@ -5145,8 +5145,8 @@ var badgeEl = document.getElementById("reqModalStatusBadge");
  if (badgeEl) { if (isRejected) { badgeEl.innerHTML = '<span class="bg-rose-100 text-rose-800 border border-rose-200 text-xs font-black px-3 py-1' +
    'rounded-full uppercase">REJECTED</span>';
  }
- else if (stUpper === 'APPROVED') { badgeEl.innerHTML = '<span class="bg-emerald-100 text-emerald-800 border' +
-   'border-emerald-200 text-xs font-black px-3 py-1 rounded-full uppercase">APPROVED</span>';
+ else if (stUpper === 'APPROVED') { badgeEl.innerHTML = '<span class="bg-neutral-100 dark:bg-neutral-800 text-emerald-800 border' +
+   'border-neutral-200 dark:border-neutral-700 text-xs font-black px-3 py-1 rounded-full uppercase">APPROVED</span>';
  }
  else if (stUpper === 'CHECKED') { badgeEl.innerHTML = '<span class="bg-blue-100 text-blue-800 border border-blue-200' +
    'text-xs font-black px-3 py-1 rounded-full uppercase">CHECKED</span>';
@@ -5220,7 +5220,7 @@ var modal = document.getElementById("requestDetailModal");
  if (matnr) matnr = matnr.replace(/^0+/, '');
  html += '<tr class="hover:bg-slate-50 transition border-b border-slate-100 text-xs">';
  html += '  <td class="p-2 text-center text-slate-400 font-medium sticky left-0 bg-white border-r border-slate-200 z-10">' + (idx + 1) + '</td>';
- html += '  <td class="p-2 font-mono font-bold text-emerald-800 bg-emerald-50/60 border-r border-slate-100">'
+ html += '  <td class="p-2 font-mono font-bold text-emerald-800 bg-neutral-50 dark:bg-neutral-850/60 border-r border-slate-100">'
    + (matnr ? escapeHtml(matnr) : '<span class="text-slate-400 font-normal italic">AUTO</span>')
    + '</td>';
  html += '  <td class="p-2 text-center border-r border-slate-100">' + g('mbrsh') + '</td>';
@@ -5347,7 +5347,7 @@ var modal = document.getElementById("requestDetailModal");
  var fileName = escapeHtml(att.file_name || ('Attachment_' + (idx + 1)));
  var desc = escapeHtml(att.description || '');
  html += '<div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 ';
- html += '            flex flex-col justify-between hover:border-emerald-500/50 ';
+ html += '            flex flex-col justify-between hover:border-neutral-400 dark:border-neutral-600/50 ';
  html += '            transition shadow-2xs group relative">';
  if (isImg && fullB64) { html += '  <div class="h-24 w-full bg-slate-200/60 rounded-lg overflow-hidden ';
  html += '              flex items-center justify-center mb-2 cursor-pointer ';
@@ -5362,7 +5362,7 @@ var modal = document.getElementById("requestDetailModal");
  html += '       View';
  html += '    </div>';
  html += '  </div>'; }
- else { html += '  <div class="h-24 w-full bg-emerald-50/80 rounded-lg flex flex-col ';
+ else { html += '  <div class="h-24 w-full bg-neutral-50 dark:bg-neutral-850/80 rounded-lg flex flex-col ';
  html += '              items-center justify-center p-2 mb-2 border border-emerald-100">';
  html += '    ';
  html += '    <span class="text-[10px] font-bold text-emerald-800 uppercase font-mono">' + (att.file_type
@@ -5380,8 +5380,8 @@ var modal = document.getElementById("requestDetailModal");
    + '" download="'
    + fileName
    + '" ';
- html += '       class="mt-2 w-full text-[10px] font-bold text-emerald-700 ';
- html += '              bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 ';
+ html += '       class="mt-2 w-full text-[10px] font-bold text-neutral-600 dark:text-neutral-400 ';
+ html += '              bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 ';
  html += '              py-1 rounded text-center block transition">Download File</a>'; }
  html += '  </div>';
  html += '</div>'; }); grid.innerHTML = html; }
@@ -5406,7 +5406,7 @@ var modal = document.getElementById("requestDetailModal");
  if (subEl) subEl.innerText = 'Dokumen Pendukung Request';
  if (badgeEl) { badgeEl.innerText = 'IMG';
  badgeEl.className = 'w-8 h-8 rounded-xl font-bold text-xs flex items-center justify-center shrink-0 bg-emerald-500/20' +
-   'text-emerald-300 border border-emerald-500/40';
+   'text-emerald-300 border border-neutral-400 dark:border-neutral-600/40';
  } if (descEl) descEl.classList.add("hidden");
  if (bodyContainer) { bodyContainer.innerHTML = '<img id="attachmentPreviewTarget" src="'
    + src
@@ -5490,7 +5490,7 @@ sernp: item.sernp || item.SERNP || "" });
  var emailStatusEl = document.getElementById("successModalEmailStatus");
  if (reqIdEl) reqIdEl.innerText = uploadId || "-";
  if (reasonEl) reasonEl.innerText = subReason || "-";
- if (emailStatusEl) { emailStatusEl.className = 'p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex' +
+ if (emailStatusEl) { emailStatusEl.className = 'p-3 rounded-xl bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 text-emerald-800 text-xs font-semibold flex' +
    'items-center justify-center gap-2';
  var svgSuccess = '';
  var textSuccess = '<span>Data request berhasil diproses dan tersimpan di sistem SAP.</span>'; emailStatusEl.innerHTML = svgSuccess
@@ -5609,7 +5609,7 @@ function matchWildcard(text, pattern) { if (text === undefined || text === null 
  var matklVal = document.getElementById("filterMatkl") ? document.getElementById("filterMatkl").value.trim() : "";
  var tbody = document.getElementById("maraResultTbody");
  var badge = document.getElementById("maraResultBadge");
- if (tbody) { tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-emerald-700 font-bold animate-pulse">'
+ if (tbody) { tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-neutral-600 dark:text-neutral-400 font-bold animate-pulse">'
    + '<div class="inline-flex items-center gap-2">'
    + ' Querying SAP MARA records...</div></td></tr>';
    } if (badge) { badge.innerText = "Querying SAP...";
@@ -5684,7 +5684,7 @@ function matchWildcard(text, pattern) { if (text === undefined || text === null 
  if (maraCurrentPage < 1) maraCurrentPage = 1;
  if (badge) { badge.innerText = totalItems
    + " Record(s) Found";
-   badge.className = "text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200";
+   badge.className = "text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700";
    }
  var startIndex = (maraCurrentPage - 1) * maraPageSize;
  var endIndex = Math.min(startIndex + maraPageSize, totalItems);
@@ -5698,10 +5698,10 @@ function matchWildcard(text, pattern) { if (text === undefined || text === null 
  var matkl = item.matkl || item.MATKL || '';
  var meins = item.meins || item.MEINS || 'PC';
  var tr = document.createElement('tr');
- tr.className = 'hover:bg-emerald-50/40 transition-colors border-b border-slate-100';
+ tr.className = 'hover:bg-neutral-50 dark:bg-neutral-850/40 transition-colors border-b border-slate-100';
  var html = '';
  html += '  <td class="p-2 text-center font-bold text-slate-500 text-[11px]">' + (globalIdx + 1) + '</td>';
- html += '  <td class="p-2 font-mono font-bold text-emerald-700 text-[11px]">' + escapeHtml(matnrDisplay) + '</td>';
+ html += '  <td class="p-2 font-mono font-bold text-neutral-600 dark:text-neutral-400 text-[11px]">' + escapeHtml(matnrDisplay) + '</td>';
  html += '  <td class="p-2 font-medium text-slate-800 text-[11px] max-w-[180px] truncate" title="'
    + escapeHtml(maktx)
    + '">'
@@ -5714,8 +5714,8 @@ function matchWildcard(text, pattern) { if (text === undefined || text === null 
  html += '  <td class="p-2 text-center font-mono text-[11px] text-slate-600">' + escapeHtml(meins) + '</td>';
  html += '  <td class="p-2 text-center">';
   html += '    <button type="button" class="btn-use-ref px-2.5 py-1 text-[10px] '
-    + 'font-extrabold text-emerald-700 hover:text-white bg-emerald-50 '
-    + 'hover:bg-emerald-600 border border-emerald-300 '
+    + 'font-extrabold text-neutral-600 dark:text-neutral-400 hover:text-white bg-neutral-50 dark:bg-neutral-850 '
+    + 'hover:bg-emerald-600 border border-neutral-300 dark:border-neutral-700 '
     + 'hover:border-emerald-600 rounded-md transition '
     + 'shadow-2xs inline-flex items-center gap-1 cursor-pointer">';
   html += '';
@@ -5767,7 +5767,7 @@ paginationControls.appendChild(span);
  pBtn.className = "px-2.5 py-1 rounded-lg border text-[11px] font-extrabold transition "
    + (pageNum === maraCurrentPage
      ? "bg-emerald-600 text-white border-emerald-600 shadow-2xs"
-     : "bg-white text-slate-700 hover:bg-emerald-50 border-slate-300 cursor-pointer");
+     : "bg-white text-slate-700 hover:bg-neutral-50 dark:bg-neutral-850 border-slate-300 cursor-pointer");
      pBtn.innerText = pageNum;
      pBtn.onclick = function () { changeMaraPage(pageNum);
      };
@@ -5831,8 +5831,8 @@ nextBtn.className = "px-2.5 py-1 rounded-lg border text-[11px] font-bold transit
    "border-blue-200";
  span.textContent = "CHECKED";
  }
- else if (st === 'APPROVED') { span.className = "bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border" +
-   "border-emerald-200";
+ else if (st === 'APPROVED') { span.className = "bg-neutral-100 dark:bg-neutral-800 text-emerald-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border" +
+   "border-neutral-200 dark:border-neutral-700";
  span.textContent = "APPROVED";
  }
  else if (st === 'REJECTED' || st === 'FAILED') { span.className = "bg-rose-100 text-rose-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border" +
@@ -5899,7 +5899,7 @@ badgeEl.innerText = "Duplicate";
  badgeEl.innerText = "Possible";
  }
  else { badgeEl.className = "row-ai-status-badge cursor-pointer text-[10px] font-bold px-1.5 py-0.5 rounded text-emerald-800" +
-   "bg-emerald-50 border border-emerald-200 inline-block mb-1 font-mono";
+   "bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700 inline-block mb-1 font-mono";
  badgeEl.innerText = "Unique";
  } }
 /* Show AI Standardization Chip if recommendation differs */
@@ -5926,7 +5926,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
  });
  setTimeout(function () { if (statusBadge) { statusBadge.innerText = "VERIFIED";
  statusBadge.className = "text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border" +
-   "border-emerald-500/30 uppercase font-mono";
+   "border-neutral-400 dark:border-neutral-600/30 uppercase font-mono";
  } showToast("AI Copilot selesai meng-audit "
    + checkedCount
    + " baris.", "success"); }, 800); }
@@ -5973,7 +5973,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
  }
  else { badgeEl.innerText = "UNIQUE MATERIAL";
  badgeEl.className = "bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded border" +
-   "border-emerald-500/30 uppercase font-mono";
+   "border-neutral-400 dark:border-neutral-600/30 uppercase font-mono";
  } } if (res && res.recommended_name && res.recommended_name !== originalText) { if (aiRecBox) aiRecBox.classList.remove("hidden");
  if (aiRecText) aiRecText.innerText = res.recommended_name;
  if (aiRecReason) aiRecReason.innerText = "Alasan: " + (res.recommendation_reason || "Format disesuaikan."); }
@@ -5983,7 +5983,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
    'lain yang terdeteksi di SAP.</td></tr>';
  }
  else { var html = ''; candidates.forEach(function (c) { html += '<tr class="hover:bg-slate-50 transition border-b border-slate-100">';
- html += '  <td class="p-2.5 font-mono font-bold text-emerald-700">' + escapeHtml(c.matnr || '-') + '</td>';
+ html += '  <td class="p-2.5 font-mono font-bold text-neutral-600 dark:text-neutral-400">' + escapeHtml(c.matnr || '-') + '</td>';
  html += '  <td class="p-2.5 font-semibold text-slate-800">' + escapeHtml(c.maktx || '-') + '</td>';
  html += '  <td class="p-2.5 text-center text-[11px] font-medium text-slate-500">' + escapeHtml(c.source || 'SAP') + '</td>';
  html += '<td class="p-2.5 text-center"><span class="px-2 py-0.5 text-[10px] font-bold rounded-full' +
@@ -5994,9 +5994,9 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
  html += '            data-matnr="' + escapeHtml(c.matnr || '') + '" ';
  html += '            data-maktx="' + escapeHtml(c.maktx || '') + '" ';
  html += '            onclick="useCandidateAsReference(this.dataset.matnr, this.dataset.maktx)" ';
- html += '            class="px-2.5 py-1 text-[10px] font-extrabold text-emerald-700 ';
- html += '                   hover:text-white bg-emerald-50 hover:bg-emerald-600 border ';
- html += '                   border-emerald-300 rounded transition cursor-pointer">Gunakan Ref</button>';
+ html += '            class="px-2.5 py-1 text-[10px] font-extrabold text-neutral-600 dark:text-neutral-400 ';
+ html += '                   hover:text-white bg-neutral-50 dark:bg-neutral-850 hover:bg-emerald-600 border ';
+ html += '                   border-neutral-300 dark:border-neutral-700 rounded transition cursor-pointer">Gunakan Ref</button>';
  html += '</tr>'; });
  tbody.innerHTML = html; } } if (modal) modal.classList.remove("hidden"); }
  function closeDuplicateReviewModal() { var modal = document.getElementById("duplicateReviewModal");
@@ -6032,7 +6032,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                     <div class="flex items-center gap-3">
                         <div id="attPreviewIconBadge"
      class="w-8 h-8 rounded-xl font-bold text-xs flex items-center justify-center shrink-0
-         bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">IMG</div>
+         bg-emerald-500/20 text-emerald-300 border border-neutral-400 dark:border-neutral-600/40">IMG</div>
                         <div>
                             <h3 id="attPreviewFileName" class="text-sm font-bold text-slate-100 truncate max-w-xs md:max-w-md">Preview Attachment</h3>
                             <p id="attPreviewSubText" class="text-[11px] text-slate-400 font-mono">Dokumen Pendukung Requester</p>
@@ -6129,10 +6129,10 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                     <!-- TAB 1: FUNGSI HALAMAN -->
                     <div id="guideFungsi" class="guide-tab-content space-y-4">
                         <div
-                            class="p-4 bg-emerald-50/60 border border-emerald-200 rounded-2xl">
+                            class="p-4 bg-neutral-50 dark:bg-neutral-850/60 border border-neutral-200 dark:border-neutral-700 rounded-2xl">
                             <h4
                                 class="text-sm font-black text-emerald-950 mb-1 flex items-center gap-2">
-                                <span>🎯</span> Apa Fungsi Halaman Ini?
+                                <svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Apa Fungsi Halaman Ini?
                             </h4>
                             <p class="text-xs text-slate-700">Halaman ini
                                 digunakan oleh unit kerja / user untuk mengajukan
@@ -6225,7 +6225,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                 <div>
                                     <div class="font-bold text-slate-900 text-xs">
                                         Template Excel Resmi: <span
-                                            class="font-mono text-emerald-700 font-extrabold">data_material.xlsx</span>
+                                            class="font-mono text-neutral-600 dark:text-neutral-400 font-extrabold">data_material.xlsx</span>
                                     </div>
                                     <div
                                         class="text-[11px] text-slate-500 mt-0.5">
@@ -6233,7 +6233,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                         MBEW, dan MAKT.</div>
                                 </div>
                                 <a href="data_material.xlsx" download
-                                    class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px]
+                                    class="px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-900 text-white font-bold text-[11px]
                                         rounded-lg shadow-2xs transition shrink-0">Download
                                     Template</a>
                             </div>
@@ -6247,38 +6247,38 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                     class="divide-y divide-slate-100 text-[11px] bg-white">
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">MAKTX</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">MAKTX</span>
                                         <span><b>Deskripsi Material</b> (Maksimal
                                             40 karakter, huruf kapital).</span>
                                     </li>
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">MTART</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">MTART</span>
                                         <span><b>Material Type</b> (Contoh: ZRAW,
                                             ZFIN, ZSPM, FERT).</span>
                                     </li>
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">WERKS</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">WERKS</span>
                                         <span><b>Plant / Pabrik</b> tempat
                                             material digunakan (Contoh:
                                             1101).</span>
                                     </li>
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">LGORT</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">LGORT</span>
                                         <span><b>Storage Location</b> / Gudang
                                             penerima (Contoh: 1001).</span>
                                     </li>
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">MEINS</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">MEINS</span>
                                         <span><b>Base Unit of Measure</b> (Satuan
                                             Dasar, Contoh: PC, KG, M).</span>
                                     </li>
                                     <li class="p-2.5 flex items-start gap-2">
                                         <span
-                                            class="font-bold text-emerald-700 font-mono w-24 shrink-0">BKLAS</span>
+                                            class="font-bold text-neutral-600 dark:text-neutral-400 font-mono w-24 shrink-0">BKLAS</span>
                                         <span><b>Valuation Class</b> (Klasifikasi
                                             Akuntansi SAP, Contoh: 3000).</span>
                                     </li>
@@ -6324,7 +6324,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                     online, melengkapi dokumen penunjang, lalu
                                     menekan tombol <b>Submit Request</b>. Status
                                     data berubah menjadi <span
-                                        class="font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200
+                                        class="font-mono font-bold text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850 border border-neutral-200 dark:border-neutral-700
                                             px-1.5 py-0.5 rounded">SUBMITTED</span>.
                                 </p>
                             </div>
@@ -6349,7 +6349,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                     wewenang (Pak Sur / Approver Master Data)
                                     menyetujui pengajuan. Jika disetujui, status
                                     menjadi <span
-                                        class="font-mono font-bold text-emerald-800 bg-emerald-100 border border-emerald-300
+                                        class="font-mono font-bold text-emerald-800 bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700
                                             px-1.5 py-0.5 rounded">APPROVED</span>.
                                 </p>
                             </div>
@@ -6394,7 +6394,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                 class="p-3 bg-white border border-slate-200 rounded-xl">
                                 <b>Notifikasi Outbound Email SAP:</b> Begitu
                                 request dikirim (<span
-                                    class="font-mono text-emerald-700">SUBMITTED</span>),
+                                    class="font-mono text-neutral-600 dark:text-neutral-400">SUBMITTED</span>),
                                 sistem meregistrasikan notifikasi email di queue
                                 SAP SOST kepada Data Steward &amp; Approver.
                             </li>
@@ -6414,7 +6414,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                         <div class="p-4 bg-emerald-900 text-white rounded-2xl">
                             <h4
                                 class="text-sm font-black text-emerald-300 mb-1 flex items-center gap-2">
-                                <span>🏷️</span> Menampilkan Kode Material Hasil
+                                <svg class="w-4 h-4 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Menampilkan Kode Material Hasil
                                 Approval
                             </h4>
                             <p class="text-xs text-emerald-100">Setelah pengajuan
@@ -6433,7 +6433,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                             <ul class="space-y-2 text-[11px]">
                                 <li class="flex items-start gap-2">
                                     <span
-                                        class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center
+                                        class="w-5 h-5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-emerald-800 font-bold flex items-center
                                             justify-center shrink-0">1</span>
                                     <span>Klik tombol <b>"Lacak"</b> pada tabel
                                         Riwayat Pengajuan untuk membuka modal
@@ -6441,7 +6441,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <span
-                                        class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center
+                                        class="w-5 h-5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-emerald-800 font-bold flex items-center
                                             justify-center shrink-0">2</span>
                                     <span>Lihat pada <b>Tahap 3: Keputusan Akhir
                                             &amp; Master Data SAP</b>. Seluruh
@@ -6488,7 +6488,7 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                     <input type="text" id="searchableDropdownQuery" onkeyup="filterSearchableDropdownItems()"
                         placeholder="Ketik kata kunci pencarian..."
                         class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 bg-white text-slate-800 font-medium">
-                    <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+                    <span class="absolute left-2.5 top-2 text-slate-400 text-xs"><svg class="w-3.5 h-3.5 text-neutral-400 inline-block align-middle mr-1" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span>
                 </div>
             </div>
             <div id="searchableDropdownList" class="max-h-60 overflow-y-auto p-1 divide-y divide-slate-100">
@@ -6600,12 +6600,12 @@ var recName = (result && result.recommended_name) ? result.recommended_name : ra
                     var text = escapeHtml(item.text || '');
                     var label = (text && text !== code) ? text : code;
                     html += '<div onclick="selectSearchableDropdownOption(\'' + code + '\')" ' +
-                        'class="p-2 hover:bg-emerald-50 cursor-pointer flex items-center justify-between rounded-lg transition group text-xs">' +
+                        'class="p-2 hover:bg-neutral-50 dark:bg-neutral-850 cursor-pointer flex items-center justify-between rounded-lg transition group text-xs">' +
                         '<div class="truncate mr-2">' +
                         '<span class="font-mono font-bold text-emerald-800 mr-2">' + code + '</span>' +
                         '<span class="text-slate-700 font-medium truncate">' + label + '</span>' +
                         '</div>' +
-                        '<span class="text-[10px] font-extrabold text-emerald-600 opacity-0 group-hover:opacity-100 shrink-0">Pilih ↵</span>' +
+                        '<span class="text-[10px] font-extrabold text-neutral-600 dark:text-neutral-400 opacity-0 group-hover:opacity-100 shrink-0">Pilih ↵</span>' +
                         '</div>';
                 });
                 container.innerHTML = html;

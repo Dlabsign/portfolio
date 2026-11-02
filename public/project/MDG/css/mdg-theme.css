@@ -1,0 +1,360 @@
+/**
+ * =====================================================================================
+ * PT KAYU MEBEL INDONESIA - MASTER DATA GOVERNANCE (MDG)
+ * Unified Minimalist Monochrome Design System (Apple / Impeccable Standard)
+ * =====================================================================================
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Canvas & Surfaces (Light) */
+  --mdg-canvas: #f8f9fa;
+  --mdg-surface: #ffffff;
+  --mdg-surface-subtle: #f3f4f6;
+  --mdg-surface-hover: #f1f3f5;
+  --mdg-surface-active: #e5e7eb;
+
+  /* Hairline Borders */
+  --mdg-border: #e5e7eb;
+  --mdg-border-strong: #d1d5db;
+  --mdg-border-focus: #111827;
+
+  /* Typography Colors */
+  --mdg-text-primary: #111827;
+  --mdg-text-secondary: #4b5563;
+  --mdg-text-muted: #9ca3af;
+  --mdg-text-inverse: #ffffff;
+
+  /* Action Buttons */
+  --mdg-btn-primary-bg: #111827;
+  --mdg-btn-primary-text: #ffffff;
+  --mdg-btn-primary-hover: #1f2937;
+
+  --mdg-btn-secondary-bg: #ffffff;
+  --mdg-btn-secondary-text: #111827;
+  --mdg-btn-secondary-border: #e5e7eb;
+  --mdg-btn-secondary-hover: #f3f4f6;
+
+  --mdg-btn-danger-bg: #18181b;
+  --mdg-btn-danger-text: #ffffff;
+  --mdg-btn-danger-hover: #27272a;
+
+  /* Neutral Status Badges */
+  --mdg-badge-bg: #f3f4f6;
+  --mdg-badge-text: #1f2937;
+  --mdg-badge-border: #e5e7eb;
+
+  /* Diffuse Elevation */
+  --mdg-shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --mdg-shadow-modal: 0 16px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --mdg-backdrop: rgba(15, 23, 42, 0.45);
+}
+
+/* Dark Theme Overrides */
+html.dark, body.dark, [data-theme="dark"] {
+  --mdg-canvas: #090a0c;
+  --mdg-surface: #131417;
+  --mdg-surface-subtle: #191a1e;
+  --mdg-surface-hover: #202227;
+  --mdg-surface-active: #2a2d33;
+
+  --mdg-border: rgba(255, 255, 255, 0.08);
+  --mdg-border-strong: rgba(255, 255, 255, 0.16);
+  --mdg-border-focus: #f9fafb;
+
+  --mdg-text-primary: #f9fafb;
+  --mdg-text-secondary: #9ca3af;
+  --mdg-text-muted: #6b7280;
+  --mdg-text-inverse: #0f172a;
+
+  --mdg-btn-primary-bg: #f9fafb;
+  --mdg-btn-primary-text: #0f172a;
+  --mdg-btn-primary-hover: #e2e8f0;
+
+  --mdg-btn-secondary-bg: #18191c;
+  --mdg-btn-secondary-text: #f9fafb;
+  --mdg-btn-secondary-border: rgba(255, 255, 255, 0.12);
+  --mdg-btn-secondary-hover: #222428;
+
+  --mdg-btn-danger-bg: #27272a;
+  --mdg-btn-danger-text: #fca5a5;
+  --mdg-btn-danger-hover: #3f3f46;
+
+  --mdg-badge-bg: #1f2937;
+  --mdg-badge-text: #f3f4f6;
+  --mdg-badge-border: rgba(255, 255, 255, 0.1);
+
+  --mdg-shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --mdg-shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.6);
+  --mdg-backdrop: rgba(0, 0, 0, 0.75);
+}
+
+/* Base Typographic Hierarchy - Inter Everywhere */
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body {
+  background-color: var(--mdg-canvas) !important;
+  color: var(--mdg-text-primary) !important;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Neutral Monochrome Icon Enforcement */
+svg {
+  flex-shrink: 0;
+}
+
+/* Form Controls - Minimalist Hairline Design */
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+input[type="date"],
+input[type="email"],
+select,
+textarea {
+  background-color: var(--mdg-surface) !important;
+  color: var(--mdg-text-primary) !important;
+  border: 1px solid var(--mdg-border) !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--mdg-border-focus) !important;
+  box-shadow: 0 0 0 1px var(--mdg-border-focus) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--mdg-text-muted) !important;
+  font-weight: 400;
+}
+
+/* Buttons - High Contrast Apple-Grade Precision */
+.mdg-btn-primary {
+  background-color: var(--mdg-btn-primary-bg) !important;
+  color: var(--mdg-btn-primary-text) !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.mdg-btn-primary:hover {
+  background-color: var(--mdg-btn-primary-hover) !important;
+  transform: translateY(-0.5px);
+}
+
+.mdg-btn-primary:active {
+  transform: scale(0.99);
+}
+
+.mdg-btn-secondary {
+  background-color: var(--mdg-btn-secondary-bg) !important;
+  color: var(--mdg-btn-secondary-text) !important;
+  border: 1px solid var(--mdg-btn-secondary-border) !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.mdg-btn-secondary:hover {
+  background-color: var(--mdg-btn-secondary-hover) !important;
+  border-color: var(--mdg-border-strong) !important;
+}
+
+/* Clean Minimalist Badges (Monochrome Neutral) */
+.mdg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background-color: var(--mdg-badge-bg);
+  color: var(--mdg-badge-text);
+  border: 1px solid var(--mdg-badge-border);
+}
+
+.mdg-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--mdg-text-secondary);
+}
+
+/* Table Architecture */
+.mdg-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+
+.mdg-table th {
+  background-color: var(--mdg-surface-subtle) !important;
+  color: var(--mdg-text-secondary) !important;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--mdg-border);
+  text-align: left;
+}
+
+.mdg-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--mdg-border);
+  color: var(--mdg-text-primary);
+  vertical-align: middle;
+}
+
+.mdg-table tr:hover td {
+  background-color: var(--mdg-surface-hover) !important;
+}
+
+/* Minimalist Cards & Containers */
+.mdg-card {
+  background-color: var(--mdg-surface) !important;
+  border: 1px solid var(--mdg-border) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--mdg-shadow-subtle) !important;
+  transition: border-color 0.15s ease;
+}
+
+/* Modals & Dialogs */
+.mdg-modal-backdrop {
+  background-color: var(--mdg-backdrop) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.mdg-modal-container {
+  background-color: var(--mdg-surface) !important;
+  border: 1px solid var(--mdg-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--mdg-shadow-modal) !important;
+  color: var(--mdg-text-primary) !important;
+}
+
+/* Tab Navigation */
+.mdg-tab {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mdg-text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  text-decoration: none;
+}
+
+.mdg-tab:hover {
+  color: var(--mdg-text-primary);
+}
+
+.mdg-tab.active {
+  color: var(--mdg-text-primary);
+  font-weight: 600;
+  border-bottom-color: var(--mdg-text-primary);
+}
+
+/* Theme Toggle Button */
+.mdg-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--mdg-border);
+  background: var(--mdg-surface);
+  color: var(--mdg-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mdg-theme-toggle:hover {
+  color: var(--mdg-text-primary);
+  border-color: var(--mdg-border-strong);
+}
+
+/* Color Neutralizers for Legacy Classes & Dynamic JS Elements */
+.bg-emerald-600, .bg-emerald-700, .bg-sky-600, .bg-sky-700, .bg-teal-600, .bg-teal-700, .bg-blue-600 {
+  background-color: var(--mdg-btn-primary-bg) !important;
+  color: var(--mdg-btn-primary-text) !important;
+}
+
+.hover\:bg-emerald-700:hover, .hover\:bg-emerald-600:hover, .hover\:bg-sky-700:hover, .hover\:bg-blue-700:hover {
+  background-color: var(--mdg-btn-primary-hover) !important;
+}
+
+.text-emerald-400, .text-emerald-500, .text-emerald-600, .text-emerald-700,
+.text-sky-400, .text-sky-500, .text-sky-600, .text-teal-600, .text-teal-700 {
+  color: var(--mdg-text-primary) !important;
+}
+
+.bg-emerald-50, .bg-emerald-100, .bg-sky-50, .bg-sky-100, .bg-amber-50, .bg-amber-100, .bg-teal-50, .bg-teal-100 {
+  background-color: var(--mdg-surface-subtle) !important;
+  color: var(--mdg-text-secondary) !important;
+  border-color: var(--mdg-border) !important;
+}
+
+.border-emerald-100, .border-emerald-200, .border-emerald-300, .border-emerald-400,
+.border-sky-200, .border-sky-300, .border-amber-200, .border-amber-300 {
+  border-color: var(--mdg-border) !important;
+}
+
+/* Custom Minimalist Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mdg-border-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mdg-text-muted);
+}
+
+/* Remove bottom standalone role/control bar */
+#mdg-standalone-control-bar {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

@@ -9,11 +9,11 @@
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 <link rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+                    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800">
                 <style>
                     body {
-                        font-family: 'Plus Jakarta Sans', sans-serif;
-                        background: #f7faf9;
+                        font-family: 'Inter', sans-serif;
+                        background: var(--mdg-canvas);
                         color: #0f172a;
                         margin: 0;
                         padding: 0;
@@ -83,7 +83,7 @@
                         width: 42px;
                         height: 42px;
                         border-radius: 12px;
-                        background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0c4a6e 100%);
+                        background: var(--mdg-btn-primary-bg); color: var(--mdg-btn-primary-text);
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -91,7 +91,7 @@
                         font-weight: 800;
                         font-size: 14px;
                         letter-spacing: 0.05em;
-                        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+                        box-shadow: none;
                     }
 
                     .brand-text-wrap {
@@ -121,9 +121,7 @@
                         gap: 8px;
                         padding: 6px 14px;
                         border-radius: 9999px;
-                        background: #f0f9ff;
-                        border: 1px solid #bae6fd;
-                        color: #0284c7;
+                        background: var(--mdg-surface-subtle); border: 1px solid var(--mdg-border); color: var(--mdg-text-secondary);
                         font-size: 12px;
                         font-weight: 700;
                         letter-spacing: 0.01em;
@@ -133,8 +131,7 @@
                         width: 7px;
                         height: 7px;
                         border-radius: 9999px;
-                        background: #0284c7;
-                        box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
+                        background: var(--mdg-text-secondary); box-shadow: 0 0 0 1px var(--mdg-border);
                         animation: devPulse 1.8s infinite;
                     }
 
@@ -228,13 +225,16 @@
 
                     /* 2. TOP HERO BANNER (DEEP OCEAN BLUE #0c4a6e) */
                     .hero-banner {
-                        width: 100%;
-                        background: linear-gradient(135deg, #0c4a6e 0%, #075985 60%, #082f49 100%);
-                        padding: 34px 40px;
-                        display: flex;
-                        flex-direction: column;
-                        box-shadow: 0 4px 20px rgba(8, 47, 73, 0.12);
-                    }
+                width: 100%;
+                background: var(--mdg-surface-subtle);
+                border-bottom: 1px solid var(--mdg-border);
+                padding: 32px 24px 28px 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-shadow: none;
+            }
 
                     .hero-section {
                         display: flex;
@@ -249,9 +249,7 @@
                         font-size: 32px;
                         font-weight: 800;
                         letter-spacing: -0.02em;
-                        color: #ffffff !important;
-                        margin: 0;
-                        line-height: 1.2;
+                        color: var(--mdg-text-primary) !important; margin: 0; line-height: 1.25;
                     }
 
                     .hero-section p {
@@ -349,144 +347,16 @@
                         }
 
                         .hero-banner {
-                            padding: 26px 18px;
-                        }
-
-                        .main-wrapper {
-                            padding: 20px 16px 40px 16px;
-                        }
-
-                        .analytics-grid {
-                            grid-template-columns: repeat(2, 1fr);
-                            gap: 14px;
-                        }
-                    }
-
-                    @media (max-width: 640px) {
-                        .analytics-grid {
-                            grid-template-columns: 1fr;
-                        }
-                    }
-
-                    /* DS CARD & PANELS */
-                    .ds-card {
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 26px;
-                        padding: 28px 30px;
-                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-                        transition: all 0.3s ease;
-                        width: 100%;
-                    }
-
-                    .ds-card-header {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        padding-bottom: 18px;
-                        margin-bottom: 22px;
-                        border-bottom: 1px solid #edf2f0;
-                        flex-wrap: wrap;
-                        gap: 16px;
-                    }
-
-                    .ds-header-left {
-                        display: flex;
-                        align-items: center;
-                        gap: 14px;
-                    }
-
-                    .ds-header-icon {
-                        width: 44px;
-                        height: 44px;
-                        border-radius: 13px;
-                        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: #ffffff;
-                        font-weight: 800;
-                        font-size: 13px;
-                        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-                        flex-shrink: 0;
-                    }
-
-                    .ds-card-title {
-                        font-size: 16px;
-                        font-weight: 800;
-                        color: #0f172a;
-                        letter-spacing: -0.01em;
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                        margin: 0;
-                    }
-
-                    .ds-card-subtitle {
-                        font-size: 12.5px;
-                        color: #64748b;
-                        font-weight: 500;
-                        margin-top: 2px;
-                        margin-bottom: 0;
-                    }
-
-                    .badge-live {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 6px;
-                        padding: 3px 10px;
-                        border-radius: 9999px;
-                        font-size: 10px;
-                        font-weight: 800;
-                        letter-spacing: 0.04em;
-                        text-transform: uppercase;
-                        background: #f0f9ff;
-                        color: #0284c7;
-                        border: 1px solid #bae6fd;
-                    }
-
-                    .ds-subpanel {
-                        background: #f8faf9;
-                        border: 1px solid #edf2f0;
-                        border-radius: 20px;
-                        padding: 22px;
-                    }
-
-                    .ds-subpanel-title {
-                        font-size: 12.5px;
-                        font-weight: 800;
-                        color: #0f172a;
-                        text-transform: uppercase;
-                        letter-spacing: 0.04em;
-                        margin-bottom: 16px;
-                        padding-bottom: 10px;
-                        border-bottom: 1px solid #e2e8f0;
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
-
-                    /* FORM CONTROLS & INPUTS */
-                    .ds-input {
-                        width: 100%;
-                        padding: 10px 14px;
-                        background: #ffffff;
-                        border: 1px solid #cbd5e1;
-                        border-radius: 12px;
-                        font-family: inherit;
-                        font-size: 13px;
-                        color: #1e293b;
-                        outline: none;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-                        box-sizing: border-box;
-                    }
-
-                    .ds-input:focus {
-                        background: #ffffff;
-                        border-color: #0284c7;
-                        box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
-                    }
+                width: 100%;
+                background: var(--mdg-surface-subtle);
+                border-bottom: 1px solid var(--mdg-border);
+                padding: 32px 24px 28px 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-shadow: none;
+            }
 
                     .ds-select {
                         width: 100%;
@@ -531,7 +401,7 @@
                         align-items: center;
                         justify-content: center;
                         gap: 8px;
-                        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+                        background: var(--mdg-btn-primary-bg); color: var(--mdg-btn-primary-text);
                         color: #ffffff !important;
                         font-size: 13px;
                         font-weight: 800;
@@ -608,7 +478,7 @@
                     }
 
                     .ds-table tr:hover td {
-                        background-color: #f8fafc;
+                        background-color: var(--mdg-canvas);
                     }
 
                     .ds-table tr:last-child td {
@@ -647,6 +517,7 @@
                     }
                 </style>
               <script src="js/mdg-runtime.js"></script>
+  <link rel="stylesheet" href="css/mdg-theme.css">
 </head>
 
             <body class="min-h-screen text-slate-800 flex flex-col">
@@ -716,7 +587,7 @@
 
                         <!-- CARD 2: READY TO CHECKED -->
                         <div class="rounded-2xl p-5 text-white shadow-md cursor-pointer transition transform hover:-translate-y-1"
-                            style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0c4a6e 100%);"
+                            style="background: var(--mdg-btn-primary-bg); color: var(--mdg-btn-primary-text);"
                             onclick="document.getElementById('statusFilter').value='SD_APPROVED'; applyFilters();"
                             title="Klik untuk menyaring status Ready To Checked">
                             <div class="flex items-center justify-between mb-2">
@@ -898,7 +769,7 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                             <div id="modalRejectBanner"
                                 class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 hidden mb-3">
                                 <div class="font-extrabold flex items-center gap-1.5 mb-1">
-                                    <span>&#10007; Permohonan Pernah Dikembalikan/Ditolak:</span>
+                                    <span>Permohonan Pernah Dikembalikan/Ditolak:</span>
                                 </div>
                                 <div id="modalRejectReason" class="text-xs font-medium"></div>
                             </div>
@@ -1127,8 +998,7 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                         <div class="w-12 h-12 rounded-full bg-sky-100
                         text-sky-700 mx-auto flex items-center
                         justify-center text-xl font-black mb-3">
-                            &#10003;
-                        </div>
+                            </div>
                         <h3 class="text-sm font-extrabold text-slate-900" id="confirmModalTitle">
                             Konfirmasi Aktivasi Role FI &amp; Approval Bank
                         </h3>
@@ -1137,7 +1007,7 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                                 id="confirmReqIdLabel" class="font-mono text-sky-900"></strong>. Perintah ini akan
                             mengaktifkan <span id="confirmRoleLabel" class="font-bold text-sky-700">BP Role FI</span> pada
                             Nomor BP SAP yang dibuat di Tahap 1, dan menyelesaikan alur governance (<strong
-                                class="text-emerald-700">APPROVED Complete</strong>).
+                                class="text-neutral-600 dark:text-neutral-400">APPROVED Complete</strong>).
                         </p>
                         <div class="mt-4 text-left">
                             <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">
@@ -1170,7 +1040,7 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                         border-slate-100 mb-4">
                             <h3 class="text-xs font-extrabold text-rose-800 uppercase
                            tracking-wider flex items-center gap-1.5">
-                                <span>&#10007; Tolak Permohonan Business Partner</span>
+                                <span>Tolak Permohonan Business Partner</span>
                             </h3>
                             <button type="button" onclick="closeReturnModal()"
                                 class="text-slate-400 hover:text-slate-600 font-bold">&times;</button>
@@ -1367,20 +1237,20 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                             var statusBadge = '';
                             if (status === 'APPROVED') {
                                 statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] ' +
-                                    'font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">' +
-                                    '&#10003; APPROVED</span>';
+                                    'font-bold bg-neutral-50 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700">' +
+                                    'APPROVED</span>';
                             } else if (status === 'SD_APPROVED') {
                                 statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] ' +
                                     'font-bold bg-sky-50 text-sky-800 border border-sky-200 animate-pulse">' +
-                                    '&#10003; READY TO CHECKED</span>';
+                                    'READY TO CHECKED</span>';
                             } else if (status === 'MM_APPROVED') {
                                 statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] ' +
                                     'font-bold bg-purple-50 text-purple-800 border border-purple-200 animate-pulse">' +
-                                    '&#10003; MM APPROVED</span>';
+                                    'MM APPROVED</span>';
                             } else if (status === 'REJECTED' || status === 'FAILED' || r.stw_bank_status === 'R') {
                                 statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] ' +
                                     'font-bold bg-rose-50 text-rose-700 border border-rose-200">' +
-                                    '&#10007; BANK REJECT</span>';
+                                    'BANK REJECT</span>';
                             } else {
                                 statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] ' +
                                     'font-bold bg-amber-50 text-amber-700 border border-amber-200 animate-pulse">' +
@@ -1393,26 +1263,26 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                                 actionBtns = '<button type="button" ' +
                                     'class="ds-btn-primary px-3 py-1 text-[11px] inline-flex items-center gap-1 shadow-2xs" ' +
                                     'onclick="markAsCheckedDirect(\'' + reqNo +
-                                    '\')">&#10003; Approve FI Customer (FLCU00)</button> ' +
+                                    '\')">Approve FI Customer (FLCU00)</button> ' +
                                     '<button type="button" class="ds-btn-secondary px-2.5 py-1 text-[11px]" ' +
                                     'onclick="openBpDetailModal(\'' + reqNo + '\')">Detail</button> ' +
                                     '<button type="button" ' +
                                     'class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 ' +
                                     'px-2.5 py-1 rounded-full font-bold text-[11px] transition shadow-2xs cursor-pointer" ' +
                                     'onclick="openReturnModal(\'' + reqNo +
-                                    '\')">&#10007; Reject</button>';
+                                    '\')">Reject</button>';
                             } else if (r.stw_bank_status === 'X') {
                                 actionBtns = '<button type="button" disabled ' +
                                     'class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-50 ' +
                                     'text-sky-600 border border-sky-200 cursor-not-allowed ' +
-                                    'inline-flex items-center gap-1 opacity-80">&#10003; Disetujui Bank</button> ' +
+                                    'inline-flex items-center gap-1 opacity-80">Disetujui Bank</button> ' +
                                     '<button type="button" class="ds-btn-secondary px-2.5 py-1 text-[11px]" ' +
                                     'onclick="openBpDetailModal(\'' + reqNo + '\')">Detail</button>';
                             } else if (status === 'REJECTED' || status === 'FAILED' || r.stw_bank_status === 'R') {
                                 actionBtns = '<button type="button" disabled ' +
                                     'class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 ' +
                                     'text-rose-600 border border-rose-200 cursor-not-allowed ' +
-                                    'inline-flex items-center gap-1 opacity-80">&#10007; Ditolak</button> ' +
+                                    'inline-flex items-center gap-1 opacity-80">Ditolak</button> ' +
                                     '<button type="button" class="ds-btn-secondary px-2.5 py-1 text-[11px]" ' +
                                     'onclick="openBpDetailModal(\'' + reqNo + '\')">Detail</button>';
                             } else {
@@ -1691,10 +1561,10 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                             r.status === 'DATA_CHECKED' ||
                             r.status === 'CHECKED' ||
                             r.status === 'APPROVED') {
-                            stwDataStatusText = '&#10003; Lolos Verifikasi (' +
+                            stwDataStatusText = 'Lolos Verifikasi (' +
                                 (r.stw_data_by || 'Data Steward') + ')';
                         } else if (r.stw_data_status === 'R') {
-                            stwDataStatusText = '&#10007; Ditolak (' + (r.stw_data_by || 'Data Steward') +
+                            stwDataStatusText = 'Ditolak (' + (r.stw_data_by || 'Data Steward') +
                                 ')';
                         }
                         document.getElementById('dtlStwDataStatus').innerHTML = stwDataStatusText;
@@ -1703,10 +1573,10 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
 
                         var stwBankStatusText = 'Belum Diproses';
                         if (r.stw_bank_status === 'X' || r.status === 'CHECKED' || r.status === 'APPROVED') {
-                            stwBankStatusText = '&#10003; Lolos Verifikasi (' +
+                            stwBankStatusText = 'Lolos Verifikasi (' +
                                 (r.stw_bank_by || 'Bank Steward') + ')';
                         } else if (r.stw_bank_status === 'R') {
-                            stwBankStatusText = '&#10007; Ditolak (' + (r.stw_bank_by || 'Bank Steward') +
+                            stwBankStatusText = 'Ditolak (' + (r.stw_bank_by || 'Bank Steward') +
                                 ')';
                         }
                         document.getElementById('dtlStwBankStatus').innerHTML = stwBankStatusText;
@@ -1731,19 +1601,19 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                                 '<button type="button" onclick="openReturnModalFromDetail()" ' +
                                 'class="px-4 py-2 rounded-full text-xs font-extrabold bg-rose-50 ' +
                                 'text-rose-700 border border-rose-200 hover:bg-rose-100 transition ' +
-                                'cursor-pointer">&#10007; Reject</button>' +
+                                'cursor-pointer">Reject</button>' +
                                 '<button type="button" onclick="markAsCheckedFromDetail()" ' +
-                                'class="ds-btn-primary px-6 py-2 text-xs">&#10003; Approve Bank ' +
+                                'class="ds-btn-primary px-6 py-2 text-xs">Approve Bank ' +
                                 '(Validasi Data Keuangan &amp; Rekening)</button>';
                         } else if (r.stw_bank_status === 'X') {
                             actionContainer.innerHTML =
                                 '<span class="text-xs text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg ' +
-                                'border border-sky-200 font-semibold">&#10003; Sudah disetujui ' +
+                                'border border-sky-200 font-semibold">Sudah disetujui ' +
                                 'Bank Steward' + (r.status === 'CHECKED' ? ' &amp; siap di Approval Final' : ' (menunggu Data Steward)') + '</span>';
                         } else if (r.status === 'APPROVED') {
                             actionContainer.innerHTML =
-                                '<span class="text-xs text-emerald-700 bg-emerald-50 px-3 py-1.5 ' +
-                                'rounded-lg border border-emerald-200 font-semibold">&#10003; ' +
+                                '<span class="text-xs text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-850 px-3 py-1.5 ' +
+                                'rounded-lg border border-neutral-200 dark:border-neutral-700 font-semibold">' +
                                 'Telah disetujui Final dan terdaftar di SAP' +
                                 (r.bp_number ? ' (No: ' + r.bp_number + ')' : '') + '</span>';
                         } else {
@@ -1786,12 +1656,12 @@ text-lg p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                         toast.className = 'px-4 py-3 rounded-xl shadow-xl text-xs font-bold ' +
                             'border flex items-center gap-2 transition-all duration-300';
                         if (type === 'success') {
-                            toast.className += ' bg-emerald-50 text-emerald-900 border-emerald-200';
-                            toast.innerHTML = '<span>&#10003;</span> <span>' + escapeHtml(message) +
+                            toast.className += ' bg-neutral-50 dark:bg-neutral-850 text-emerald-900 border-neutral-200 dark:border-neutral-700';
+                            toast.innerHTML = '<span></span> <span>' + escapeHtml(message) +
                                 '</span>';
                         } else if (type === 'error') {
                             toast.className += ' bg-rose-50 text-rose-900 border-rose-200';
-                            toast.innerHTML = '<span>&#10007;</span> <span>' + escapeHtml(message) +
+                            toast.innerHTML = '<span></span> <span>' + escapeHtml(message) +
                                 '</span>';
                         } else {
                             toast.className += ' bg-slate-900 text-white border-slate-700';

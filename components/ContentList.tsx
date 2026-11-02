@@ -32,7 +32,7 @@ interface ProjectItem {
   isGame?: boolean;
 }
 
-// Landing Page: ONLY Website and Mobile App projects (6 projects, Graphic Design excluded)
+// Landing Page: Interactive Games, Web and Mobile App projects
 const PROJECTS: ProjectItem[] = [
   {
     id: "super-smash-badminton",
@@ -52,8 +52,25 @@ const PROJECTS: ProjectItem[] = [
     isGame: true,
   },
   {
-    id: "icy-goat",
+    id: "type-racing-stadium",
     number: "02",
+    title: "Type Racing Stadium Edition",
+    category: {
+      EN: "Interactive Typing Arcade",
+      ID: "Game Balap Ketik Arcade",
+    },
+    summary: {
+      EN: "Fast-paced arcade stadium typing race featuring animated sprinters, dynamic lane physics, procedural crowd cheers, and real-time WPM tracking.",
+      ID: "Game balap ketik arcade di stadion dengan pelari beranimasi, fisika lintasan dinamis, sorak penonton prosedural, dan kalkulasi WPM serta akurasi real-time.",
+    },
+    stack: ["HTML5", "CSS3 Animation", "JavaScript", "Web Audio API"],
+    link: "/projects/type-racing-stadium",
+    image: "/project/type_racing_stadium.png",
+    isGame: true,
+  },
+  {
+    id: "icy-goat",
+    number: "03",
     title: "ICY - GOAT",
     category: {
       EN: "Discovery & Travel Platform",
@@ -69,7 +86,7 @@ const PROJECTS: ProjectItem[] = [
   },
   {
     id: "kabaabs",
-    number: "03",
+    number: "04",
     title: "Kabaabs",
     category: {
       EN: "Web Application & Ordering",
@@ -85,7 +102,7 @@ const PROJECTS: ProjectItem[] = [
   },
   {
     id: "movie-app",
-    number: "04",
+    number: "05",
     title: "Movie Ticketing Mobile App",
     category: {
       EN: "Mobile App UI/UX System",
@@ -101,7 +118,7 @@ const PROJECTS: ProjectItem[] = [
   },
   {
     id: "smart-vending",
-    number: "05",
+    number: "06",
     title: "Smart Fruit Salad & Vending Machine",
     category: {
       EN: "IoT & Mobile Ordering",
@@ -117,7 +134,7 @@ const PROJECTS: ProjectItem[] = [
   },
   {
     id: "sap-mdg",
-    number: "06",
+    number: "07",
     title: "SAP Master Data Governance (MDG)",
     category: {
       EN: "Enterprise Staging Platform",
