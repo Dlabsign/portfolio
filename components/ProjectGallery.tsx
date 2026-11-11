@@ -8,9 +8,10 @@ import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 interface ProjectGalleryProps {
   images: string[];
   title: string;
+  video?: string;
 }
 
-export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
+export default function ProjectGallery({ images, title, video }: ProjectGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   // Keyboard navigation for lightbox
@@ -34,10 +35,27 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, images.length]);
 
-  if (!images || images.length === 0) return null;
+  if ((!images || images.length === 0) && !video) return null;
 
   return (
     <div className="w-full my-12 sm:my-16">
+      {/* Video Banner if available */}
+      {video && (
+        <div className="mb-8 rounded-xl overflow-hidden border border-[#262626] bg-[#0d0d0d] shadow-xs">
+          <div className="relative w-full aspect-[16/9] overflow-hidden">
+            <video
+              src={video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Clean Visual Grid */}
       <div
         className={`grid gap-6 sm:gap-8 ${
@@ -54,7 +72,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
             whileHover={{ y: -2 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             onClick={() => setSelectedIndex(idx)}
-            className="group relative cursor-pointer rounded-xl overflow-hidden border border-[#E5E4E0] bg-[#F5F5F2] shadow-xs hover:border-[#2d2d2a] hover:shadow-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+            className="group relative cursor-pointer rounded-xl overflow-hidden border border-[#262626] bg-[#0d0d0d] shadow-xs hover:border-[#404040] hover:shadow-md transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
             tabIndex={0}
             role="button"
             aria-label={`${title} screenshot ${idx + 1}`}
@@ -65,7 +83,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
               }
             }}
           >
-            <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#EAE8E3]">
+            <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#141414]">
               <Image
                 src={src}
                 alt={`${title} preview ${idx + 1}`}
@@ -75,8 +93,8 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
               />
 
               {/* Minimalist Hover Overlay */}
-              <div className="absolute inset-0 bg-[#2d2d2a]/0 group-hover:bg-[#2d2d2a]/15 transition-colors flex items-center justify-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 rounded-full bg-[#2d2d2a]/90 text-[#bfe100] border border-[#bfe100]/30 type-caption !font-medium flex items-center gap-1.5 backdrop-blur-sm shadow-md">
+              <div className="absolute inset-0 bg-[#000000]/0 group-hover:bg-[#000000]/40 transition-colors flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 rounded-full bg-[#0d0d0d]/90 text-[#bfe100] border border-[#bfe100]/30 type-caption !font-medium flex items-center gap-1.5 backdrop-blur-sm shadow-md">
                   <ZoomIn className="w-3.5 h-3.5 text-[#bfe100]" />
                   <span>Enlarge</span>
                 </span>
@@ -95,7 +113,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setSelectedIndex(null)}
-            className="fixed inset-0 z-50 bg-[#2d2d2a]/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 select-none"
+            className="fixed inset-0 z-50 bg-[#000000]/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 select-none"
             role="dialog"
             aria-modal="true"
             aria-label="Image preview modal"
@@ -104,7 +122,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
             <button
               type="button"
               onClick={() => setSelectedIndex(null)}
-              className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+              className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-[#171717] hover:bg-[#262626] border border-[#262626] text-[#fafafa] hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
@@ -120,7 +138,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     prev !== null ? (prev > 0 ? prev - 1 : images.length - 1) : null
                   );
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-2.5 rounded-full bg-[#171717] hover:bg-[#262626] border border-[#262626] text-[#fafafa] hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -137,7 +155,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     prev !== null ? (prev < images.length - 1 ? prev + 1 : 0) : null
                   );
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-2.5 rounded-full bg-[#171717] hover:bg-[#262626] border border-[#262626] text-[#fafafa] hover:text-[#bfe100] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -160,7 +178,7 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
               </div>
 
               {/* Lightbox Caption */}
-              <div className="mt-4 flex items-center justify-between w-full max-w-md px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm text-white type-caption !font-medium">
+              <div className="mt-4 flex items-center justify-between w-full max-w-md px-4 py-2 rounded-full bg-[#0d0d0d] border border-[#262626] backdrop-blur-sm text-[#fafafa] type-caption !font-medium">
                 <span>{title}</span>
                 <span className="text-[#bfe100] font-bold">
                   {selectedIndex + 1} / {images.length}

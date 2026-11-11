@@ -39,6 +39,6 @@ Live Demo
 
 #### Mainkan Game Type Racing
 
-](/project/type_racing_stadium_edition.html)
+](https://type-racing-game.vercel.app)
 
 ![Type Racing Preview](type_racing_stadium.png)

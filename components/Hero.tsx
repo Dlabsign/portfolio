@@ -42,6 +42,29 @@ export default function Hero() {
   const yPhoto = useTransform(smoothScrollY, [0, crumbleLimit], [0, 60]);
   const scalePhoto = useTransform(smoothScrollY, [0, crumbleLimit], [1, 0.96]);
 
+  // Interactive 3D mouse parallax physics for Daniel's cutout photo
+  const mouseX = useSpring(0, { stiffness: 100, damping: 22 });
+  const mouseY = useSpring(0, { stiffness: 100, damping: 22 });
+
+  const photoRotateX = useTransform(mouseY, [-0.5, 0.5], [6, -6]);
+  const photoRotateY = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
+  const photoTranslateX = useTransform(mouseX, [-0.5, 0.5], [-12, 12]);
+  const photoTranslateY = useTransform(mouseY, [-0.5, 0.5], [-10, 10]);
+
+  const handleHeroMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(nx);
+    mouseY.set(ny);
+  }, [mouseX, mouseY]);
+
+  const handleHeroMouseLeave = useCallback(() => {
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [mouseX, mouseY]);
+
   // Gentle fade as hero exits viewport smoothly
   const opacityHero = useTransform(smoothScrollY, [0, viewportHeight * 1.1], [1, 0.2]);
 
@@ -114,12 +137,12 @@ export default function Hero() {
 
         el.style.transform = `translate3d(0, ${liftY}px, 0) scale(${scale})`;
         el.style.fontWeight = factor > 0.65 ? "600" : factor > 0.35 ? "400" : "100";
-        el.style.color = factor > 0.08 ? "#2d2d2a" : "#6e6e69";
+        el.style.color = "#fafafa";
       } else {
         if (el.style.transform) {
           el.style.transform = "";
           el.style.fontWeight = "100";
-          el.style.color = "#6e6e69";
+          el.style.color = "#fafafa";
         }
       }
     });
@@ -171,7 +194,7 @@ export default function Hero() {
       el.style.transition = "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.3s ease-out, color 0.4s ease-out";
       el.style.transform = "";
       el.style.fontWeight = "100";
-      el.style.color = "#6e6e69";
+      el.style.color = "#fafafa";
     });
 
     // Clear inline transition after relaxation completes so subsequent entries are instant
@@ -211,10 +234,10 @@ export default function Hero() {
           }}
           style={{
             fontWeight: 100,
-            color: isSpecial ? "#e50319" : "#6e6e69",
+            color: "#fafafa",
           }}
           className={`inline-block origin-center select-none will-change-transform pointer-events-none transition-colors duration-300 ${
-            isSpecial ? "font-headline italic font-light lowercase text-[#e50319]" : ""
+            isSpecial ? "font-headline italic font-light lowercase text-[#fafafa]" : ""
           }`}
         >
           {char}
@@ -227,7 +250,9 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-screen w-full overflow-hidden bg-[#FAFAFA] flex flex-col justify-center m-0 p-0 select-none"
+      onMouseMove={handleHeroMouseMove}
+      onMouseLeave={handleHeroMouseLeave}
+      className="relative min-h-screen w-full overflow-hidden bg-[#000000] flex flex-col justify-center m-0 p-0 select-none"
     >
       {/* Pure Full-Width Hero Content: 4-Line Monumental Headline & Proportional Uncut Photo */}
       <motion.div
@@ -239,7 +264,7 @@ export default function Hero() {
         className="w-full flex-1 flex items-center px-4 sm:px-8 lg:px-12 py-6 sm:py-10 overflow-hidden"
       >
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-8">
-          {/* Left Column: Full-Width 4-Line Giant Headline with Proximity Text Magnifier */}
+          {/* Left Column: Full-Width 4-Line Giant Headline with Proximity Text Magnifier & Staggered Reveal */}
           <div
             ref={headlineRef}
             onMouseEnter={handleMouseEnter}
@@ -254,71 +279,119 @@ export default function Hero() {
             onTouchEnd={handleMouseLeave}
             className="lg:col-span-8 p-0 m-0 flex flex-col justify-center"
           >
-            <h1 className="p-0 m-0 font-headline uppercase leading-[0.80] tracking-tighter text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-500 text-[clamp(2.8rem,9.2vw,11.2rem)] select-none">
-              {/* Line 1: "SOFTWARE" with Proximity Magnifier */}
-              <motion.div
-                style={{ y: yLine1, rotate: rotLine1 }}
-                className="block p-0 m-0 origin-left"
-              >
-                <span className="inline-block whitespace-nowrap">
-                  {renderSplitLine("SOFTWARE", "L1")}
-                </span>
-              </motion.div>
+            <h1 className="p-0 m-0 font-headline uppercase leading-[0.80] tracking-tighter text-[#fafafa] hover:text-[#fafafa] transition-colors duration-500 text-[clamp(2.8rem,9.2vw,11.2rem)] select-none">
+              {/* Line 1: "SOFTWARE" with Staggered Kinetic Reveal Mask */}
+              <div className="overflow-hidden p-0 m-0">
+                <motion.div
+                  initial={{ y: "105%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.div
+                    style={{ y: yLine1, rotate: rotLine1 }}
+                    className="block p-0 m-0 origin-left"
+                  >
+                    <span className="inline-block whitespace-nowrap">
+                      {renderSplitLine("SOFTWARE", "L1")}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
 
-              {/* Line 2: "ENGINEER &" with Proximity Magnifier */}
-              <motion.div
-                style={{ y: yLine2, rotate: rotLine2 }}
-                className="block p-0 m-0 origin-left"
-              >
-                <span className="inline-block whitespace-nowrap">
-                  {renderSplitLine("ENGINEER &", "L2", (char) => char === "&")}
-                </span>
-              </motion.div>
+              {/* Line 2: "ENGINEER &" with Staggered Kinetic Reveal Mask */}
+              <div className="overflow-hidden p-0 m-0">
+                <motion.div
+                  initial={{ y: "105%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.div
+                    style={{ y: yLine2, rotate: rotLine2 }}
+                    className="block p-0 m-0 origin-left"
+                  >
+                    <span className="inline-block whitespace-nowrap">
+                      {renderSplitLine("ENGINEER &", "L2", (char) => char === "&")}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
 
-              {/* Line 3: "DIGITAL" with Proximity Magnifier */}
-              <motion.div
-                style={{ y: yLine3, rotate: rotLine3 }}
-                className="block p-0 m-0 origin-left"
-              >
-                <span className="inline-block whitespace-nowrap">
-                  {renderSplitLine("DIGITAL", "L3")}
-                </span>
-              </motion.div>
+              {/* Line 3: "DIGITAL" with Staggered Kinetic Reveal Mask */}
+              <div className="overflow-hidden p-0 m-0">
+                <motion.div
+                  initial={{ y: "105%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.div
+                    style={{ y: yLine3, rotate: rotLine3 }}
+                    className="block p-0 m-0 origin-left"
+                  >
+                    <span className="inline-block whitespace-nowrap">
+                      {renderSplitLine("DIGITAL", "L3")}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
 
-              {/* Line 4: "ARCHITECTURE" with Proximity Magnifier (Spanning Full Width) */}
-              <motion.div
-                style={{ y: yLine4, rotate: rotLine4 }}
-                className="block p-0 m-0 origin-left"
-              >
-                <span className="inline-block whitespace-nowrap">
-                  {renderSplitLine("ARCHITECTURE", "L4")}
-                </span>
-              </motion.div>
+              {/* Line 4: "ARCHITECTURE" with Staggered Kinetic Reveal Mask */}
+              <div className="overflow-hidden p-0 m-0">
+                <motion.div
+                  initial={{ y: "105%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.div
+                    style={{ y: yLine4, rotate: rotLine4 }}
+                    className="block p-0 m-0 origin-left"
+                  >
+                    <span className="inline-block whitespace-nowrap">
+                      {renderSplitLine("ARCHITECTURE", "L4")}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
             </h1>
           </div>
 
-          {/* Right Column: Proportional Profile Photo Aligned & Uncropped from Top of Head */}
+          {/* Right Column: Natural Cutout Profile Photo with 3D Parallax & Ambient Breathing */}
           <div className="lg:col-span-4 p-0 m-0 flex items-center justify-center lg:justify-end">
             <motion.div
               style={{
                 y: yPhoto,
                 scale: scalePhoto,
+                rotateX: photoRotateX,
+                rotateY: photoRotateY,
+                x: photoTranslateX,
+                perspective: 1000,
+                transformStyle: "preserve-3d",
               }}
-              initial={{ opacity: 0, scale: 0.94 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false, amount: 0.2 }}
-              data-cursor="read"
-              data-cursor-badge="View"
-              className="relative w-full max-w-[270px] sm:max-w-[320px] lg:max-w-[370px] aspect-[3/4] rounded-2xl overflow-hidden border border-[#E5E4E0] hover:border-[#2d2d2a] bg-[#F5F5F2] cursor-pointer transition-colors duration-300"
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-[270px] sm:max-w-[320px] lg:max-w-[380px] flex items-center justify-center pointer-events-none select-none will-change-transform"
             >
-              <Image
-                src="/FOTO.png"
-                alt="Daniel Kurnia"
-                fill
-                priority
-                sizes="(max-width: 1024px) 320px, 380px"
-                className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-500 ease-out"
-              />
+              {/* Subtle ambient breathing floating motion */}
+              <motion.div
+                animate={{
+                  y: [0, -6, 0],
+                }}
+                transition={{
+                  duration: 4.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="w-full flex items-center justify-center"
+              >
+                <Image
+                  src="/FOTO.png"
+                  alt="Daniel Kurnia"
+                  width={700}
+                  height={933}
+                  priority
+                  className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-[0_16px_36px_rgba(0,0,0,0.65)]"
+                />
+              </motion.div>
             </motion.div>
           </div>
         </div>

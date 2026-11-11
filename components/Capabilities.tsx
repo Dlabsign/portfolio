@@ -2,56 +2,9 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext";
-
-interface CapabilityGroup {
-  number: string;
-  category: string;
-  categoryId: string;
-  items: string[];
-}
-
-const CAPABILITIES: CapabilityGroup[] = [
-  {
-    number: "01",
-    category: "Languages",
-    categoryId: "Bahasa Pemrograman",
-    items: ["PHP", "TypeScript", "JavaScript", "Python", "C++", "Dart", "Java", "SQL"],
-  },
-  {
-    number: "02",
-    category: "Frontend",
-    categoryId: "Frontend",
-    items: ["Next.js", "React", "Tailwind CSS", "HTML5", "CSS3", "Three.js"],
-  },
-  {
-    number: "03",
-    category: "Backend & Systems",
-    categoryId: "Backend & Arsitektur Sistem",
-    items: ["Laravel", "Node.js", "Express.js", "REST APIs", "MVC Architecture", "Yii 2"],
-  },
-  {
-    number: "04",
-    category: "Database & Cloud",
-    categoryId: "Basis Data & Cloud",
-    items: ["MySQL", "Firebase", "MongoDB", "Vercel", "cPanel"],
-  },
-  {
-    number: "05",
-    category: "Design Systems",
-    categoryId: "Sistem Desain",
-    items: ["Figma Component Systems", "Swiss Typography", "Minimalist UI/UX", "Editorial Layouts"],
-  },
-  {
-    number: "06",
-    category: "Development Tooling",
-    categoryId: "Alat Pengembangan",
-    items: ["Git", "GitHub", "VS Code", "Postman", "npm / pnpm"],
-  },
-];
+import { TECH_ICONS, TechIcon } from "./techIconsData";
 
 export default function Capabilities() {
-  const { lang } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
 
   // Responsive Parallax Scrolling Physics
@@ -66,69 +19,98 @@ export default function Capabilities() {
     restDelta: 0.001,
   });
 
-  const yHeader = useTransform(smoothProgress, [0, 1], [-20, 20]);
-  const yRows = useTransform(smoothProgress, [0, 1], [18, -18]);
+  const yMarquee = useTransform(smoothProgress, [0, 1], [14, -14]);
+
+  // Split tech stack into 2 complementary streams for rich dual-lane motion
+  // Lane 1: Core Languages & Foundational Engineering
+  const lane1: TechIcon[] = TECH_ICONS.filter(
+    (t) =>
+      t.category === "Language" ||
+      t.slug === "mysql" ||
+      t.slug === "postgresql" ||
+      t.slug === "html5" ||
+      t.slug === "css3" ||
+      t.slug === "git"
+  );
+
+  // Lane 2: Frameworks, Systems, Cloud & Tooling
+  const lane2: TechIcon[] = TECH_ICONS.filter(
+    (t) =>
+      t.category !== "Language" &&
+      t.slug !== "mysql" &&
+      t.slug !== "postgresql" &&
+      t.slug !== "html5" &&
+      t.slug !== "css3" &&
+      t.slug !== "git"
+  );
+
+  // Duplicate for seamless 100% infinite marquee loop
+  const lane1Items = [...lane1, ...lane1, ...lane1];
+  const lane2Items = [...lane2, ...lane2, ...lane2];
+
+  const renderTechCard = (tech: TechIcon, key: string) => (
+    <div
+      key={key}
+      className="flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2 opacity-30 hover:opacity-100 transition-all duration-300 group cursor-pointer shrink-0 select-none bg-transparent"
+    >
+      <div className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#fafafa] transition-colors duration-300 shrink-0">
+        <svg
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110"
+          aria-hidden="true"
+        >
+          <path d={tech.path} />
+        </svg>
+      </div>
+
+      <span className="font-mono text-xs sm:text-sm !font-normal group-hover:!font-bold text-[#fafafa] tracking-tight whitespace-nowrap transition-all duration-300">
+        {tech.name}
+      </span>
+    </div>
+  );
 
   return (
     <section
       ref={sectionRef}
       id="capabilities"
-      className="relative w-full min-h-[100dvh] bg-[#FAFAFA] border-t border-[#E5E4E0] flex flex-col justify-center py-16 sm:py-20 md:py-24 overflow-hidden"
+      className="relative w-full bg-[#000000] border-t border-[#262626] text-[#fafafa] py-10 sm:py-14 md:py-16 overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-12 md:px-16 flex flex-col justify-center flex-1">
-        {/* Section Header with Parallax & Hover Black */}
-        <motion.div
-          style={{ y: yHeader }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pb-6 sm:pb-8 border-b border-[#E5E4E0]"
-        >
-          <h2 className="type-h2 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
-            {lang === "EN" ? "Capabilities" : "Keahlian"}
-          </h2>
-        </motion.div>
+      {/* =========================================================================
+          HORIZONTAL SCROLLING MARQUEE TRACKS (Seamless, continuous, borderless, 30% opacity)
+      ========================================================================= */}
+      <motion.div
+        style={{ y: yMarquee }}
+        className="relative w-full overflow-hidden flex flex-col gap-4 sm:gap-6"
+      >
+        {/* Left and Right Linear Vignette / Mask for Edge Softness */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 md:w-44 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-20"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 md:w-44 bg-gradient-to-l from-[#000000] via-[#000000]/80 to-transparent z-20"
+        />
 
-        {/* Horizontal Capabilities Rows with Parallax */}
-        <motion.div style={{ y: yRows }} className="divide-y divide-[#E5E4E0]">
-          {CAPABILITIES.map((group, idx) => (
-            <motion.div
-              key={group.number}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
-              transition={{
-                duration: 0.6,
-                delay: idx * 0.05,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="py-5 sm:py-7 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-baseline group"
-            >
-              <div className="type-caption text-[#6e6e69]/80 group-hover:text-[#e50319] transition-colors duration-300 md:col-span-1">
-                {group.number}
-              </div>
+        {/* Track 1: Languages & Core (Moving Left) */}
+        <div className="relative w-full overflow-hidden flex">
+          <div className="animate-marquee-left flex items-center gap-4 sm:gap-6 shrink-0">
+            {lane1Items.map((tech, i) =>
+              renderTechCard(tech, `lane1-${tech.slug}-${i}`)
+            )}
+          </div>
+        </div>
 
-              <div className="type-h4 text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300 md:col-span-3">
-                {lang === "EN" ? group.category : group.categoryId}
-              </div>
-
-              <div className="md:col-span-8 flex flex-wrap items-center gap-x-5 gap-y-2">
-                {group.items.map((tech) => (
-                  <motion.span
-                    key={tech}
-                    whileHover={{ y: -1.5 }}
-                    data-cursor-interactive="true"
-                    className="inline-block type-small text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-pointer"
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+        {/* Track 2: Frameworks, Cloud & Engineering (Moving Right) */}
+        <div className="relative w-full overflow-hidden flex">
+          <div className="animate-marquee-right flex items-center gap-4 sm:gap-6 shrink-0">
+            {lane2Items.map((tech, i) =>
+              renderTechCard(tech, `lane2-${tech.slug}-${i}`)
+            )}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

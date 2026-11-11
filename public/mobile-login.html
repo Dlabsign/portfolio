@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Frame 375x812 - Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    /* Hide scrollbars while allowing scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 antialiased text-slate-800">
+
+  <!-- Top Showcase Bar / Info Bar -->
+  <header class="mb-6 flex flex-wrap items-center justify-between gap-4 max-w-[375px] w-full text-xs text-slate-500 font-medium px-2">
+    <div class="flex items-center gap-2">
+      <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span class="font-semibold text-slate-700">Mobile Frame Preview</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200 shadow-xs font-mono text-[11px] text-slate-600">375 × 812 px</span>
+      <button id="toggleDeviceStyle" class="px-2.5 py-1 rounded-md bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium transition cursor-pointer shadow-xs">
+        Toggle Frame Bezel
+      </button>
+    </div>
+  </header>
+
+  <!-- Outer Frame Container (Controlled width 375px x 812px) -->
+  <div id="deviceWrapper" class="relative transition-all duration-300 p-3 bg-slate-900 rounded-[52px] shadow-2xl ring-1 ring-slate-800/10">
+    
+    <!-- Screen Viewport: Exact 375x812, White Background -->
+    <main 
+      id="mobileScreen"
+      class="relative w-[375px] h-[812px] bg-white rounded-[40px] overflow-hidden flex flex-col justify-between shadow-inner select-none transition-all duration-300 border border-slate-100"
+    >
+      
+      <!-- Safe Area Top & Status Bar (44px) -->
+      <section aria-label="Status Bar" class="pt-3.5 px-7 flex items-center justify-between text-slate-900 text-xs font-semibold tracking-tight z-20">
+        <!-- Clock -->
+        <span class="tracking-tight text-[13px] font-bold">9:41</span>
+        
+        <!-- Dynamic Island / Speaker notch simulation -->
+        <div class="w-24 h-4 bg-slate-900 rounded-full flex items-center justify-end pr-2 gap-1.5 opacity-90">
+          <span class="w-2 h-2 rounded-full bg-slate-800 border border-slate-700"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-950"></span>
+        </div>
+
+        <!-- Icons: Cellular, Wifi, Battery -->
+        <div class="flex items-center gap-1.5">
+          <!-- Cellular -->
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M2 17h3v4H2v-4zm5-4h3v8H7v-8zm5-4h3v12h-3V9zm5-4h3v16h-3V5z"/>
+          </svg>
+          <!-- Wifi -->
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.8 0 7.24 1.5 9.77 3.96L12 18.2 2.23 11.46C4.76 9 8.2 7.5 12 7.5z"/>
+          </svg>
+          <!-- Battery -->
+          <div class="w-5 h-2.5 border border-slate-900 rounded-[3px] p-[1px] flex items-center">
+            <div class="h-full w-full bg-slate-900 rounded-[1px]"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scrollable Content Area -->
+      <div class="flex-1 overflow-y-auto no-scrollbar px-6 pt-3 pb-4 flex flex-col justify-between">
+        
+        <div>
+          <!-- Header Navigation (Back button & Help) -->
+          <header class="flex items-center justify-between mb-6">
+            <button 
+              type="button" 
+              class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-95 transition cursor-pointer"
+              aria-label="Kembali"
+              onclick="showToast('Kembali ke halaman sebelumnya')"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Portal Akun</span>
+            <button 
+              type="button"
+              class="text-xs font-semibold text-blue-600 hover:text-blue-700 cursor-pointer"
+              onclick="showToast('Bantuan / FAQ')"
+            >
+              Bantuan
+            </button>
+          </header>
+
+          <!-- Header / Title Section -->
+          <section class="mb-7">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 text-blue-600 shadow-xs">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11a7.978 7.978 0 001.378 4.47" />
+              </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Selamat Datang</h1>
+            <p class="text-slate-500 text-sm mt-1 leading-relaxed">
+              Masuk untuk melanjutkan ke akun dan portofolio Anda.
+            </p>
+          </section>
+
+          <!-- Form Login -->
+          <form id="loginForm" class="space-y-4" onsubmit="handleFormSubmit(event)">
+            
+            <!-- Email Input Field -->
+            <div>
+              <label for="email" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                Email atau Username
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
+                  </svg>
+                </div>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required
+                  placeholder="nama@email.com" 
+                  class="w-full pl-10 pr-3.5 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
+                >
+              </div>
+            </div>
+
+            <!-- Password Input Field -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="password" class="block text-xs font-semibold text-slate-700">
+                  Kata Sandi
+                </label>
+                <a 
+                  href="javascript:void(0)" 
+                  onclick="showToast('Fitur reset kata sandi dikirim ke email')"
+                  class="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+                >
+                  Lupa Sandi?
+                </a>
+              </div>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  required
+                  placeholder="••••••••" 
+                  class="w-full pl-10 pr-10 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition"
+                >
+                <!-- Toggle Password Visibility -->
+                <button 
+                  type="button" 
+                  id="togglePassword" 
+                  onclick="togglePasswordVisibility()" 
+                  class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                  aria-label="Tampilkan / sembunyikan kata sandi"
+                >
+                  <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <svg id="eyeSlashIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Remember Me Row -->
+            <div class="flex items-center pt-0.5">
+              <input 
+                id="remember" 
+                type="checkbox" 
+                class="w-4 h-4 text-blue-600 bg-slate-50 border-slate-300 rounded focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
+              >
+              <label for="remember" class="ml-2.5 text-xs text-slate-600 cursor-pointer select-none">
+                Ingat saya di perangkat ini
+              </label>
+            </div>
+
+            <!-- Blue 'Sign In' Button (Tombol Sign In Warna Biru) -->
+            <div class="pt-2">
+              <button 
+                type="submit" 
+                id="submitBtn" 
+                class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md shadow-blue-500/25 active:scale-[0.99] transition duration-200 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <!-- Spinner (Hidden by default) -->
+                <svg id="btnSpinner" class="w-4 h-4 animate-spin hidden" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <span id="btnText">Sign In</span>
+                <svg id="btnArrow" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-slate-200"></div>
+            </div>
+            <div class="relative flex justify-center text-[11px] uppercase tracking-wider">
+              <span class="bg-white px-3 text-slate-400 font-medium">atau masuk dengan</span>
+            </div>
+          </div>
+
+          <!-- Social Buttons -->
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              type="button" 
+              onclick="showToast('Masuk dengan Google')"
+              class="flex items-center justify-center gap-2 py-2.5 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition text-xs font-semibold text-slate-700 cursor-pointer"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button 
+              type="button" 
+              onclick="showToast('Masuk dengan Apple')"
+              class="flex items-center justify-center gap-2 py-2.5 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition text-xs font-semibold text-slate-700 cursor-pointer"
+            >
+              <svg class="w-4 h-4 fill-current text-slate-900" viewBox="0 0 24 24">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.73 1.4-.59.68-1.11 1.77-.97 2.83 1.04.08 2.1-.51 2.74-1.29z"/>
+              </svg>
+              <span>Apple</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer / Sign Up Prompt -->
+        <footer class="pt-4 text-center">
+          <p class="text-xs text-slate-500">
+            Belum punya akun? 
+            <a 
+              href="javascript:void(0)" 
+              onclick="showToast('Membuka formulir pendaftaran')"
+              class="font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+            >
+              Daftar sekarang
+            </a>
+          </p>
+        </footer>
+
+      </div>
+
+      <!-- Home Indicator Bar (iOS Bottom 34px safe area) -->
+      <footer aria-label="Home Indicator" class="pb-2 pt-1 flex justify-center z-20">
+        <div class="w-32 h-1 bg-slate-900/30 rounded-full"></div>
+      </footer>
+
+      <!-- Toast Feedback Message -->
+      <div 
+        id="toast" 
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs py-2 px-3.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-1.5 z-50 whitespace-nowrap"
+      >
+        <span id="toastIcon">ℹ️</span>
+        <span id="toastMessage">Pesan</span>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // Toggle Password Visibility
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      const eyeSlashIcon = document.getElementById('eyeSlashIcon');
+      
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeIcon.classList.add('hidden');
+        eyeSlashIcon.classList.remove('hidden');
+      } else {
+        pwdInput.type = 'password';
+        eyeIcon.classList.remove('hidden');
+        eyeSlashIcon.classList.add('hidden');
+      }
+    }
+
+    // Toggle Bezel vs Minimalist Frame
+    let hasBezel = true;
+    const deviceWrapper = document.getElementById('deviceWrapper');
+    const mobileScreen = document.getElementById('mobileScreen');
+    const toggleBtn = document.getElementById('toggleDeviceStyle');
+
+    toggleBtn.addEventListener('click', () => {
+      hasBezel = !hasBezel;
+      if (!hasBezel) {
+        deviceWrapper.className = 'relative transition-all duration-300 p-0 bg-transparent rounded-none shadow-none ring-0';
+        mobileScreen.className = 'relative w-[375px] h-[812px] bg-white rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg border border-slate-200';
+        toggleBtn.textContent = 'Add Phone Bezel';
+      } else {
+        deviceWrapper.className = 'relative transition-all duration-300 p-3 bg-slate-900 rounded-[52px] shadow-2xl ring-1 ring-slate-800/10';
+        mobileScreen.className = 'relative w-[375px] h-[812px] bg-white rounded-[40px] overflow-hidden flex flex-col justify-between shadow-inner select-none transition-all duration-300 border border-slate-100';
+        toggleBtn.textContent = 'Remove Bezel';
+      }
+    });
+
+    // Handle Form Submit with visual states
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const pwd = document.getElementById('password').value;
+      const btn = document.getElementById('submitBtn');
+      const spinner = document.getElementById('btnSpinner');
+      const arrow = document.getElementById('btnArrow');
+      const btnText = document.getElementById('btnText');
+
+      if (!email || !pwd) {
+        showToast('Silakan isi email dan kata sandi', '⚠️');
+        return;
+      }
+
+      // Loading state
+      btn.disabled = true;
+      spinner.classList.remove('hidden');
+      arrow.classList.add('hidden');
+      btnText.textContent = 'Memverifikasi...';
+      btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+      setTimeout(() => {
+        spinner.classList.add('hidden');
+        arrow.classList.remove('hidden');
+        btnText.textContent = 'Sign In';
+        btn.disabled = false;
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+        
+        showToast('Berhasil masuk! Selamat datang kembali.', '✅');
+      }, 1200);
+    }
+
+    // Simple Toast notification
+    let toastTimer;
+    function showToast(msg, icon = '💡') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMsg.textContent = msg;
+      toastIcon.textContent = icon;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

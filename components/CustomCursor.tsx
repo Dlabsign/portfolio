@@ -361,18 +361,18 @@ export default function CustomCursor() {
           }`}
           style={{
             background:
-              "radial-gradient(circle at 35% 30%, #FFFFFF 0%, #bfe100 45%, #2d2d2a 90%)",
+              "radial-gradient(circle at 35% 30%, #d4d4d4 0%, #bfe100 45%, #171717 90%)",
             boxShadow:
-              "0 0 8px rgba(191, 225, 0, 0.65), 0 0 2px rgba(45, 45, 42, 0.6), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.4)",
-            border: "0.5px solid rgba(255, 255, 255, 0.95)",
+              "0 0 8px rgba(191, 225, 0, 0.65), 0 0 2px rgba(0, 0, 0, 0.8), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.6)",
+            border: "0.5px solid rgba(191, 225, 0, 0.6)",
           }}
         >
           {/* Micro specular glint reflecting light from top-left */}
-          <span className="absolute top-[1px] left-[1px] w-[1.5px] h-[1.5px] rounded-full bg-white opacity-95" />
+          <span className="absolute top-[1px] left-[1px] w-[1.5px] h-[1.5px] rounded-full bg-[#d4d4d4] opacity-80" />
         </div>
       </div>
 
-      {/* 2. Unified Trailing Follower: Circular Liquid Glass with Brand Hue */}
+      {/* 2. Unified Trailing Follower: Circular Liquid Glass with Dark Charcoal Hue */}
       <div
         ref={followerRef}
         className="fixed top-0 left-0 pointer-events-none will-change-transform flex items-center justify-center z-[81]"
@@ -382,7 +382,7 @@ export default function CustomCursor() {
           transition: "opacity 0.25s ease",
         }}
       >
-        {/* Layer A: Circular Liquid Glass Lens with Brand Sheen */}
+        {/* Layer A: Circular Liquid Glass Lens with Dark Sheen */}
         <div
           className={`absolute rounded-full pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center ${
             hasBadge
@@ -397,14 +397,14 @@ export default function CustomCursor() {
           }`}
           style={{
             background: isHovered
-              ? "linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(191, 225, 0, 0.20) 40%, rgba(229, 3, 25, 0.12) 80%, rgba(255, 255, 255, 0.40) 100%)"
-              : "linear-gradient(135deg, rgba(255, 255, 255, 0.40) 0%, rgba(191, 225, 0, 0.12) 50%, rgba(255, 255, 255, 0.30) 100%)",
+              ? "linear-gradient(135deg, rgba(40, 40, 40, 0.75) 0%, rgba(191, 225, 0, 0.15) 50%, rgba(15, 15, 15, 0.85) 100%)"
+              : "linear-gradient(135deg, rgba(30, 30, 30, 0.65) 0%, rgba(191, 225, 0, 0.08) 50%, rgba(12, 12, 12, 0.75) 100%)",
             backdropFilter: "blur(8px) saturate(180%)",
             WebkitBackdropFilter: "blur(8px) saturate(180%)",
-            border: isHovered ? "1px solid rgba(45, 45, 42, 0.25)" : "1px solid rgba(45, 45, 42, 0.18)",
+            border: isHovered ? "1px solid rgba(191, 225, 0, 0.35)" : "1px solid rgba(70, 70, 70, 0.4)",
             boxShadow: isHovered
-              ? "0 8px 24px rgba(45, 45, 42, 0.15), 0 0 12px rgba(191, 225, 0, 0.30), inset 0 1.5px 2px rgba(255, 255, 255, 0.9), inset 0 -1.5px 2px rgba(45, 45, 42, 0.1)"
-              : "0 4px 16px rgba(45, 45, 42, 0.08), inset 0 1.2px 1.5px rgba(255, 255, 255, 0.85), inset 0 -1px 1.5px rgba(45, 45, 42, 0.08)",
+              ? "0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(191, 225, 0, 0.25), inset 0 1.2px 1.5px rgba(163, 163, 163, 0.25), inset 0 -1.5px 2px rgba(0, 0, 0, 0.4)"
+              : "0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 1.2px rgba(163, 163, 163, 0.15), inset 0 -1px 1.5px rgba(0, 0, 0, 0.3)",
           }}
         >
           {/* Specular Rim Arc */}
@@ -412,7 +412,7 @@ export default function CustomCursor() {
             className="absolute inset-[1px] rounded-full pointer-events-none opacity-85"
             style={{
               background:
-                "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(191, 225, 0, 0.45) 40%, transparent 65%, rgba(229, 3, 25, 0.25) 100%)",
+                "linear-gradient(135deg, rgba(163, 163, 163, 0.45) 0%, rgba(191, 225, 0, 0.35) 40%, transparent 65%, rgba(229, 3, 25, 0.15) 100%)",
               maskImage: "radial-gradient(circle, transparent 65%, black 72%)",
               WebkitMaskImage: "radial-gradient(circle, transparent 65%, black 72%)",
             }}
@@ -434,19 +434,19 @@ export default function CustomCursor() {
           }`}
           style={{
             background:
-              "linear-gradient(135deg, rgba(45, 45, 42, 0.95) 0%, rgba(35, 35, 32, 0.94) 100%)",
+              "linear-gradient(135deg, rgba(18, 18, 18, 0.96) 0%, rgba(10, 10, 10, 0.95) 100%)",
             backdropFilter: "blur(12px) saturate(180%)",
             WebkitBackdropFilter: "blur(12px) saturate(180%)",
             border: "1px solid rgba(191, 225, 0, 0.35)",
             boxShadow:
-              "0 14px 40px rgba(0, 0, 0, 0.35), 0 0 16px rgba(191, 225, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 0, 0, 0.4)",
+              "0 14px 40px rgba(0, 0, 0, 0.7), 0 0 16px rgba(191, 225, 0, 0.25), inset 0 1px 1px rgba(70, 70, 70, 0.3), inset 0 -1px 2px rgba(0, 0, 0, 0.5)",
           }}
         >
           <span className="type-caption uppercase tracking-[0.2em] !font-medium flex items-center gap-1 select-none">
             <span className="text-[#bfe100] font-bold">
               {badgeLabel}
             </span>
-            <span className="type-caption text-[#e50319] font-bold">↗</span>
+            <span className="type-caption text-[#fafafa] font-bold">↗</span>
           </span>
         </div>
       </div>

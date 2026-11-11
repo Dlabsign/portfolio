@@ -28,6 +28,7 @@ export interface DetailedProject {
   caseStudy?: ProjectCaseStudy;
   stack: string[];
   heroImage: string;
+  heroVideo?: string;
   gallery: string[];
   liveUrl?: string;
   sourceUrl?: string;
@@ -123,8 +124,8 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
     number: "02",
     title: "Type Racing Stadium Edition",
     subtitle: {
-      EN: "Interactive Stadium Typing Sprint & Real-Time WPM Race Engine",
-      ID: "Game Balap Ketik Ceria di Stadion & Simulasi WPM Real-Time",
+      EN: "Stadium Typing Sprint & Real-Time WPM Race Engine",
+      ID: "Game Balap Ketik di Stadion & Simulasi WPM",
     },
     category: "Website",
     categoryKey: "website",
@@ -158,12 +159,13 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
     },
     stack: ["HTML5", "CSS3 Animation", "JavaScript", "Web Audio API", "Tailwind CSS"],
     heroImage: "/project/type_racing_stadium.png",
+    heroVideo: "/project/Video/TypeRacing.mp4",
     gallery: [
       "/project/type_racing_stadium.png",
     ],
     isGame: true,
-    gameUrl: "/project/type_racing_stadium_edition.html",
-    liveUrl: "/project/type_racing_stadium_edition.html",
+    gameUrl: "https://type-racing-game.vercel.app",
+    liveUrl: "https://type-racing-game.vercel.app",
     controlsHint: {
       EN: "Controls: Type the highlighted letters/words on your keyboard to sprint towards the finish line",
       ID: "Kontrol: Ketik huruf/kata yang disorot pada keyboard fisik untuk berlari kencang menuju garis finis",
@@ -507,6 +509,62 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
     ],
     liveUrl: "https://danielkurnia.framer.website/work/kedai-nihao/design",
     sourceUrl: "https://danielkurnia.framer.website/work/kedai-nihao/design",
+  },
+  {
+    id: "becak-racing",
+    number: "10",
+    title: "BeCak Racing",
+    subtitle: {
+      EN: "Semangat Kecepatan Tanpa Batas — Futuristic Indonesian Motorsport",
+      ID: "Semangat Kecepatan Tanpa Batas — Motorsport Futuristik Indonesia",
+    },
+    category: "Website",
+    categoryKey: "website",
+    year: "2024",
+    client: "Cinema Concept",
+    role: {
+      EN: "Mobile UI/UX Design",
+      ID: "Desain Mobile UI/UX",
+    },
+    summary: {
+      EN: "High-octane mobile-first digital experience and interactive motorsport portal celebrating Indonesian urban street racing culture with extreme speed and cyberpunk flair.",
+      ID: "Pengalaman digital mobile-first dan portal interaktif motorsport bertenaga tinggi yang mengangkat kultur balap jalanan perkotaan Indonesia dengan kecepatan ekstrem dan estetika cyberpunk.",
+    },
+    description: {
+      EN: "BeCak Racing is an adrenaline-fueled motorsport design concept engineered in collaboration with Cinema Concept. Reimagining Indonesia's iconic three-wheeled traditional transport into a brutal, 880+ horsepower street-racing prototype, the project delivers an uncompromising mobile-first visual experience. The platform features telemetry dashboards, live race series count-downs, pro driver rosters (featuring legendary pilots like Kenda Wijaya #46), and a radical dark-neon interface inspired by late-night street circuits across Surabaya, Bandung, and Jakarta.",
+      ID: "BeCak Racing adalah konsep desain motorsport bertenaga tinggi yang dikembangkan bersama Cinema Concept. Mereimajinasi ikon becak roda tiga tradisional Indonesia menjadi prototipe mesin balap buas bertenaga 880+ HP, proyek ini menghadirkan pengalaman visual mobile-first tanpa kompromi. Platform ini memadukan dasbor telemetri aerodinamis, hitung mundur kejuaraan GP 2026, profil pembalap pro unggulan seperti Kenda Wijaya #46, serta antarmuka dark-neon agresif yang terinspirasi dari sirkuit jalanan malam hari di Surabaya, Bandung, dan Jakarta.",
+    },
+    caseStudy: {
+      problem: {
+        EN: "Traditional cultural transportation icons are often perceived by younger generations as relics of the past—static, slow, and disconnected from high-speed digital culture. Conventional promotional platforms failed to convey the visceral thrill, technical engineering possibilities, and urban swagger needed to turn heritage into an exciting contemporary sports phenomenon.",
+        ID: "Ikon transportasi tradisional sering kali dianggap oleh generasi muda sebagai peninggalan masa lalu yang statis, lambat, dan tidak relevan dengan kultur digital yang serba cepat. Media promosi konvensional gagal mengomunikasikan sensasi ketegangan, kecanggihan rekayasa teknis, serta daya tarik urban yang dibutuhkan untuk mengubah warisan lokal menjadi fenomena olahraga kontemporer yang menggugah.",
+      },
+      trustPositioning: {
+        EN: "Partnering with Cinema Concept, the initiative established an audacious narrative: treating the becak as a world-class motorsport contender dubbed 'Becak X Apex Corsa' with carbon-fiber chassis, sequential 6-speed gearbox, and 381 km/h top velocity. We crafted a high-contrast cinematic mobile design system with bold racing typography, tactical telemetry gauges, and responsive micro-interactions that legitimized the concept as an electrifying cultural spectacle.",
+        ID: "Bekerja sama dengan Cinema Concept, proyek ini membangun narasi berani: menempatkan becak sebagai kontender balap kelas dunia bertajuk 'Becak X Apex Corsa' yang diperkuat sasis carbon fiber, gearbox sekuensial 6-percepatan, dan kecepatan puncak 381 km/h. Kami merancang design system mobile sinematik berkontras tinggi dengan tipografi balap tegas, instrumen telemetri taktis, dan mikro-interaksi responsif yang mengukuhkan konsep ini sebagai tontonan kultur yang spektakuler.",
+      },
+      whatChanged: {
+        EN: "Launched a hyper-responsive mobile and web experience deployed at becakracing.vercel.app, showcasing interactive driver profiles, race calendars, chassis blueprint breakdowns, and live track status. The project sparked widespread viral fascination, earning acclaim across automotive enthusiasts, digital designers, and pop-culture creators for boldly fusing Indonesian heritage with motorsport spectacle.",
+        ID: "Meluncurkan pengalaman web dan mobile ultra-responsif di becakracing.vercel.app, menghadirkan profil pembalap interaktif, kalender musim balap, spesifikasi teknis sasis, dan status sirkuit langsung. Proyek ini memicu viralitas luas serta apresiasi tinggi dari komunitas otomotif, desainer digital, dan pegiat kultur populer atas keberaniannya memadukan warisan Indonesia dengan panggung motorsport modern.",
+      },
+    },
+    stack: [
+      "Figma",
+      "Mobile UI/UX Design",
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Design System",
+    ],
+    heroImage: "/project/becak-racing.png",
+    gallery: [
+      "/project/becak-racing.png",
+      "/project/BeCak Racing_ Semangat Kecepatan Tanpa Batas.png",
+    ],
+    liveUrl: "https://becakracing.vercel.app/",
+    sourceUrl: "https://becakracing.vercel.app/",
   },
 ];
 

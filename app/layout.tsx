@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FAFAFA",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };
@@ -77,10 +77,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ppNeueMontreal.variable} ${ppNeueMontreal.className} bg-[#FAFAFA] text-[#2d2d2a]`}
+      className={`${ppNeueMontreal.variable} ${ppNeueMontreal.className} bg-[#000000] text-[#fafafa]`}
     >
       <body
-        className={`${ppNeueMontreal.className} font-sans antialiased bg-[#FAFAFA] text-[#2d2d2a] selection:bg-[#bfe100] selection:text-[#2d2d2a]`}
+        className={`${ppNeueMontreal.className} font-sans antialiased bg-[#000000] text-[#fafafa] selection:bg-[#262626] selection:text-[#fafafa]`}
       >
         <LanguageProvider>
           {children}

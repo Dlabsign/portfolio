@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Globe } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import PhotoHoverPreview from "@/components/PhotoHoverPreview";
 
 interface ExperienceItem {
   period: string;
@@ -14,11 +16,9 @@ interface ExperienceItem {
   entity: string;
   entityUrl?: string;
   location: string;
-  scope: string;
-  scopeId: string;
   image?: string;
   monogram?: string;
-  category: "all" | "tech" | "creative" | "leadership";
+  isWhiteBg?: boolean;
 }
 
 interface EducationItem {
@@ -45,21 +45,17 @@ interface AwardItem {
 
 const EXPERIENCES: ExperienceItem[] = [
   {
-    period: "Apr 2026 — Present",
-    role: "Fullstack Developer",
-    roleId: "Pengembang Fullstack",
-    type: "Full-time",
-    typeId: "Purna Waktu",
+    period: "Feb 2026 — Present",
+    role: "IT Staff - Programmer",
+    roleId: "Staf TI - Programmer",
+    type: "Contract",
+    typeId: "Kontrak",
     entity: "PT. Kayu Mebel Indonesia",
     entityUrl: "https://id.linkedin.com/company/pt-kayu-mebel-indonesia",
-    location: "Sidoarjo, Indonesia",
-    image: "https://framerusercontent.com/images/pzok54TZr1eioQsRBNFQ9HB5NE.jpg?width=150&height=145",
+    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
+    image: "/project/ENJOYSAP_LOGO.png",
     monogram: "KM",
-    scope:
-      "Architecting and developing enterprise fullstack systems, ERP integration workflows, and internal manufacturing business portals.",
-    scopeId:
-      "Merancang dan mengembangkan sistem fullstack enterprise, alur kerja integrasi ERP, dan portal bisnis manufaktur internal.",
-    category: "tech",
+    isWhiteBg: false,
   },
   {
     period: "Feb 2025 — Present",
@@ -69,14 +65,10 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Paruh Waktu",
     entity: "Zero One",
     entityUrl: "https://zeroone.co.id/",
-    location: "Surabaya, Indonesia",
-    image: "https://framerusercontent.com/images/gBqR230nGgBfGGYyTOTsiP1WVHY.png?width=825&height=975",
+    location: "Surabaya, Jawa Timur, Indonesia • Hybrid",
+    image: "/project/zeroone-logo.png",
     monogram: "ZO",
-    scope:
-      "Building high-performance client web applications, responsive frontend interfaces, and scalable RESTful API integrations.",
-    scopeId:
-      "Membangun aplikasi web klien performa tinggi, antarmuka frontend responsif, dan integrasi RESTful API yang scalable.",
-    category: "tech",
+    isWhiteBg: false,
   },
   {
     period: "Dec 2021 — Present",
@@ -86,13 +78,8 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Lepas (Freelance)",
     entity: "dlabsign",
     entityUrl: "https://github.com/Dlabsign",
-    location: "Indonesia (Remote)",
+    location: "Indonesia • Remote",
     monogram: "DL",
-    scope:
-      "Delivering brand identities, high-fidelity UI design systems, visual assets, and custom design solutions for clients.",
-    scopeId:
-      "Menghadirkan identitas visual brand, sistem UI presisi tinggi, aset grafis, dan solusi desain kustom untuk berbagai klien.",
-    category: "creative",
   },
   {
     period: "Mar 2025 — Jan 2026",
@@ -102,13 +89,8 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Lepas (Freelance)",
     entity: "Pemancingan Tanggul Rejo",
     entityUrl: "https://share.google/CmZKjS4kq0h4lkVSZ",
-    location: "Sidoarjo, Indonesia",
+    location: "Sidoarjo, Jawa Timur, Indonesia • Hybrid",
     monogram: "TR",
-    scope:
-      "Engineered database architecture, order processing workflows, and backend operational management systems.",
-    scopeId:
-      "Merancang arsitektur basis data, alur kerja pemrosesan pesanan, dan sistem manajemen operasional backend.",
-    category: "tech",
   },
   {
     period: "Mar 2024 — Jan 2026",
@@ -118,14 +100,9 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Paruh Waktu",
     entity: "Universitas 17 Agustus 1945 Surabaya",
     entityUrl: "https://untag-sby.ac.id/",
-    location: "Surabaya, Indonesia",
+    location: "Surabaya, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/iwS1Rr5TtduV7Ko1GJJ2WtH04.png?width=2823&height=2865",
     monogram: "UT",
-    scope:
-      "Mentored undergraduate engineering students in C++, Python, algorithms, database systems, and software engineering practicums.",
-    scopeId:
-      "Membimbing mahasiswa teknik dalam praktikum C++, Python, algoritma, sistem basis data, dan rekayasa perangkat lunak.",
-    category: "leadership",
   },
   {
     period: "Mar 2025",
@@ -135,14 +112,9 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Koordinator Acara",
     entity: "GMS Sidoarjo",
     entityUrl: "https://gms.church/id",
-    location: "Sidoarjo, Indonesia",
+    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/41pwj8FMUikZ7st7guDeTSTABc.jpg?width=1961&height=3487",
     monogram: "GMS",
-    scope:
-      "Supervised media production, event technology coordination, and multimedia stage visual logistics for large youth conference.",
-    scopeId:
-      "Mengawasi produksi media, koordinasi teknologi acara, dan logistik visual panggung multimedia untuk konferensi pemuda.",
-    category: "leadership",
   },
   {
     period: "Feb 2022",
@@ -152,14 +124,9 @@ const EXPERIENCES: ExperienceItem[] = [
     typeId: "Koordinator Proyek",
     entity: "SMK Antartika 2 Sidoarjo",
     entityUrl: "https://smkantartika2-sda.sch.id/",
-    location: "Sidoarjo, Indonesia",
+    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/ujny5iZ13TTSbUmeVK4oj5vxeV0.jpg?width=1620&height=1080",
     monogram: "A2",
-    scope:
-      "Coordinated creative multimedia batch training, student workshops, and graphic design/video curriculum delivery.",
-    scopeId:
-      "Mengoordinasikan pelatihan batch multimedia kreatif, workshop siswa, dan penyampaian kurikulum desain grafis & video.",
-    category: "leadership",
   },
   {
     period: "Jan 2021",
@@ -168,14 +135,9 @@ const EXPERIENCES: ExperienceItem[] = [
     type: "Volunteer PIC",
     typeId: "Relawan (Volunteer)",
     entity: "Sidoarjo School Festival - SMK",
-    location: "Sidoarjo, Indonesia",
+    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/Hs45H39TaIemKy4FiVbAJ1Q3Vew.jpg?width=6000&height=4000",
     monogram: "SSF",
-    scope:
-      "Directed festival visual branding, print collaterals, promotional banners, and social campaign assets.",
-    scopeId:
-      "Mengarahkan identitas visual festival, materi cetak promosi, banner panggung, dan aset kampanye media sosial.",
-    category: "creative",
   },
 ];
 
@@ -236,7 +198,6 @@ const AWARDS_ITEMS: AwardItem[] = [
 
 export default function Experience() {
   const { lang } = useLanguage();
-  const [filter, setFilter] = useState<"all" | "tech" | "creative" | "leadership">("all");
   const sectionRef = useRef<HTMLElement>(null);
 
   // Responsive Parallax Scrolling Physics
@@ -251,216 +212,323 @@ export default function Experience() {
     restDelta: 0.001,
   });
 
-  const yHeader = useTransform(smoothProgress, [0, 1], [-20, 20]);
-  const yRows = useTransform(smoothProgress, [0, 1], [18, -18]);
-  const ySubsections = useTransform(smoothProgress, [0, 1], [24, -18]);
-
-  const filteredExperiences =
-    filter === "all"
-      ? EXPERIENCES
-      : EXPERIENCES.filter((exp) => exp.category === filter);
+  const yHeader = useTransform(smoothProgress, [0, 1], [-18, 18]);
+  const yTimeline = useTransform(smoothProgress, [0, 1], [14, -14]);
+  const ySubsections = useTransform(smoothProgress, [0, 1], [22, -18]);
+  const timelineScaleY = useTransform(smoothProgress, [0.12, 0.75], [0, 1]);
 
   return (
     <section
       ref={sectionRef}
       id="experience"
-      className="relative w-full min-h-[100dvh] bg-[#FAFAFA] border-t border-[#E5E4E0] flex flex-col justify-center py-16 sm:py-20 md:py-24 overflow-hidden"
+      className="relative w-full min-h-[100dvh] bg-[#000000] border-t border-[#262626] text-[#fafafa] flex flex-col justify-center py-16 sm:py-20 md:py-24 overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-12 md:px-16 flex flex-col justify-center flex-1">
-        {/* Section Header with Direct Metric & Filter Tabs */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 md:px-16 flex flex-col justify-center flex-1">
+        
+        {/* =========================================================================
+            1. SECTION HEADER (Minimalist Swiss Editorial Consistent with Site)
+        ========================================================================= */}
         <motion.div
           style={{ y: yHeader }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pb-6 sm:pb-8 border-b border-[#E5E4E0] flex flex-col md:flex-row md:items-end justify-between gap-4"
+          className="pb-6 sm:pb-8 border-b border-[#262626]"
         >
-          <div>
-            <h2 className="type-h2 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
-              5+ Years
-            </h2>
-            <p className="type-small text-[#6e6e69]/80 hover:text-[#2d2d2a] transition-colors duration-300 mt-2">
-              {lang === "EN"
-                ? "Continuous software delivery across engineering and creative design"
-                : "Pengiriman perangkat lunak berkelanjutan di bidang teknik dan desain kreatif"}
-            </p>
+          <h2 className="type-h2 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
+            {lang === "EN" ? "Experience" : "Pengalaman"}
+          </h2>
+        </motion.div>
+
+        {/* =========================================================================
+            2. ZIG-ZAG TIMELINE (Pure Black & Swiss Minimalist Theme)
+        ========================================================================= */}
+        <motion.div style={{ y: yTimeline }} className="relative pt-12 sm:pt-16">
+          
+          {/* Continuous Center Vertical Line for Desktop with Dynamic Scroll Energy Beam */}
+          <div
+            aria-hidden="true"
+            className="hidden md:block absolute left-1/2 top-4 bottom-8 w-[1px] bg-[#262626] -translate-x-1/2 pointer-events-none z-0 overflow-hidden"
+          >
+            <motion.div
+              style={{ scaleY: timelineScaleY, originY: 0 }}
+              className="w-full h-full bg-gradient-to-b from-[#fafafa]/80 via-[#fafafa] to-[#fafafa]/20"
+            />
           </div>
 
-          {/* Minimalist Filter Controls */}
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            {[
-              { id: "all", labelEn: "All", labelId: "Semua" },
-              { id: "tech", labelEn: "Engineering", labelId: "Teknik" },
-              { id: "creative", labelEn: "Design", labelId: "Desain" },
-              { id: "leadership", labelEn: "Leadership", labelId: "Kepemimpinan" },
-            ].map((tab) => {
-              const active = filter === tab.id;
+          {/* Continuous Left Vertical Line for Mobile with Dynamic Scroll Energy Beam */}
+          <div
+            aria-hidden="true"
+            className="md:hidden absolute left-5 top-4 bottom-8 w-[1px] bg-[#262626] pointer-events-none z-0 overflow-hidden"
+          >
+            <motion.div
+              style={{ scaleY: timelineScaleY, originY: 0 }}
+              className="w-full h-full bg-gradient-to-b from-[#fafafa]/80 via-[#fafafa] to-[#fafafa]/20"
+            />
+          </div>
+
+          <div className="space-y-16 sm:space-y-24">
+            {EXPERIENCES.map((exp, idx) => {
+              const isLeft = idx % 2 === 0; // Alternating zig-zag
+              const isFirst = idx === 0;
+
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => setFilter(tab.id as typeof filter)}
-                  className={`px-3 py-1.5 rounded-full type-caption uppercase tracking-wider transition-all duration-300 ${
-                    active
-                      ? "bg-[#2d2d2a] text-[#bfe100] shadow-xs"
-                      : "bg-[#F5F5F2] text-[#6e6e69] hover:text-[#2d2d2a] hover:bg-[#EAE8E3]"
-                  }`}
+                <motion.div
+                  key={`${exp.entity}-${idx}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative flex items-center md:justify-center w-full group"
                 >
-                  {lang === "EN" ? tab.labelEn : tab.labelId}
-                </button>
+                  {/* ===================================================
+                      DESKTOP LAYOUT (Alternating Left / Right)
+                      =================================================== */}
+                  <div className="hidden md:grid md:grid-cols-2 w-full items-center">
+                    
+                    {/* LEFT COLUMN */}
+                    <div className="flex items-center justify-end pr-10">
+                      {isLeft && (
+                        <div className="flex items-center justify-end gap-5 text-right">
+                          {/* Text Block: Position as Headline, Company as Subheadline */}
+                          <div>
+                            <h3 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold tracking-tight transition-all duration-300">
+                              {lang === "EN" ? exp.role : exp.roleId}
+                            </h3>
+                            <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
+                              {exp.entity}
+                              <span className="inline-block mx-1.5 text-[#262626]">•</span>
+                              <span className="text-[#bfe100] font-mono text-xs uppercase tracking-wider">
+                                {lang === "EN" ? exp.type : exp.typeId}
+                              </span>
+                            </p>
+                            <p className="type-caption text-[#fafafa]/80 font-mono mt-0.5">
+                              {exp.period}
+                            </p>
+                            <p className="type-caption text-[#fafafa]/60 mt-0.5">
+                              {exp.location}
+                            </p>
+                          </div>
+
+                          {/* Logo / Photo Container with Proportional Hover Enlarge */}
+                          {exp.image ? (
+                            <PhotoHoverPreview
+                              src={exp.image}
+                              alt={exp.entity}
+                              title={lang === "EN" ? exp.role : exp.roleId}
+                              subtitle={`${exp.entity} • ${exp.period}`}
+                              badge={lang === "EN" ? exp.type : exp.typeId}
+                              baseClassName="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
+                              imageClassName="object-contain p-2.5"
+                              placement={idx === 0 ? "bottom" : "top"}
+                              isLogoWhiteBg={exp.isWhiteBg ?? false}
+                            />
+                          ) : (
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-transparent flex items-center justify-center shrink-0">
+                              <div className="w-full h-full rounded-xl bg-transparent flex items-center justify-center text-[#fafafa] font-bold text-base">
+                                {exp.monogram || exp.entity.slice(0, 2).toUpperCase()}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* RIGHT COLUMN */}
+                    <div className="flex items-center justify-start pl-10">
+                      {!isLeft && (
+                        <div className="flex items-center justify-start gap-5 text-left">
+                          {/* Logo / Photo Container with Proportional Hover Enlarge */}
+                          {exp.image ? (
+                            <PhotoHoverPreview
+                              src={exp.image}
+                              alt={exp.entity}
+                              title={lang === "EN" ? exp.role : exp.roleId}
+                              subtitle={`${exp.entity} • ${exp.period}`}
+                              badge={lang === "EN" ? exp.type : exp.typeId}
+                              baseClassName="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
+                              imageClassName="object-contain p-2.5"
+                              placement={idx === 0 ? "bottom" : "top"}
+                              isLogoWhiteBg={exp.isWhiteBg ?? false}
+                            />
+                          ) : (
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-transparent flex items-center justify-center shrink-0">
+                              <div className="w-full h-full rounded-xl bg-transparent flex items-center justify-center text-[#fafafa] font-bold text-base">
+                                {exp.monogram || exp.entity.slice(0, 2).toUpperCase()}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Text Block */}
+                          <div>
+                            <h3 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold tracking-tight transition-all duration-300">
+                              {lang === "EN" ? exp.role : exp.roleId}
+                            </h3>
+                            <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
+                              {exp.entity}
+                              <span className="inline-block mx-1.5 text-[#262626]">•</span>
+                              <span className="text-[#bfe100] font-mono text-xs uppercase tracking-wider">
+                                {lang === "EN" ? exp.type : exp.typeId}
+                              </span>
+                            </p>
+                            <p className="type-caption text-[#fafafa]/80 font-mono mt-0.5">
+                              {exp.period}
+                            </p>
+                            <p className="type-caption text-[#fafafa]/60 mt-0.5">
+                              {exp.location}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ===================================================
+                      CENTER TIMELINE NODE (Minimalist Clean Pure White)
+                      =================================================== */}
+                  <div
+                    aria-hidden="true"
+                    className="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 items-center justify-center pointer-events-none"
+                  >
+                    {isFirst ? (
+                      /* Active Current Node with Clean White */
+                      <div className="relative w-6 h-6 rounded-full bg-[#000000] flex items-center justify-center">
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#fafafa]" />
+                      </div>
+                    ) : (
+                      /* Minimalist Clean Ring Node */
+                      <div className="w-5 h-5 rounded-full bg-[#000000] flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#fafafa]/40 group-hover:bg-[#fafafa] group-hover:scale-125 transition-all duration-300" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ===================================================
+                      MOBILE RESPONSIVE LAYOUT (< md)
+                      =================================================== */}
+                  <div className="md:hidden flex items-start gap-4 pl-12 w-full relative">
+                    {/* Node on mobile left line */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-[13px] top-4 z-20 flex items-center justify-center"
+                    >
+                      {isFirst ? (
+                        <div className="w-5 h-5 rounded-full bg-[#000000] flex items-center justify-center">
+                          <div className="w-2 h-2 rounded-full bg-[#fafafa]" />
+                        </div>
+                      ) : (
+                        <div className="w-4 h-4 rounded-full bg-[#000000] flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#fafafa]/40 group-hover:bg-[#fafafa] transition-colors duration-300" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Mobile Content (No Box, No Border, No Background) */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3.5 w-full py-2 bg-transparent">
+                      {/* Logo / Photo Container with Proportional Hover Enlarge */}
+                      {exp.image ? (
+                        <PhotoHoverPreview
+                          src={exp.image}
+                          alt={exp.entity}
+                          title={lang === "EN" ? exp.role : exp.roleId}
+                          subtitle={`${exp.entity} • ${exp.period}`}
+                          badge={lang === "EN" ? exp.type : exp.typeId}
+                          baseClassName="w-14 h-14 rounded-xl"
+                          imageClassName="object-contain p-2"
+                          placement="right"
+                          enlargedWidth="w-64 sm:w-72"
+                          isLogoWhiteBg={exp.isWhiteBg ?? false}
+                        />
+                      ) : (
+                        <div className="w-14 h-14 rounded-xl bg-transparent flex items-center justify-center shrink-0">
+                          <div className="w-full h-full rounded-lg bg-transparent flex items-center justify-center text-[#fafafa] font-bold text-xs">
+                            {exp.monogram || exp.entity.slice(0, 2).toUpperCase()}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Text */}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="type-h4 text-[#fafafa] font-bold tracking-tight truncate">
+                          {lang === "EN" ? exp.role : exp.roleId}
+                        </h3>
+                        <p className="type-small text-[#fafafa]/80 text-xs mt-0.5 font-medium truncate">
+                          {exp.entity}
+                          <span className="inline-block mx-1.5 text-[#262626]">•</span>
+                          <span className="text-[#bfe100] font-mono text-[10px] uppercase">
+                            {lang === "EN" ? exp.type : exp.typeId}
+                          </span>
+                        </p>
+                        <p className="type-caption text-[#fafafa]/80 font-mono text-xs mt-0.5">
+                          {exp.period}
+                        </p>
+                        <p className="type-caption text-[#fafafa]/60 text-[11px] mt-0.5">
+                          {exp.location}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                </motion.div>
               );
             })}
           </div>
         </motion.div>
 
-        {/* Experience Table Column Headers for Desktop */}
-        <div className="hidden md:grid grid-cols-12 gap-4 py-3 border-b border-[#E5E4E0] type-caption text-[#6e6e69]/80 uppercase tracking-wider">
-          <div className="col-span-3">{lang === "EN" ? "Timeline" : "Waktu"}</div>
-          <div className="col-span-4">{lang === "EN" ? "Role & Scope" : "Peran & Lingkup"}</div>
-          <div className="col-span-3">{lang === "EN" ? "Entity" : "Entitas"}</div>
-          <div className="col-span-2 text-right">{lang === "EN" ? "Location" : "Lokasi"}</div>
-        </div>
-
-        {/* Horizontal Experience Rows with Parallax */}
-        <motion.div style={{ y: yRows }} className="divide-y divide-[#E5E4E0]">
-          {filteredExperiences.map((exp, idx) => (
-            <motion.div
-              key={`${exp.entity}-${idx}`}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.05,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              data-cursor-interactive="true"
-              className="py-6 sm:py-7 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 group transition-colors duration-300 relative cursor-default hover:bg-[#F5F5F2] -mx-4 px-4 sm:-mx-6 sm:px-6 rounded-xl"
-            >
-              {/* Expanding Hairline on Hover in Primary Scarlet */}
-              <div className="absolute bottom-0 left-4 right-4 h-[1px] bg-[#e50319] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10 pointer-events-none" />
-
-              {/* Col 1: Timeline & Type Badge */}
-              <div className="md:col-span-3 flex flex-col items-start gap-1.5">
-                <span className="type-small text-[#6e6e69] group-hover:text-[#2d2d2a] font-semibold tracking-tight transition-colors duration-300">
-                  {exp.period}
-                </span>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full type-caption uppercase tracking-wider bg-white border border-[#E5E4E0] text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300">
-                  {lang === "EN" ? exp.type : exp.typeId}
-                </span>
-              </div>
-
-              {/* Col 2: Role & Title + Scope */}
-              <div className="md:col-span-4">
-                <div className="type-h4 text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300">
-                  {lang === "EN" ? exp.role : exp.roleId}
-                </div>
-                <p className="type-small text-[#6e6e69]/80 group-hover:text-[#2d2d2a] mt-1.5 transition-colors duration-300">
-                  {lang === "EN" ? exp.scope : exp.scopeId}
-                </p>
-              </div>
-
-              {/* Col 3: Organization with Logo / Monogram + Link */}
-              <div className="md:col-span-3 flex items-center gap-3">
-                {exp.image ? (
-                  <div className="relative w-9 h-9 rounded-md overflow-hidden bg-white border border-[#E5E4E0] shrink-0 shadow-xs">
-                    <Image
-                      src={exp.image}
-                      alt={exp.entity}
-                      fill
-                      sizes="36px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                ) : (
-                  <div className="w-9 h-9 rounded-md bg-[#F5F5F2] border border-[#E5E4E0] type-caption font-bold text-[#6e6e69] group-hover:text-[#2d2d2a] flex items-center justify-center shrink-0 transition-colors duration-300">
-                    {exp.monogram || exp.entity.slice(0, 2).toUpperCase()}
-                  </div>
-                )}
-
-                <div className="min-w-0 flex-1">
-                  {exp.entityUrl ? (
-                    <a
-                      href={exp.entityUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 type-small text-[#6e6e69] group-hover:text-[#2d2d2a] hover:underline underline-offset-2 transition-colors duration-300 group/link"
-                    >
-                      <span className="truncate">{exp.entity}</span>
-                      <span className="text-[11px] text-[#96958f] group-hover/link:text-[#e50319] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-all duration-200">
-                        ↗
-                      </span>
-                    </a>
-                  ) : (
-                    <span className="type-small text-[#6e6e69] group-hover:text-[#2d2d2a] truncate block transition-colors duration-300">
-                      {exp.entity}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Col 4: Location */}
-              <div className="type-small text-[#6e6e69]/80 group-hover:text-[#2d2d2a] md:col-span-2 md:text-right self-center transition-colors duration-300">
-                {exp.location}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* =====================================================================
-            ACADEMIC BACKGROUND & HONORS SECTION WITH PARALLAX
-        ====================================================================== */}
-        <motion.div style={{ y: ySubsections }} className="mt-16 sm:mt-20 pt-10 border-t border-[#E5E4E0]">
+        {/* =========================================================================
+            3. ACADEMIC BACKGROUND & HONORS (Education & Awards Consistent with Site)
+        ========================================================================= */}
+        <motion.div style={{ y: ySubsections }} className="mt-20 pt-12 border-t border-[#262626]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12">
+            
             {/* Left: Education Column */}
-            <div className="lg:col-span-6 space-y-4">
-              <div className="pb-3 border-b border-[#E5E4E0]">
-                <h3 className="type-h3 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
+            <div id="education" className="lg:col-span-6 space-y-4">
+              <div className="pb-3 border-b border-[#262626]">
+                <h3 className="type-h3 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
                   {lang === "EN" ? "Education" : "Pendidikan"}
                 </h3>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-6 pt-2">
                 {EDUCATION_ITEMS.map((edu, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl border border-[#E5E4E0] bg-white hover:border-[#2d2d2a]/30 transition-colors duration-300 flex items-start gap-3.5 group"
+                    className="flex items-start gap-4 group relative py-2 bg-transparent"
                   >
                     {edu.image ? (
-                      <div className="relative w-10 h-10 rounded-md overflow-hidden bg-white border border-[#E5E4E0] shrink-0">
-                        <Image
-                          src={edu.image}
-                          alt={edu.institution}
-                          fill
-                          sizes="40px"
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
+                      <PhotoHoverPreview
+                        src={edu.image}
+                        alt={edu.institution}
+                        baseClassName="w-12 h-12 rounded-xl"
+                        imageClassName="object-contain p-1"
+                        placement="right"
+                        enlargedWidth="w-72 sm:w-80"
+                        isLogoWhiteBg={false}
+                      />
                     ) : (
-                      <div className="w-10 h-10 rounded-md bg-[#F5F5F2] border border-[#E5E4E0] type-caption font-bold text-[#6e6e69] group-hover:text-[#2d2d2a] flex items-center justify-center shrink-0 transition-colors duration-300">
+                      <div className="w-12 h-12 rounded-xl bg-transparent type-caption font-bold text-[#fafafa] flex items-center justify-center shrink-0">
                         {edu.monogram}
                       </div>
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <h4 className="type-h4 text-[#6e6e69] group-hover:text-[#2d2d2a] truncate transition-colors duration-300">
+                      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                        <h4 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold truncate transition-all duration-300">
                           {edu.institution}
                         </h4>
-                        <span className="type-caption text-[#6e6e69]/80 group-hover:text-[#2d2d2a] shrink-0 transition-colors duration-300">
+                        <span className="type-caption text-[#fafafa]/80 font-mono shrink-0">
                           {edu.period}
                         </span>
                       </div>
-                      <p className="type-small text-[#6e6e69]/80 group-hover:text-[#2d2d2a] mt-0.5 transition-colors duration-300">
+                      <p className="type-small text-[#fafafa]/80 mt-1">
                         {lang === "EN" ? edu.degree : edu.degreeId}
                       </p>
-                      {/* Score Pill highlighted in Lemon Lime */}
-                      <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#bfe100]/20 border border-[#bfe100]/40 type-caption text-[#2d2d2a] transition-colors duration-300">
-                        <span>{lang === "EN" ? edu.scoreLabel : edu.scoreLabelId}:</span>
-                        <span className="font-bold text-[#2d2d2a]">{edu.score}</span>
-                      </div>
+                      {/* Score displayed cleanly as inline typography without any card box or border */}
+                      <p className="type-caption text-[#fafafa]/70 mt-1.5 font-mono">
+                        <span className="text-[#fafafa]/50">{lang === "EN" ? edu.scoreLabel : edu.scoreLabelId}: </span>
+                        <span className="font-semibold text-[#bfe100]">{edu.score}</span>
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -469,38 +537,39 @@ export default function Experience() {
 
             {/* Right: Awards & Recognitions Column */}
             <div className="lg:col-span-6 space-y-4">
-              <div className="pb-3 border-b border-[#E5E4E0]">
-                <h3 className="type-h3 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
+              <div className="pb-3 border-b border-[#262626]">
+                <h3 className="type-h3 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
                   {lang === "EN" ? "Awards & Honors" : "Penghargaan & Prestasi"}
                 </h3>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-6 pt-2">
                 {AWARDS_ITEMS.map((award, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl border border-[#E5E4E0] bg-white hover:border-[#2d2d2a]/30 transition-colors duration-300 flex items-start gap-3.5 group"
+                    className="flex items-start gap-4 group relative py-2 bg-transparent"
                   >
                     {award.image ? (
-                      <div className="relative w-10 h-10 rounded-md overflow-hidden bg-white border border-[#E5E4E0] shrink-0">
-                        <Image
-                          src={award.image}
-                          alt={award.title}
-                          fill
-                          sizes="40px"
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
+                      <PhotoHoverPreview
+                        src={award.image}
+                        alt={award.title}
+                        title={lang === "EN" ? award.title : award.titleId}
+                        subtitle={`${lang === "EN" ? award.event : award.eventId} • ${award.year}`}
+                        badge="AWARD & HONORS"
+                        baseClassName="w-12 h-12 rounded-xl"
+                        imageClassName="object-contain p-1"
+                        placement="right"
+                        enlargedWidth="w-72 sm:w-84 md:w-96"
+                      />
                     ) : (
-                      <div className="w-10 h-10 rounded-md bg-[#2d2d2a] text-[#FAFAFA] type-caption font-bold flex items-center justify-center shrink-0">
+                      <div className="w-12 h-12 rounded-xl bg-transparent type-caption font-bold text-[#fafafa] flex items-center justify-center shrink-0">
                         {idx + 1}
                       </div>
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="type-caption text-[#6e6e69] group-hover:text-[#2d2d2a] px-1.5 py-0.5 rounded-sm bg-[#F5F5F2] transition-colors duration-300">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="type-caption text-[#fafafa]/80 font-mono shrink-0">
                           {award.year}
                         </span>
                         {award.link && (
@@ -508,17 +577,17 @@ export default function Experience() {
                             href={award.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="type-caption text-[#6e6e69]/80 hover:text-[#e50319] inline-flex items-center gap-0.5 hover:underline transition-colors duration-300"
+                            aria-label="Verify award"
+                            className="text-[#fafafa]/70 hover:text-[#fafafa] hover:scale-110 transition-all duration-200 inline-flex items-center justify-center p-0.5"
                           >
-                            <span>{lang === "EN" ? "Verify" : "Lihat Bukti"}</span>
-                            <span>↗</span>
+                            <Globe className="w-3.5 h-3.5 text-[#fafafa]" />
                           </a>
                         )}
                       </div>
-                      <h4 className="type-h4 text-[#6e6e69] group-hover:text-[#2d2d2a] mt-1 transition-colors duration-300">
+                      <h4 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold mt-1 transition-all duration-300">
                         {lang === "EN" ? award.title : award.titleId}
                       </h4>
-                      <p className="type-small text-[#6e6e69]/80 group-hover:text-[#2d2d2a] mt-0.5 transition-colors duration-300">
+                      <p className="type-small text-[#fafafa]/80 mt-0.5 transition-colors duration-300">
                         {lang === "EN" ? award.event : award.eventId}
                       </p>
                     </div>
@@ -526,10 +595,14 @@ export default function Experience() {
                 ))}
               </div>
             </div>
+
           </div>
         </motion.div>
+
+        {/* Boundary marker for Navbar dock: marks the end of Education & Awards */}
+        <div id="education-boundary" className="w-full h-px pointer-events-none opacity-0" />
+
       </div>
     </section>
   );
 }
-

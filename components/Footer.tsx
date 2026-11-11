@@ -44,9 +44,9 @@ export default function Footer() {
     <footer
       ref={sectionRef}
       id="contact"
-      className="relative w-full bg-[#FAFAFA] text-[#6e6e69] border-t border-[#E5E4E0] overflow-hidden"
+      className="relative w-full bg-[#000000] text-[#fafafa] border-t border-[#262626] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 pt-20 sm:pt-28 pb-32 sm:pb-36">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 pt-20 sm:pt-28 pb-16 sm:pb-20">
         {/* Section Header with Parallax & Hover Black */}
         <motion.div
           style={{ y: yHeader }}
@@ -54,9 +54,9 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pb-6 sm:pb-8 border-b border-[#E5E4E0]"
+          className="pb-6 sm:pb-8 border-b border-[#262626]"
         >
-          <h2 className="type-h2 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
+          <h2 className="type-h2 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
             {lang === "EN" ? "Contact" : "Kontak"}
           </h2>
         </motion.div>
@@ -68,9 +68,9 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="py-12 sm:py-20 border-b border-[#E5E4E0]"
+          className="py-12 sm:py-20 border-b border-[#262626]"
         >
-          <h3 className="type-h1 uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-500 cursor-default">
+          <h3 className="type-h1 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-500 cursor-default">
             {lang === "EN" ? (
               <>
                 Let&rsquo;s Build <br />
@@ -87,10 +87,10 @@ export default function Footer() {
               </>
             )}
           </h3>
-          <p className="mt-6 type-body text-[#6e6e69]/80 hover:text-[#2d2d2a] transition-colors duration-300 max-w-xl">
+          <p className="mt-6 type-body text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300 max-w-xl">
             {lang === "EN"
-              ? "Available for new client commissions, full-stack architectural contracts, and software engineering collaborations."
-              : "Terbuka untuk kolaborasi proyek klien baru, kontrak arsitektur full-stack, dan pengembangan perangkat lunak."}
+              ? "Available for software engineering roles, full-stack contracts, and selected client projects."
+              : "Terbuka untuk posisi software engineering, kontrak full-stack, dan proyek klien pilihan."}
           </p>
 
           {/* Interactive Direct Email Contact with Smooth Hover */}
@@ -100,7 +100,7 @@ export default function Footer() {
               href={`mailto:${email}`}
               data-cursor="read"
               data-cursor-badge="Email"
-              className="type-h3 text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 underline underline-offset-8 decoration-[#E5E4E0] hover:decoration-[#e50319] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319] rounded-sm"
+              className="type-h3 text-[#fafafa] !font-normal hover:!font-bold transition-all duration-300 underline underline-offset-8 decoration-[#262626] hover:decoration-[#fafafa] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
             >
               {email}
             </motion.a>
@@ -111,16 +111,16 @@ export default function Footer() {
               transition={{ type: "spring", stiffness: 450, damping: 20 }}
               onClick={handleCopyEmail}
               data-cursor-interactive="true"
-              className={`type-button py-1.5 px-3 border transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319] rounded-sm ${
+              className={`type-button py-1 px-2.5 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa] ${
                 copied
-                  ? "bg-[#bfe100] text-[#2d2d2a] border-[#bfe100] !font-medium shadow-xs"
-                  : "border-[#E5E4E0] hover:border-[#2d2d2a] text-[#6e6e69] hover:text-[#2d2d2a]"
+                  ? "text-[#bfe100] !font-bold"
+                  : "text-[#fafafa]/80 hover:text-[#fafafa] !font-normal hover:!font-bold"
               }`}
             >
               {copied
                 ? lang === "EN"
-                  ? "Copied"
-                  : "Tersalin"
+                  ? "Copied ✓"
+                  : "Tersalin ✓"
                 : lang === "EN"
                 ? "Copy Email"
                 : "Salin Email"}
@@ -129,7 +129,7 @@ export default function Footer() {
         </motion.div>
 
         {/* Minimalist Horizontal Social Links with Parallax & Hover Black */}
-        <motion.div style={{ y: yLinks }} className="py-10 border-b border-[#E5E4E0]">
+        <motion.div style={{ y: yLinks }} className="py-10 border-b border-[#262626]">
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
             {socialLinks.map((link, idx) => (
               <motion.a
@@ -148,12 +148,12 @@ export default function Footer() {
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 whileHover={{ y: -1 }}
-                className="group inline-flex items-center gap-1 type-small !font-medium text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319] rounded-sm"
+                className="group inline-flex items-center gap-1 type-small text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
               >
-                <span className="transition-all duration-300">
+                <span className="!font-normal group-hover:!font-bold transition-all duration-300">
                   {link.label}
                 </span>
-                <span className="type-caption text-[#6e6e69]/80 group-hover:text-[#e50319] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300">
+                <span className="type-caption text-[#fafafa]/60 group-hover:text-[#fafafa] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300">
                   ↗
                 </span>
               </motion.a>
@@ -162,7 +162,7 @@ export default function Footer() {
         </motion.div>
 
         {/* Clean Copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 type-caption text-[#6e6e69]/80">
+        <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 type-caption text-[#fafafa]/80">
           <div>
             &copy; {new Date().getFullYear()} Daniel Kurnia. All rights reserved.
           </div>

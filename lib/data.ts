@@ -17,6 +17,7 @@ export interface Project {
   category: string;
   year: string;
   image: string;
+  video?: string;
   link: string;
   summary: string;
   client?: string;
@@ -114,7 +115,8 @@ export const PROJECTS_DATA: Project[] = [
     category: "GAME DEVELOPMENT",
     year: "2025",
     image: "/project/type_racing_stadium.png",
-    link: "/project/type_racing_stadium_edition.html",
+    video: "/project/Video/TypeRacing.mp4",
+    link: "https://type-racing-game.vercel.app",
     summary: "Fast-paced arcade stadium typing race featuring animated sprinters, dynamic lane physics, procedural crowd cheers, and real-time WPM tracking.",
     badge: "TYPING GAME",
     client: "Personal Project",
@@ -184,6 +186,19 @@ export const PROJECTS_DATA: Project[] = [
     badge: "ENTERPRISE",
     client: "PT Kayu Mebel Indonesia",
     stack: ["SAP ABAP", "SAP BSP", "SAP S/4HANA", "Tailwind CSS"],
+  },
+  {
+    id: "becak-racing",
+    number: "06",
+    title: "BeCak Racing",
+    category: "2024 • MOTORSPORT UI/UX",
+    year: "2024",
+    image: "/project/becak-racing.png",
+    link: "https://becakracing.vercel.app/",
+    summary: "High-octane mobile UI/UX experience and interactive motorsport portal celebrating Indonesian urban street racing culture with extreme speed.",
+    badge: "MOBILE UI/UX",
+    client: "Cinema Concept",
+    stack: ["Figma", "Mobile UI/UX", "Next.js", "Tailwind CSS", "Framer Motion"],
   },
 ];
 

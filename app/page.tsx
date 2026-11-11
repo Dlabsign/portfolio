@@ -34,7 +34,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#FAFAFA] text-[#2d2d2a] flex flex-col font-sans selection:bg-[#bfe100] selection:text-[#2d2d2a]">
+    <div className="min-h-[100dvh] bg-[#000000] text-[#fafafa] flex flex-col font-sans selection:bg-[#262626] selection:text-[#fafafa]">
       {/* Floating Dock Navbar with Integrated Language Switcher */}
       <Navbar onNavigate={scrollToSection} />
 
@@ -49,11 +49,11 @@ function HomeContent() {
         {/* 3. About */}
         <About />
 
-        {/* 4. Experience */}
-        <Experience />
-
-        {/* 5. Capabilities */}
+        {/* 4. Capabilities (Horizontal Icon Marquee) */}
         <Capabilities />
+
+        {/* 5. Experience */}
+        <Experience />
 
         {/* 6. Contact / Footer */}
         <Footer />

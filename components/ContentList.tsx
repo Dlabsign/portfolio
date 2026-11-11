@@ -11,7 +11,7 @@ import {
   useMotionValue,
   AnimatePresence,
 } from "framer-motion";
-import { ArrowUpRight, ArrowRight, Layers } from "lucide-react";
+import { ArrowUpRight, Layers } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface ProjectItem {
@@ -29,6 +29,7 @@ interface ProjectItem {
   stack: string[];
   link: string;
   image: string;
+  video?: string;
   isGame?: boolean;
 }
 
@@ -39,8 +40,8 @@ const PROJECTS: ProjectItem[] = [
     number: "01",
     title: "Super Smash Badminton Arcade",
     category: {
-      EN: "Interactive Arcade Game",
-      ID: "Game Arcade Interaktif",
+      EN: "Arcade Game",
+      ID: "Game Arcade",
     },
     summary: {
       EN: "2D arcade badminton championship featuring high-drag shuttlecock physics, responsive jump-smashes, and tournament AI.",
@@ -56,8 +57,8 @@ const PROJECTS: ProjectItem[] = [
     number: "02",
     title: "Type Racing Stadium Edition",
     category: {
-      EN: "Interactive Typing Arcade",
-      ID: "Game Balap Ketik Arcade",
+      EN: "Typing Game",
+      ID: "Game Ketik",
     },
     summary: {
       EN: "Fast-paced arcade stadium typing race featuring animated sprinters, dynamic lane physics, procedural crowd cheers, and real-time WPM tracking.",
@@ -66,6 +67,7 @@ const PROJECTS: ProjectItem[] = [
     stack: ["HTML5", "CSS3 Animation", "JavaScript", "Web Audio API"],
     link: "/projects/type-racing-stadium",
     image: "/project/type_racing_stadium.png",
+    video: "/project/Video/TypeRacing.mp4",
     isGame: true,
   },
   {
@@ -148,6 +150,22 @@ const PROJECTS: ProjectItem[] = [
     link: "/projects/sap-mdg",
     image: "/project/landing-page-mdg.png",
   },
+  {
+    id: "becak-racing",
+    number: "08",
+    title: "BeCak Racing",
+    category: {
+      EN: "Motorsport & Mobile UI/UX",
+      ID: "Motorsport & UI/UX Mobile",
+    },
+    summary: {
+      EN: "High-octane mobile UI/UX experience and interactive motorsport portal celebrating Indonesian urban street racing culture with extreme speed.",
+      ID: "Pengalaman digital mobile UI/UX bertenaga tinggi dan portal motorsport interaktif yang mengangkat kultur balap jalanan perkotaan Indonesia.",
+    },
+    stack: ["Figma", "Mobile UI/UX", "Next.js", "Tailwind CSS"],
+    link: "/projects/becak-racing",
+    image: "/project/becak-racing.png",
+  },
 ];
 
 export default function ContentList() {
@@ -169,7 +187,6 @@ export default function ContentList() {
 
   const yHeader = useTransform(smoothProgress, [0, 1], [-22, 22]);
   const yList = useTransform(smoothProgress, [0, 1], [18, -18]);
-  const yBanner = useTransform(smoothProgress, [0, 1], [30, -15]);
 
   // Spring cursor coordinates for floating hover preview
   const mouseX = useMotionValue(-1000);
@@ -189,7 +206,7 @@ export default function ContentList() {
       ref={sectionRef}
       id="works"
       onMouseMove={handleMouseMove}
-      className="relative w-full min-h-screen bg-[#FAFAFA] border-t border-[#E5E4E0] flex flex-col justify-center py-16 sm:py-20 md:py-24 overflow-hidden"
+      className="relative w-full min-h-screen bg-[#000000] border-t border-[#262626] flex flex-col justify-center py-16 sm:py-20 md:py-24 overflow-hidden"
     >
       {/* Floating Cursor Image Preview Follower */}
       <motion.div
@@ -210,7 +227,7 @@ export default function ContentList() {
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               exit={{ opacity: 0, scale: 0.72, rotate: 2 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-[340px] lg:w-[400px] aspect-[16/10] rounded-xl overflow-hidden bg-[#2d2d2a] border border-[#2d2d2a]/20 shadow-[0_24px_60px_rgba(0,0,0,0.35),0_0_25px_rgba(191,225,0,0.2)]"
+              className="relative w-[220px] sm:w-[260px] aspect-[16/10] rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
             >
               <AnimatePresence mode="popLayout">
                 <motion.div
@@ -221,30 +238,25 @@ export default function ContentList() {
                   transition={{ duration: 0.22, ease: "easeOut" }}
                   className="absolute inset-0"
                 >
-                  <Image
-                    src={hoveredProject.image}
-                    alt={hoveredProject.title}
-                    fill
-                    sizes="400px"
-                    priority
-                    className="object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2d2d2a]/90 via-[#2d2d2a]/20 to-transparent pointer-events-none" />
-
-                  {/* Editorial Tag & Title at Bottom of Preview */}
-                  <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-white pointer-events-none">
-                    <div className="flex items-center gap-2 min-w-0 pr-2">
-                      <span className="type-caption text-[#bfe100] font-mono font-bold shrink-0">
-                        {hoveredProject.number}
-                      </span>
-                      <span className="type-caption text-white font-medium truncate">
-                        {hoveredProject.title}
-                      </span>
-                    </div>
-                    <span className="type-caption px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[#bfe100] border border-white/10 uppercase tracking-caption font-semibold shrink-0">
-                      {hoveredProject.category[lang]}
-                    </span>
-                  </div>
+                  {hoveredProject.video ? (
+                    <video
+                      src={hoveredProject.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover object-top"
+                    />
+                  ) : (
+                    <Image
+                      src={hoveredProject.image}
+                      alt={hoveredProject.title}
+                      fill
+                      sizes="260px"
+                      priority
+                      className="object-cover object-top"
+                    />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </motion.div>
@@ -260,21 +272,21 @@ export default function ContentList() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pb-6 sm:pb-8 border-b border-[#E5E4E0] flex flex-wrap items-baseline justify-between gap-4"
+          className="pb-6 sm:pb-8 border-b border-[#262626] flex flex-wrap items-baseline justify-between gap-4"
         >
           <div className="p-0 m-0">
-            <h2 className="p-0 m-0 type-h2 font-headline uppercase text-[#6e6e69] hover:text-[#2d2d2a] transition-colors duration-300 cursor-default">
+            <h2 className="p-0 m-0 type-h2 font-headline uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
               {lang === "EN" ? "Selected Works" : "Karya Terpilih"}
             </h2>
           </div>
 
           <Link
             href="/projects"
-            className="group/all flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E5E4E0] hover:border-[#2d2d2a] type-button uppercase tracking-wider text-[#6e6e69] hover:text-[#2d2d2a] transition-all duration-300 shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
+            className="group/all flex items-center gap-2 type-button uppercase tracking-wider text-[#fafafa]/80 hover:text-[#fafafa] transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
           >
-            <Layers className="w-3.5 h-3.5 text-[#96958f] group-hover/all:text-[#e50319] transition-colors duration-300" />
-            <span>{lang === "EN" ? "All Projects Archive" : "Arsip Seluruh Proyek"}</span>
-            <span className="transform group-hover/all:translate-x-1 text-[#e50319] transition-transform duration-300">→</span>
+            <Layers className="w-3.5 h-3.5 text-[#fafafa]/70 group-hover/all:text-[#fafafa] transition-colors duration-300" />
+            <span className="font-normal group-hover/all:font-bold transition-all duration-300">{lang === "EN" ? "All Projects Archive" : "Arsip Seluruh Proyek"}</span>
+            <span className="transform group-hover/all:translate-x-1 text-[#fafafa]/70 group-hover/all:text-[#fafafa] transition-all duration-300">→</span>
           </Link>
         </motion.div>
 
@@ -282,116 +294,49 @@ export default function ContentList() {
         <motion.div
           style={{ y: yList }}
           onMouseLeave={() => setHoveredProject(null)}
-          className="divide-y divide-[#E5E4E0] pt-4 sm:pt-6"
+          className="divide-y divide-[#262626] pt-4 sm:pt-6"
         >
-          {PROJECTS.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.04,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <Link
-                href={project.link}
-                data-cursor-interactive="true"
+          {PROJECTS.map((project, idx) => {
+            const isHovered = hoveredProject?.id === project.id;
+            const isDimmed = hoveredProject !== null && !isHovered;
+
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{
+                  duration: 0.5,
+                  delay: idx * 0.04,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 onMouseEnter={() => setHoveredProject(project)}
-                className="group block py-6 sm:py-8 transition-colors duration-300 relative rounded-xl -mx-4 px-4 sm:-mx-6 sm:px-6 hover:bg-[#F5F5F2]"
+                className={`transition-opacity duration-300 ${isDimmed ? "opacity-30" : "opacity-100"}`}
               >
-                {/* Expanding Hairline on Hover with Primary Scarlet Accent */}
-                <div className="absolute bottom-0 left-4 right-4 h-[1px] bg-[#e50319] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-10 pointer-events-none" />
-
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline">
-                  {/* Left Column: Number Index & Category */}
-                  <div className="md:col-span-3 flex items-center md:flex-col md:items-start justify-between md:justify-start gap-1">
-                    <span className="type-caption font-semibold text-[#96958f] group-hover:text-[#e50319] transition-colors duration-300">
-                      {project.number}
-                    </span>
-                    <span className="type-caption text-[#96958f] group-hover:text-[#6e6e69] transition-colors duration-300 uppercase tracking-caption">
-                      {project.category[lang]}
-                    </span>
-                  </div>
-
-                  {/* Middle Column: Title & Summary */}
-                  <div className="md:col-span-6 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="p-0 m-0 type-h3 font-headline text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300">
+                <Link
+                  href={project.link}
+                  data-cursor-interactive="true"
+                  onMouseEnter={() => setHoveredProject(project)}
+                  className="group block py-5 sm:py-6 relative -mx-4 px-4 sm:-mx-6 sm:px-6"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    {/* Title: PP Neue Montreal Font Regular by default, Bold on Hover with subtle magnetic slide */}
+                    <div className="flex items-center gap-3 transform group-hover:translate-x-2 sm:group-hover:translate-x-3.5 transition-transform duration-300 ease-out">
+                      <h3 className="p-0 m-0 type-h3 font-headline !font-normal group-hover:!font-bold text-[#fafafa] transition-all duration-300">
                         {project.title}
                       </h3>
-                      {project.isGame && (
-                        <span className="px-2 py-0.5 rounded-full bg-[#bfe100]/20 text-[#2d2d2a] border border-[#bfe100]/40 type-caption uppercase tracking-caption font-semibold transition-colors duration-300 shrink-0">
-                          {lang === "EN" ? "Arcade" : "Game"}
-                        </span>
-                      )}
                     </div>
-                    <p className="type-small text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300 max-w-xl">
-                      {project.summary[lang]}
-                    </p>
 
-                    {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                      {project.stack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="type-caption px-2 py-0.5 rounded-sm bg-[#F5F5F2] group-hover:bg-[#EAE8E3] text-[#6e6e69] group-hover:text-[#2d2d2a] border border-[#E5E4E0] transition-colors duration-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                    {/* Right Column: Interactive Action Arrow Only (Smooth directional glide) */}
+                    <div className="inline-flex items-center justify-center p-2 text-[#fafafa]/50 group-hover:text-[#fafafa] transition-colors duration-300 shrink-0">
+                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 ease-out" />
                     </div>
                   </div>
-
-                  {/* Right Column: Interactive Action Arrow */}
-                  <div className="md:col-span-3 flex items-center md:justify-end mt-2 md:mt-0">
-                    <div className="inline-flex items-center gap-1.5 type-button text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300">
-                      <span className="uppercase tracking-wider">
-                        {lang === "EN" ? "Explore Case Study" : "Buka Studi Kasus"}
-                      </span>
-                      <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300 text-[#96958f] group-hover:text-[#e50319]" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Bottom Callout Banner with Parallax */}
-        <motion.div
-          style={{ y: yBanner }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="mt-14 p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E4E0] hover:border-[#2d2d2a] transition-colors duration-300 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs group"
-        >
-          <div>
-            <span className="type-caption uppercase tracking-caption text-[#96958f] group-hover:text-[#2d2d2a] transition-colors duration-300 block">
-              {lang === "EN" ? "Archive & Visual Gallery" : "Arsip & Galeri Visual"}
-            </span>
-            <h3 className="type-h4 text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300 mt-1">
-              {lang === "EN"
-                ? "Explore visual previews, screenshots, and filtered categories."
-                : "Jelajahi pratinjau visual, tangkapan layar, dan kategori terpilih."}
-            </h3>
-            <p className="type-small text-[#6e6e69] group-hover:text-[#2d2d2a] transition-colors duration-300 mt-1 max-w-xl">
-              {lang === "EN"
-                ? "Visit the dedicated Work page for full project galleries, screenshots, and live previews."
-                : "Kunjungi halaman Work khusus untuk melihat galeri visual lengkap, tangkapan layar, dan pratinjau."}
-            </p>
-          </div>
-
-          <Link
-            href="/projects"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2d2d2a] hover:bg-[#1f1f1d] text-[#FAFAFA] hover:text-[#bfe100] type-button uppercase tracking-wider transition-colors duration-300 shadow-sm border border-transparent hover:border-[#bfe100]/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e50319]"
-          >
-            <span>{lang === "EN" ? "Open Work Archive" : "Buka Halaman Work"}</span>
-            <ArrowRight className="w-4 h-4 text-[#bfe100]" />
-          </Link>
+                </Link>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

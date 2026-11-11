@@ -66,13 +66,13 @@ const config: Config = {
         btn: ["14px", { lineHeight: "1.2", fontWeight: "500" }],
       },
       colors: {
-        canvas: "#FAFAFA",
+        canvas: "#000000",
         graphite: {
-          DEFAULT: "#2d2d2a",
-          secondary: "#6e6e69",
-          muted: "#96958f",
-          light: "#e2e1dc",
-          faint: "#f5f5f2",
+          DEFAULT: "#fafafa",
+          secondary: "#fafafa",
+          muted: "#fafafa",
+          light: "#262626",
+          faint: "#141414",
         },
         scarlet: {
           DEFAULT: "#e50319",
@@ -87,12 +87,12 @@ const config: Config = {
           border: "rgba(191, 225, 0, 0.35)",
         },
         ink: {
-          DEFAULT: "#2d2d2a",
-          secondary: "#6e6e69",
+          DEFAULT: "#fafafa",
+          secondary: "#fafafa",
         },
         hairline: {
-          DEFAULT: "#E5E4E0",
-          warm: "#ECEBE7",
+          DEFAULT: "#262626",
+          warm: "#1f1f1f",
         },
       },
       fontWeight: {
