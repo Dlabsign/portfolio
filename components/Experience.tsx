@@ -12,13 +12,14 @@ import { TextEffect } from "@/components/core/text-effect";
 
 interface ExperienceItem {
   period: string;
+  periodId?: string;
   role: string;
   roleId: string;
   type: string;
   typeId: string;
   entity: string;
   entityUrl?: string;
-  location: string;
+  location?: string;
   image?: string;
   monogram?: string;
   isWhiteBg?: boolean;
@@ -48,97 +49,97 @@ interface AwardItem {
 
 const EXPERIENCES: ExperienceItem[] = [
   {
-    period: "Feb 2026 — Present",
-    role: "IT Staff - Programmer",
-    roleId: "Staf TI - Programmer",
-    type: "Contract",
-    typeId: "Kontrak",
-    entity: "PT. Kayu Mebel Indonesia",
+    period: "Apr 2026 — Present",
+    periodId: "Apr 2026 — Sekarang",
+    role: "IT Staff",
+    roleId: "IT Staff",
+    type: "Full-time",
+    typeId: "Purna Waktu",
+    entity: "PT Kayu Mebel Indonesia (KMI)",
     entityUrl: "https://id.linkedin.com/company/pt-kayu-mebel-indonesia",
-    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "/project/ENJOYSAP_LOGO.png",
     monogram: "KM",
     isWhiteBg: false,
   },
   {
     period: "Feb 2025 — Present",
+    periodId: "Feb 2025 — Sekarang",
     role: "FullStack Developer",
     roleId: "Pengembang FullStack",
     type: "Part-time",
     typeId: "Paruh Waktu",
     entity: "Zero One",
     entityUrl: "https://zeroone.co.id/",
-    location: "Surabaya, Jawa Timur, Indonesia • Hybrid",
     image: "/project/zeroone-logo.png",
     monogram: "ZO",
     isWhiteBg: false,
   },
   {
     period: "Dec 2021 — Present",
+    periodId: "Des 2021 — Sekarang",
     role: "Graphic Designer & Digital Creator",
     roleId: "Desainer Grafis & Kreator Digital",
     type: "Freelance",
     typeId: "Lepas (Freelance)",
     entity: "dlabsign",
     entityUrl: "https://github.com/Dlabsign",
-    location: "Indonesia • Remote",
     monogram: "DL",
   },
   {
     period: "Mar 2025 — Jan 2026",
+    periodId: "Mar 2025 — Jan 2026",
     role: "Backend Developer",
     roleId: "Pengembang Backend",
     type: "Freelance",
     typeId: "Lepas (Freelance)",
     entity: "Pemancingan Tanggul Rejo",
     entityUrl: "https://share.google/CmZKjS4kq0h4lkVSZ",
-    location: "Sidoarjo, Jawa Timur, Indonesia • Hybrid",
     monogram: "TR",
   },
   {
     period: "Mar 2024 — Jan 2026",
+    periodId: "Mar 2024 — Jan 2026",
     role: "Laboratory Assistant",
     roleId: "Asisten Laboratorium Komputer",
     type: "Part-time",
     typeId: "Paruh Waktu",
     entity: "Universitas 17 Agustus 1945 Surabaya",
     entityUrl: "https://untag-sby.ac.id/",
-    location: "Surabaya, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/iwS1Rr5TtduV7Ko1GJJ2WtH04.png?width=2823&height=2865",
     monogram: "UT",
   },
   {
     period: "Mar 2025",
+    periodId: "Mar 2025",
     role: "PIC • Army of God Conference 2025",
     roleId: "Koordinator • Army of God Conference 2025",
     type: "Event PIC",
     typeId: "Koordinator Acara",
     entity: "GMS Sidoarjo",
     entityUrl: "https://gms.church/id",
-    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/41pwj8FMUikZ7st7guDeTSTABc.jpg?width=1961&height=3487",
     monogram: "GMS",
   },
   {
     period: "Feb 2022",
+    periodId: "Feb 2022",
     role: "PIC • Batch Graphic Design & Video",
     roleId: "Koordinator • Pelatihan Desain Grafis & Video",
     type: "Project PIC",
     typeId: "Koordinator Proyek",
     entity: "SMK Antartika 2 Sidoarjo",
     entityUrl: "https://smkantartika2-sda.sch.id/",
-    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/ujny5iZ13TTSbUmeVK4oj5vxeV0.jpg?width=1620&height=1080",
     monogram: "A2",
   },
   {
     period: "Jan 2021",
+    periodId: "Jan 2021",
     role: "Graphic Design Volunteer PIC",
     roleId: "Koordinator Relawan Desain Grafis",
     type: "Volunteer PIC",
     typeId: "Relawan (Volunteer)",
     entity: "Sidoarjo School Festival - SMK",
-    location: "Sidoarjo, Jawa Timur, Indonesia • On-Site",
     image: "https://framerusercontent.com/images/Hs45H39TaIemKy4FiVbAJ1Q3Vew.jpg?width=6000&height=4000",
     monogram: "SSF",
   },
@@ -330,16 +331,7 @@ export default function Experience() {
                               as="p"
                               className="type-caption text-[#fafafa]/80 font-mono mt-0.5"
                             >
-                              {exp.period}
-                            </TextEffect>
-                            <TextEffect
-                              key={`exp-loc-l-${idx}-${lang}`}
-                              per="char"
-                              preset="fade"
-                              as="p"
-                              className="type-caption text-[#fafafa]/60 mt-0.5"
-                            >
-                              {exp.location}
+                              {lang === "EN" ? exp.period : (exp.periodId || exp.period)}
                             </TextEffect>
                           </div>
 
@@ -349,7 +341,7 @@ export default function Experience() {
                               src={exp.image}
                               alt={exp.entity}
                               title={lang === "EN" ? exp.role : exp.roleId}
-                              subtitle={`${exp.entity} • ${exp.period}`}
+                              subtitle={`${exp.entity} • ${lang === "EN" ? exp.period : (exp.periodId || exp.period)}`}
                               badge={lang === "EN" ? exp.type : exp.typeId}
                               baseClassName="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
                               imageClassName="object-contain p-2.5"
@@ -377,7 +369,7 @@ export default function Experience() {
                               src={exp.image}
                               alt={exp.entity}
                               title={lang === "EN" ? exp.role : exp.roleId}
-                              subtitle={`${exp.entity} • ${exp.period}`}
+                              subtitle={`${exp.entity} • ${lang === "EN" ? exp.period : (exp.periodId || exp.period)}`}
                               badge={lang === "EN" ? exp.type : exp.typeId}
                               baseClassName="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
                               imageClassName="object-contain p-2.5"
@@ -426,16 +418,7 @@ export default function Experience() {
                               as="p"
                               className="type-caption text-[#fafafa]/80 font-mono mt-0.5"
                             >
-                              {exp.period}
-                            </TextEffect>
-                            <TextEffect
-                              key={`exp-loc-r-${idx}-${lang}`}
-                              per="char"
-                              preset="fade"
-                              as="p"
-                              className="type-caption text-[#fafafa]/60 mt-0.5"
-                            >
-                              {exp.location}
+                              {lang === "EN" ? exp.period : (exp.periodId || exp.period)}
                             </TextEffect>
                           </div>
                         </div>
@@ -491,7 +474,7 @@ export default function Experience() {
                           src={exp.image}
                           alt={exp.entity}
                           title={lang === "EN" ? exp.role : exp.roleId}
-                          subtitle={`${exp.entity} • ${exp.period}`}
+                          subtitle={`${exp.entity} • ${lang === "EN" ? exp.period : (exp.periodId || exp.period)}`}
                           badge={lang === "EN" ? exp.type : exp.typeId}
                           baseClassName="w-14 h-14 rounded-xl"
                           imageClassName="object-contain p-2"
@@ -545,16 +528,7 @@ export default function Experience() {
                           as="p"
                           className="type-caption text-[#fafafa]/80 font-mono text-xs mt-0.5"
                         >
-                          {exp.period}
-                        </TextEffect>
-                        <TextEffect
-                          key={`exp-loc-m-${idx}-${lang}`}
-                          per="char"
-                          preset="fade"
-                          as="p"
-                          className="type-caption text-[#fafafa]/60 text-[11px] mt-0.5"
-                        >
-                          {exp.location}
+                          {lang === "EN" ? exp.period : (exp.periodId || exp.period)}
                         </TextEffect>
                       </div>
                     </div>
