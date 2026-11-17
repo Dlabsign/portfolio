@@ -55,14 +55,29 @@ export default function ContactMorphForm() {
       return;
     }
 
-    // Prepare message dispatch
-    const subject = encodeURIComponent(`Project Inquiry from ${trimmedName}`);
-    const bodyContent = encodeURIComponent(
-      `Name: ${trimmedName}\nContact: ${trimmedContact}\n\nMessage:\n${message.trim() || 'No additional note provided.'}`
-    );
+    // Construct WhatsApp message dispatch
+    const trimmedMessage = message.trim();
+    const waLines = [
+      lang === 'EN' ? `Hi Daniel! I'm *${trimmedName}*.` : `Halo Daniel! Saya *${trimmedName}*.`,
+      trimmedContact ? `${lang === 'EN' ? 'Contact' : 'Kontak'}: ${trimmedContact}` : '',
+      '',
+      trimmedMessage
+        ? `${lang === 'EN' ? 'Message' : 'Pesan'}:\n${trimmedMessage}`
+        : (lang === 'EN' ? "I'd like to collaborate with you on a project." : "Saya tertarik untuk berkolaborasi dan mendiskusikan peluang proyek dengan Anda."),
+    ].filter(Boolean);
 
-    const mailtoUrl = `mailto:danielkurnia00@gmail.com?subject=${subject}&body=${bodyContent}`;
-    window.location.href = mailtoUrl;
+    const waText = waLines.join('\n');
+    const waUrl = `https://wa.me/6281259321453?text=${encodeURIComponent(waText)}`;
+
+    // Dispatch to WhatsApp
+    try {
+      const opened = window.open(waUrl, '_blank', 'noopener,noreferrer');
+      if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+        window.location.href = waUrl;
+      }
+    } catch {
+      window.location.href = waUrl;
+    }
 
     setSubmitted(true);
   };
@@ -151,8 +166,8 @@ export default function ContactMorphForm() {
             <CheckCircle2 className="w-3.5 h-3.5 text-[#bfe100] shrink-0" />
             <span>
               {lang === 'EN'
-                ? `Thank you, ${trimmedName}! Launching your email client...`
-                : `Terima kasih, ${trimmedName}! Membuka aplikasi email Anda...`}
+                ? `Thank you, ${trimmedName}! Redirecting to WhatsApp (+62 812-5932-1453)...`
+                : `Terima kasih, ${trimmedName}! Mengalihkan ke WhatsApp (+62 812-5932-1453)...`}
             </span>
           </div>
         )}
