@@ -8,6 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import PhotoHoverPreview from "@/components/PhotoHoverPreview";
 import SmoothWeightText from "@/components/SmoothWeightText";
 import { TextRoll } from "@/components/core/text-roll";
+import { TextEffect } from "@/components/core/text-effect";
 
 interface ExperienceItem {
   period: string;
@@ -298,23 +299,48 @@ export default function Experience() {
                           {/* Text Block: Position as Headline, Company as Subheadline */}
                           <div>
                             <h3 className="type-h4 text-[#fafafa] tracking-tight">
-                              <SmoothWeightText align="right">
+                              <SmoothWeightText key={`exp-role-l-${idx}-${lang}`} align="right">
                                 {lang === "EN" ? exp.role : exp.roleId}
                               </SmoothWeightText>
                             </h3>
-                            <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
-                              {exp.entity}
-                              <span className="inline-block mx-1.5 text-[#262626]">•</span>
-                              <span className="text-[#bfe100] font-mono text-xs uppercase tracking-wider">
+                            <div className="type-small text-[#fafafa]/80 mt-1 font-medium flex items-center justify-end flex-wrap gap-x-1.5">
+                              <TextEffect
+                                key={`exp-entity-l-${idx}-${lang}`}
+                                per="char"
+                                preset="fade"
+                                as="span"
+                              >
+                                {exp.entity}
+                              </TextEffect>
+                              <span className="inline-block text-[#262626]">•</span>
+                              <TextEffect
+                                key={`exp-type-l-${idx}-${lang}`}
+                                per="char"
+                                preset="fade"
+                                as="span"
+                                className="text-[#bfe100] font-mono text-xs uppercase tracking-wider"
+                              >
                                 {lang === "EN" ? exp.type : exp.typeId}
-                              </span>
-                            </p>
-                            <p className="type-caption text-[#fafafa]/80 font-mono mt-0.5">
+                              </TextEffect>
+                            </div>
+                            <TextEffect
+                              key={`exp-period-l-${idx}-${lang}`}
+                              per="char"
+                              preset="fade"
+                              as="p"
+                              className="type-caption text-[#fafafa]/80 font-mono mt-0.5"
+                            >
                               {exp.period}
-                            </p>
-                            <p className="type-caption text-[#fafafa]/60 mt-0.5">
+                            </TextEffect>
+                            <TextEffect
+                              key={`exp-loc-l-${idx}-${lang}`}
+                              per="char"
+                              preset="fade"
+                              as="p"
+                              className="type-caption text-[#fafafa]/60 mt-0.5"
+                            >
                               {exp.location}
-                            </p>
+                            </TextEffect>
                           </div>
 
                           {/* Logo / Photo Container with Proportional Hover Enlarge */}
@@ -369,23 +395,48 @@ export default function Experience() {
                           {/* Text Block */}
                           <div>
                             <h3 className="type-h4 text-[#fafafa] tracking-tight">
-                              <SmoothWeightText align="right">
+                              <SmoothWeightText key={`exp-role-r-${idx}-${lang}`} align="left">
                                 {lang === "EN" ? exp.role : exp.roleId}
                               </SmoothWeightText>
                             </h3>
-                            <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
-                              {exp.entity}
-                              <span className="inline-block mx-1.5 text-[#262626]">•</span>
-                              <span className="text-[#bfe100] font-mono text-xs uppercase tracking-wider">
+                            <div className="type-small text-[#fafafa]/80 mt-1 font-medium flex items-center justify-start flex-wrap gap-x-1.5">
+                              <TextEffect
+                                key={`exp-entity-r-${idx}-${lang}`}
+                                per="char"
+                                preset="fade"
+                                as="span"
+                              >
+                                {exp.entity}
+                              </TextEffect>
+                              <span className="inline-block text-[#262626]">•</span>
+                              <TextEffect
+                                key={`exp-type-r-${idx}-${lang}`}
+                                per="char"
+                                preset="fade"
+                                as="span"
+                                className="text-[#bfe100] font-mono text-xs uppercase tracking-wider"
+                              >
                                 {lang === "EN" ? exp.type : exp.typeId}
-                              </span>
-                            </p>
-                            <p className="type-caption text-[#fafafa]/80 font-mono mt-0.5">
+                              </TextEffect>
+                            </div>
+                            <TextEffect
+                              key={`exp-period-r-${idx}-${lang}`}
+                              per="char"
+                              preset="fade"
+                              as="p"
+                              className="type-caption text-[#fafafa]/80 font-mono mt-0.5"
+                            >
                               {exp.period}
-                            </p>
-                            <p className="type-caption text-[#fafafa]/60 mt-0.5">
+                            </TextEffect>
+                            <TextEffect
+                              key={`exp-loc-r-${idx}-${lang}`}
+                              per="char"
+                              preset="fade"
+                              as="p"
+                              className="type-caption text-[#fafafa]/60 mt-0.5"
+                            >
                               {exp.location}
-                            </p>
+                            </TextEffect>
                           </div>
                         </div>
                       )}
@@ -458,22 +509,53 @@ export default function Experience() {
 
                       {/* Text */}
                       <div className="min-w-0 flex-1">
-                        <h3 className="type-h4 text-[#fafafa] font-bold tracking-tight truncate">
+                        <TextEffect
+                          key={`exp-role-m-${idx}-${lang}`}
+                          per="char"
+                          preset="fade"
+                          as="h3"
+                          className="type-h4 text-[#fafafa] font-bold tracking-tight truncate"
+                        >
                           {lang === "EN" ? exp.role : exp.roleId}
-                        </h3>
-                        <p className="type-small text-[#fafafa]/80 text-xs mt-0.5 font-medium truncate">
-                          {exp.entity}
-                          <span className="inline-block mx-1.5 text-[#262626]">•</span>
-                          <span className="text-[#bfe100] font-mono text-[10px] uppercase">
+                        </TextEffect>
+                        <div className="type-small text-[#fafafa]/80 text-xs mt-0.5 font-medium flex items-center flex-wrap gap-x-1.5 truncate">
+                          <TextEffect
+                            key={`exp-entity-m-${idx}-${lang}`}
+                            per="char"
+                            preset="fade"
+                            as="span"
+                          >
+                            {exp.entity}
+                          </TextEffect>
+                          <span className="inline-block text-[#262626]">•</span>
+                          <TextEffect
+                            key={`exp-type-m-${idx}-${lang}`}
+                            per="char"
+                            preset="fade"
+                            as="span"
+                            className="text-[#bfe100] font-mono text-[10px] uppercase"
+                          >
                             {lang === "EN" ? exp.type : exp.typeId}
-                          </span>
-                        </p>
-                        <p className="type-caption text-[#fafafa]/80 font-mono text-xs mt-0.5">
+                          </TextEffect>
+                        </div>
+                        <TextEffect
+                          key={`exp-period-m-${idx}-${lang}`}
+                          per="char"
+                          preset="fade"
+                          as="p"
+                          className="type-caption text-[#fafafa]/80 font-mono text-xs mt-0.5"
+                        >
                           {exp.period}
-                        </p>
-                        <p className="type-caption text-[#fafafa]/60 text-[11px] mt-0.5">
+                        </TextEffect>
+                        <TextEffect
+                          key={`exp-loc-m-${idx}-${lang}`}
+                          per="char"
+                          preset="fade"
+                          as="p"
+                          className="type-caption text-[#fafafa]/60 text-[11px] mt-0.5"
+                        >
                           {exp.location}
-                        </p>
+                        </TextEffect>
                       </div>
                     </div>
                   </div>
@@ -525,22 +607,41 @@ export default function Experience() {
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                         <h4 className="type-h4 text-[#fafafa] truncate">
-                          <SmoothWeightText>
+                          <SmoothWeightText key={`edu-inst-${idx}-${lang}`}>
                             {edu.institution}
                           </SmoothWeightText>
                         </h4>
-                        <span className="type-caption text-[#fafafa]/80 font-mono shrink-0">
+                        <TextEffect
+                          key={`edu-period-${idx}-${lang}`}
+                          per="char"
+                          preset="fade"
+                          as="span"
+                          className="type-caption text-[#fafafa]/80 font-mono shrink-0"
+                        >
                           {edu.period}
-                        </span>
+                        </TextEffect>
                       </div>
-                      <p className="type-small text-[#fafafa]/80 mt-1">
+                      <TextEffect
+                        key={`edu-degree-${idx}-${lang}`}
+                        per="char"
+                        preset="fade"
+                        as="p"
+                        className="type-small text-[#fafafa]/80 mt-1"
+                      >
                         {lang === "EN" ? edu.degree : edu.degreeId}
-                      </p>
+                      </TextEffect>
                       {/* Score displayed cleanly as inline typography without any card box or border */}
-                      <p className="type-caption text-[#fafafa]/70 mt-1.5 font-mono">
-                        <span className="text-[#fafafa]/50">{lang === "EN" ? edu.scoreLabel : edu.scoreLabelId}: </span>
-                        <span className="font-semibold text-[#bfe100]">{edu.score}</span>
-                      </p>
+                      <TextEffect
+                        key={`edu-score-${idx}-${lang}`}
+                        per="char"
+                        preset="fade"
+                        as="p"
+                        className="type-caption text-[#fafafa]/70 mt-1.5 font-mono"
+                      >
+                        {lang === "EN"
+                          ? `${edu.scoreLabel}: ${edu.score}`
+                          : `${edu.scoreLabelId}: ${edu.score}`}
+                      </TextEffect>
                     </div>
                   </div>
                 ))}
@@ -583,9 +684,15 @@ export default function Experience() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="type-caption text-[#fafafa]/80 font-mono shrink-0">
+                        <TextEffect
+                          key={`award-year-${idx}-${lang}`}
+                          per="char"
+                          preset="fade"
+                          as="span"
+                          className="type-caption text-[#fafafa]/80 font-mono shrink-0"
+                        >
                           {award.year}
-                        </span>
+                        </TextEffect>
                         {award.link && (
                           <a
                             href={award.link}
@@ -599,13 +706,19 @@ export default function Experience() {
                         )}
                       </div>
                       <h4 className="type-h4 text-[#fafafa] mt-1">
-                        <SmoothWeightText>
+                        <SmoothWeightText key={`award-title-${idx}-${lang}`}>
                           {lang === "EN" ? award.title : award.titleId}
                         </SmoothWeightText>
                       </h4>
-                      <p className="type-small text-[#fafafa]/80 mt-0.5 transition-colors duration-300">
+                      <TextEffect
+                        key={`award-event-${idx}-${lang}`}
+                        per="char"
+                        preset="fade"
+                        as="p"
+                        className="type-small text-[#fafafa]/80 mt-0.5 transition-colors duration-300"
+                      >
                         {lang === "EN" ? award.event : award.eventId}
-                      </p>
+                      </TextEffect>
                     </div>
                   </div>
                 ))}
