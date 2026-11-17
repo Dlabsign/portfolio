@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import SmoothWeightText from "@/components/SmoothWeightText";
 
 export default function Footer() {
   const { lang } = useLanguage();
@@ -100,9 +101,11 @@ export default function Footer() {
               href={`mailto:${email}`}
               data-cursor="read"
               data-cursor-badge="Email"
-              className="type-h3 text-[#fafafa] !font-normal hover:!font-bold transition-all duration-300 underline underline-offset-8 decoration-[#262626] hover:decoration-[#fafafa] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
+              className="group type-h3 text-[#fafafa] underline underline-offset-8 decoration-[#262626] hover:decoration-[#fafafa] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
             >
-              {email}
+              <SmoothWeightText>
+                {email}
+              </SmoothWeightText>
             </motion.a>
             <motion.button
               type="button"
@@ -150,9 +153,9 @@ export default function Footer() {
                 whileHover={{ y: -1 }}
                 className="group inline-flex items-center gap-1 type-small text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
               >
-                <span className="!font-normal group-hover:!font-bold transition-all duration-300">
+                <SmoothWeightText>
                   {link.label}
-                </span>
+                </SmoothWeightText>
                 <span className="type-caption text-[#fafafa]/60 group-hover:text-[#fafafa] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300">
                   ↗
                 </span>

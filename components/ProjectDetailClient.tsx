@@ -10,6 +10,7 @@ import ProjectGameArena from "@/components/ProjectGameArena";
 import ProjectGallery from "@/components/ProjectGallery";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
+import SmoothWeightText from "@/components/SmoothWeightText";
 
 interface ProjectDetailClientProps {
   project: DetailedProject;
@@ -253,8 +254,10 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 <span className="type-caption uppercase block text-[#fafafa]/80 group-hover:text-[#fafafa] transition-colors duration-300">
                   {lang === "EN" ? "Previous" : "Sebelumnya"}
                 </span>
-                <span className="type-small !font-normal group-hover:!font-bold text-[#fafafa] transition-all duration-300">
-                  {prevProject.title}
+                <span className="type-small text-[#fafafa]">
+                  <SmoothWeightText>
+                    {prevProject.title}
+                  </SmoothWeightText>
                 </span>
               </div>
             </Link>
@@ -267,8 +270,10 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 <span className="type-caption uppercase block text-[#fafafa]/80 group-hover:text-[#fafafa] transition-colors duration-300">
                   {lang === "EN" ? "Next" : "Berikutnya"}
                 </span>
-                <span className="type-small !font-normal group-hover:!font-bold text-[#fafafa] transition-all duration-300">
-                  {nextProject.title}
+                <span className="type-small text-[#fafafa]">
+                  <SmoothWeightText align="right">
+                    {nextProject.title}
+                  </SmoothWeightText>
                 </span>
               </div>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 group-hover:text-[#fafafa] transition-all" />
@@ -288,15 +293,19 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             <div className="flex items-center gap-6">
               <Link
                 href="/projects"
-                className="text-[#fafafa]/80 hover:text-[#fafafa] !font-normal hover:!font-bold transition-all duration-300"
+                className="group text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300"
               >
-                {lang === "EN" ? "All Projects" : "Semua Proyek"}
+                <SmoothWeightText>
+                  {lang === "EN" ? "All Projects" : "Semua Proyek"}
+                </SmoothWeightText>
               </Link>
               <Link
                 href="/"
-                className="text-[#fafafa]/80 hover:text-[#fafafa] !font-normal hover:!font-bold transition-all duration-300"
+                className="group text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300"
               >
-                {lang === "EN" ? "Portfolio Home" : "Beranda"}
+                <SmoothWeightText>
+                  {lang === "EN" ? "Portfolio Home" : "Beranda"}
+                </SmoothWeightText>
               </Link>
             </div>
           </div>

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { DETAILED_PROJECTS, DetailedProject } from "@/lib/projects-data";
 import Navbar from "@/components/Navbar";
+import SmoothWeightText from "@/components/SmoothWeightText";
 
 export default function BrutalistTransparentGrid() {
   const [hoveredProject, setHoveredProject] = useState<DetailedProject | null>(null);
@@ -102,14 +103,14 @@ export default function BrutalistTransparentGrid() {
                   <div className="relative z-10 w-full p-0 m-0 flex items-center justify-center pointer-events-none px-6">
                     <h2
                       className={`p-0 m-0 text-center font-headline text-sm sm:text-base md:text-lg lg:text-xl tracking-tight leading-snug transition-all duration-300 max-w-[85%] ${
-                        isHovered
-                          ? "!font-bold text-[#fafafa] drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]"
-                          : isDimmed
-                          ? "!font-normal text-[#fafafa]/30"
-                          : "!font-normal text-[#fafafa]/80 group-hover:!font-bold group-hover:text-[#fafafa]"
+                        isDimmed
+                          ? "text-[#fafafa]/30"
+                          : "text-[#fafafa]"
                       }`}
                     >
-                      {project.title}
+                      <SmoothWeightText active={isHovered}>
+                        {project.title}
+                      </SmoothWeightText>
                     </h2>
                   </div>
                 </Link>

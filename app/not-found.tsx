@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SmoothWeightText from "@/components/SmoothWeightText";
 
 export default function NotFound() {
   return (
@@ -16,9 +17,11 @@ export default function NotFound() {
             href="/"
             data-cursor="read"
             data-cursor-badge="Return"
-            className="type-button text-[#fafafa]/80 hover:text-[#fafafa] !font-normal hover:!font-bold transition-all duration-200 uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa] rounded-sm"
+            className="group type-button text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-200 uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa] rounded-sm"
           >
-            ← Return to Index (Home)
+            <SmoothWeightText>
+              ← Return to Index (Home)
+            </SmoothWeightText>
           </Link>
         </div>
       </div>

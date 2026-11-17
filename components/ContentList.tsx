@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import SmoothWeightText from "./SmoothWeightText";
 
 interface ProjectItem {
   id: string;
@@ -285,7 +286,9 @@ export default function ContentList() {
             className="group/all flex items-center gap-2 type-button uppercase tracking-wider text-[#fafafa]/80 hover:text-[#fafafa] transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#fafafa]"
           >
             <Layers className="w-3.5 h-3.5 text-[#fafafa]/70 group-hover/all:text-[#fafafa] transition-colors duration-300" />
-            <span className="font-normal group-hover/all:font-bold transition-all duration-300">{lang === "EN" ? "All Projects Archive" : "Arsip Seluruh Proyek"}</span>
+            <SmoothWeightText hoverTarget="group/all">
+              {lang === "EN" ? "All Projects Archive" : "Arsip Seluruh Proyek"}
+            </SmoothWeightText>
             <span className="transform group-hover/all:translate-x-1 text-[#fafafa]/70 group-hover/all:text-[#fafafa] transition-all duration-300">→</span>
           </Link>
         </motion.div>
@@ -321,10 +324,12 @@ export default function ContentList() {
                   className="group block py-5 sm:py-6 relative -mx-4 px-4 sm:-mx-6 sm:px-6"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    {/* Title: PP Neue Montreal Font Regular by default, Bold on Hover with subtle magnetic slide */}
+                    {/* Title: PP Neue Montreal Font with Smooth Weight Crossfade & Subtle Magnetic Slide */}
                     <div className="flex items-center gap-3 transform group-hover:translate-x-2 sm:group-hover:translate-x-3.5 transition-transform duration-300 ease-out">
-                      <h3 className="p-0 m-0 type-h3 font-headline !font-normal group-hover:!font-bold text-[#fafafa] transition-all duration-300">
-                        {project.title}
+                      <h3 className="p-0 m-0 type-h3 font-headline text-[#fafafa]">
+                        <SmoothWeightText active={isHovered}>
+                          {project.title}
+                        </SmoothWeightText>
                       </h3>
                     </div>
 

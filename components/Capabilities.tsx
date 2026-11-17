@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { TECH_ICONS, TechIcon } from "./techIconsData";
+import SmoothWeightText from "./SmoothWeightText";
 
 export default function Capabilities() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -64,9 +65,9 @@ export default function Capabilities() {
         </svg>
       </div>
 
-      <span className="font-mono text-xs sm:text-sm !font-normal group-hover:!font-bold text-[#fafafa] tracking-tight whitespace-nowrap transition-all duration-300">
+      <SmoothWeightText className="font-mono text-xs sm:text-sm text-[#fafafa] tracking-tight whitespace-nowrap">
         {tech.name}
-      </span>
+      </SmoothWeightText>
     </div>
   );
 

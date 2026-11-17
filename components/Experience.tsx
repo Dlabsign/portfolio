@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Globe } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import PhotoHoverPreview from "@/components/PhotoHoverPreview";
+import SmoothWeightText from "@/components/SmoothWeightText";
 
 interface ExperienceItem {
   period: string;
@@ -293,8 +294,10 @@ export default function Experience() {
                         <div className="flex items-center justify-end gap-5 text-right">
                           {/* Text Block: Position as Headline, Company as Subheadline */}
                           <div>
-                            <h3 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold tracking-tight transition-all duration-300">
-                              {lang === "EN" ? exp.role : exp.roleId}
+                            <h3 className="type-h4 text-[#fafafa] tracking-tight">
+                              <SmoothWeightText align="right">
+                                {lang === "EN" ? exp.role : exp.roleId}
+                              </SmoothWeightText>
                             </h3>
                             <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
                               {exp.entity}
@@ -362,8 +365,10 @@ export default function Experience() {
 
                           {/* Text Block */}
                           <div>
-                            <h3 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold tracking-tight transition-all duration-300">
-                              {lang === "EN" ? exp.role : exp.roleId}
+                            <h3 className="type-h4 text-[#fafafa] tracking-tight">
+                              <SmoothWeightText align="right">
+                                {lang === "EN" ? exp.role : exp.roleId}
+                              </SmoothWeightText>
                             </h3>
                             <p className="type-small text-[#fafafa]/80 mt-1 font-medium">
                               {exp.entity}
@@ -514,8 +519,10 @@ export default function Experience() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                        <h4 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold truncate transition-all duration-300">
-                          {edu.institution}
+                        <h4 className="type-h4 text-[#fafafa] truncate">
+                          <SmoothWeightText>
+                            {edu.institution}
+                          </SmoothWeightText>
                         </h4>
                         <span className="type-caption text-[#fafafa]/80 font-mono shrink-0">
                           {edu.period}
@@ -584,8 +591,10 @@ export default function Experience() {
                           </a>
                         )}
                       </div>
-                      <h4 className="type-h4 text-[#fafafa] !font-normal group-hover:!font-bold mt-1 transition-all duration-300">
-                        {lang === "EN" ? award.title : award.titleId}
+                      <h4 className="type-h4 text-[#fafafa] mt-1">
+                        <SmoothWeightText>
+                          {lang === "EN" ? award.title : award.titleId}
+                        </SmoothWeightText>
                       </h4>
                       <p className="type-small text-[#fafafa]/80 mt-0.5 transition-colors duration-300">
                         {lang === "EN" ? award.event : award.eventId}
