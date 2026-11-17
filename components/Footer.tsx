@@ -4,6 +4,9 @@ import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import SmoothWeightText from "@/components/SmoothWeightText";
+import { TextRoll } from "@/components/core/text-roll";
+import { TextEffect } from "@/components/core/text-effect";
+import ContactMorphForm from "@/components/ContactMorphForm";
 
 export default function Footer() {
   const { lang } = useLanguage();
@@ -58,7 +61,9 @@ export default function Footer() {
           className="pb-6 sm:pb-8 border-b border-[#262626]"
         >
           <h2 className="type-h2 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
-            {lang === "EN" ? "Contact" : "Kontak"}
+            <TextRoll key={`contact-title-${lang}`}>
+              {lang === "EN" ? "Contact" : "Kontak"}
+            </TextRoll>
           </h2>
         </motion.div>
 
@@ -88,11 +93,17 @@ export default function Footer() {
               </>
             )}
           </h3>
-          <p className="mt-6 type-body text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300 max-w-xl">
+          <TextEffect
+            key={`footer-desc-${lang}`}
+            per="char"
+            preset="fade"
+            as="p"
+            className="mt-6 type-body text-[#fafafa]/80 hover:text-[#fafafa] transition-colors duration-300 max-w-xl"
+          >
             {lang === "EN"
               ? "Available for software engineering roles, full-stack contracts, and selected client projects."
               : "Terbuka untuk posisi software engineering, kontrak full-stack, dan proyek klien pilihan."}
-          </p>
+          </TextEffect>
 
           {/* Interactive Direct Email Contact with Smooth Hover */}
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -129,6 +140,9 @@ export default function Footer() {
                 : "Salin Email"}
             </motion.button>
           </div>
+
+          {/* Interactive Live Contact Morph Form */}
+          <ContactMorphForm />
         </motion.div>
 
         {/* Minimalist Horizontal Social Links with Parallax & Hover Black */}

@@ -7,6 +7,7 @@ import { Globe } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import PhotoHoverPreview from "@/components/PhotoHoverPreview";
 import SmoothWeightText from "@/components/SmoothWeightText";
+import { TextRoll } from "@/components/core/text-roll";
 
 interface ExperienceItem {
   period: string;
@@ -238,7 +239,9 @@ export default function Experience() {
           className="pb-6 sm:pb-8 border-b border-[#262626]"
         >
           <h2 className="type-h2 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
-            {lang === "EN" ? "Experience" : "Pengalaman"}
+            <TextRoll key={`exp-title-${lang}`}>
+              {lang === "EN" ? "Experience" : "Pengalaman"}
+            </TextRoll>
           </h2>
         </motion.div>
 
@@ -491,7 +494,9 @@ export default function Experience() {
             <div id="education" className="lg:col-span-6 space-y-4">
               <div className="pb-3 border-b border-[#262626]">
                 <h3 className="type-h3 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
-                  {lang === "EN" ? "Education" : "Pendidikan"}
+                  <TextRoll key={`edu-title-${lang}`}>
+                    {lang === "EN" ? "Education" : "Pendidikan"}
+                  </TextRoll>
                 </h3>
               </div>
 
@@ -546,7 +551,9 @@ export default function Experience() {
             <div className="lg:col-span-6 space-y-4">
               <div className="pb-3 border-b border-[#262626]">
                 <h3 className="type-h3 uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
-                  {lang === "EN" ? "Awards & Honors" : "Penghargaan & Prestasi"}
+                  <TextRoll key={`awards-title-${lang}`}>
+                    {lang === "EN" ? "Awards & Honors" : "Penghargaan & Prestasi"}
+                  </TextRoll>
                 </h3>
               </div>
 

@@ -14,6 +14,7 @@ import {
 import { ArrowUpRight, Layers } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import SmoothWeightText from "./SmoothWeightText";
+import { TextRoll } from "@/components/core/text-roll";
 
 interface ProjectItem {
   id: string;
@@ -277,7 +278,9 @@ export default function ContentList() {
         >
           <div className="p-0 m-0">
             <h2 className="p-0 m-0 type-h2 font-headline uppercase text-[#fafafa] hover:text-[#fafafa] transition-colors duration-300 cursor-default">
-              {lang === "EN" ? "Selected Works" : "Karya Terpilih"}
+              <TextRoll key={`works-title-${lang}`}>
+                {lang === "EN" ? "Selected Works" : "Karya Terpilih"}
+              </TextRoll>
             </h2>
           </div>
 
