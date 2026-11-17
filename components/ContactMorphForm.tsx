@@ -71,9 +71,6 @@ export default function ContactMorphForm() {
     <div className="w-full mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-[#262626]">
       {/* Live TextMorph Preview Banner */}
       <div className="mb-6 sm:mb-8">
-        <span className="type-caption font-mono uppercase text-[#bfe100] tracking-wider block mb-2">
-          {lang === 'EN' ? '// Live Transmission Preview' : '// Pratinjau Pesan Langsung'}
-        </span>
         <div className="min-h-[2.8rem] sm:min-h-[3.6rem] flex items-center overflow-x-hidden">
           <TextMorph className="type-h3 uppercase text-[#fafafa] tracking-tight leading-tight">
             {previewText}
