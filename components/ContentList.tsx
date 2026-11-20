@@ -168,6 +168,23 @@ const PROJECTS: ProjectItem[] = [
     link: "/projects/becak-racing",
     image: "/project/becak-racing.png",
   },
+  {
+    id: "charmi",
+    number: "09",
+    title: "Charmi — Habit Tracker & Productivity",
+    category: {
+      EN: "Mobile App & Habit Tracker",
+      ID: "Aplikasi Mobile & Habit Tracker",
+    },
+    summary: {
+      EN: "Minimalist habit tracker and daily productivity app inspired by TickTick and Apple HIG, combining Today Hub, Mood Calendar, Time-Blocking, and Focus Timer.",
+      ID: "Aplikasi habit tracker dan manajemen produktivitas harian terinspirasi dari TickTick dan Apple HIG, menyatukan Today Hub, Kalender Mood, Time-Blocking, dan Focus Timer.",
+    },
+    stack: ["Flutter", "Dart", "Figma", "Apple HIG", "Bento Grid"],
+    link: "/projects/charmi",
+    image: "/project/Gemini_Generated_Image_y8zgkwy8zgkwy8zg.jpg",
+    video: "/project/Video/mobile apps.mp4",
+  },
 ];
 
 export default function ContentList() {

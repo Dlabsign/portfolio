@@ -83,7 +83,11 @@ export default function ProjectGallery({ images, title, video }: ProjectGalleryP
               }
             }}
           >
-            <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#141414]">
+            <div
+              className={`relative w-full ${
+                images.length === 1 ? "aspect-[16/9]" : "aspect-[4/3]"
+              } overflow-hidden bg-[#141414]`}
+            >
               <Image
                 src={src}
                 alt={`${title} preview ${idx + 1}`}

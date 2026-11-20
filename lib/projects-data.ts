@@ -566,6 +566,61 @@ export const DETAILED_PROJECTS: DetailedProject[] = [
     liveUrl: "https://becakracing.vercel.app/",
     sourceUrl: "https://becakracing.vercel.app/",
   },
+  {
+    id: "charmi",
+    number: "11",
+    title: "Charmi — Minimalist Habit Tracker & Daily Productivity App",
+    subtitle: {
+      EN: "Minimalist Habit Tracker, Daily Routine & Productivity Ecosystem",
+      ID: "Aplikasi Habit Tracker & Manajemen Produktivitas Harian Minimalis",
+    },
+    category: "Website",
+    categoryKey: "website",
+    year: "2026",
+    client: "Personal Concept / Apple HIG Showcase",
+    role: {
+      EN: "Product Design & Mobile UI/UX Engineering",
+      ID: "Desain Produk & Rekayasa UI/UX Mobile",
+    },
+    summary: {
+      EN: "Minimalist habit tracker and daily productivity app inspired by TickTick and Apple HIG, unifying Today Hub, Habit & Mood Calendar, Time-Blocking, and Focus Timer in a calming bento-grid layout.",
+      ID: "Aplikasi habit tracker dan manajemen produktivitas harian terinspirasi dari TickTick dan Apple HIG, menyatukan Today Hub, Kalender Mood, Time-Blocking, dan Focus Timer ke dalam tata letak bento-grid yang menenangkan.",
+    },
+    description: {
+      EN: "Charmi is a minimalist habit tracking and daily productivity management application inspired by the functionality of TickTick, crafted through Apple's Human Interface Guidelines (HIG) with expressive geometric mascot illustrations.\n\nThe project focuses on achieving a harmonious balance between visual clarity and continuous user motivation. Leveraging a modular bento-grid layout, hairline borders, and a gentle pastel color palette, Charmi empowers users to cultivate positive daily routines without the cognitive overwhelm of cluttered dashboards.\n\nKey Features:\n• Today Hub: An integrated single-screen overview consolidating daily habits and to-do task queues without friction.\n• Habit & Mood Calendar: Expressive monthly consistency tracking with streak statistics and emotional resonance.\n• Time-Blocking Schedule: Structured and intuitive day planner for transparent time allocation.\n• Focus Timer (Pomodoro): Built-in focus intervals designed to maximize work efficiency and deep flow states.",
+      ID: "Charmi adalah aplikasi habit tracker dan manajemen produktivitas harian yang terinspirasi dari fungsionalitas TickTick, dirancang dengan pendekatan antarmuka minimalis ala Apple Human Interface Guidelines (HIG) dan sentuhan ilustrasi maskot geometris yang ekspresif.\n\nProyek ini berfokus pada keseimbangan antara kejelasan visual (visual clarity) dan motivasi pengguna. Dengan memanfaatkan bento-grid layout, garis batas tipis (hairline borders), serta palet warna pastel yang lembut, aplikasi ini membantu pengguna membangun rutinitas positif tanpa merasa terbebani oleh tampilan yang rumit.\n\nFitur Utama:\n• Today Hub: Ringkasan kebiasaan harian dan daftar tugas (to-do list) dalam satu layar terpadu tanpa distraksi.\n• Habit & Mood Calendar: Pelacakan konsistensi bulanan berbasis visual ekspresif dan statistik streak yang memotivasi.\n• Time-Blocking Schedule: Manajemen jadwal harian yang terstruktur dan mudah dipantau.\n• Focus Timer (Pomodoro): Pengatur waktu fokus terintegrasi untuk meningkatkan efisiensi kerja dan deep work.",
+    },
+    caseStudy: {
+      problem: {
+        EN: "Mainstream productivity and habit-tracking tools frequently overwhelm users with complex multi-level menus, intimidating statistical charts, and sterile corporate interfaces. When users miss a routine streak, rigid dashboards trigger guilt and cognitive fatigue rather than constructive encouragement. Furthermore, individuals are forced to switch between disconnected applications for their daily to-do lists, mood diaries, time-blocked calendars, and Pomodoro timers, resulting in fragmented focus.",
+        ID: "Sebagian besar aplikasi habit tracker dan produktivitas populer terasa mengintimidasi karena menu yang terlalu padat, analitik yang rumit, dan visual yang kaku. Saat pengguna melewatkan target harian, antarmuka yang kaku kerap menimbulkan rasa bersalah dan kelelahan kognitif alih-alih motivasi berkelanjutan. Selain itu, pengguna terpaksa berganti-ganti aplikasi terpisah hanya untuk mencatat to-do list, melacak mood, menyusun jadwal time-blocking, dan menyalakan timer fokus.",
+      },
+      trustPositioning: {
+        EN: "Positioned Charmi as an empathetic, calming daily productivity sanctuary built on Apple Human Interface Guidelines (HIG) and TickTick's functional depth. By replacing aggressive notifications with supportive geometric mascot micro-interactions, soft pastel tonal palettes, hairline border divisions, and modular bento grids, the design fosters genuine psychological safety, trust, and gentle accountability for long-term habit formation.",
+        ID: "Memposisikan Charmi sebagai suaka produktivitas harian yang menenangkan dengan memadukan kedalaman fitur fungsional TickTick dan keanggunan estetika Apple Human Interface Guidelines (HIG). Mengedepankan prinsip 'less is more' melalui grid bento modular, hairline borders, palet warna pastel yang lembut, serta maskot geometris ekspresif yang memberikan apresiasi emosional hangat bagi setiap progres kecil pengguna.",
+      },
+      whatChanged: {
+        EN: "Engineered a unified, friction-free productivity ecosystem: Today Hub consolidates habit checklists and tasks into a zero-distraction view; Habit & Mood Calendar visualizes monthly streaks alongside emotional well-being; Time-Blocking Schedule provides intuitive daily pacing; and an embedded Focus Timer enables seamless flow states without context switching. The resulting experience reduces interaction friction, prevents burnout, and delivers sustained habit consistency.",
+        ID: "Mengintegrasikan seluruh alur produktivitas ke dalam satu antarmuka yang mulus dan bebas distraksi: Today Hub menyatukan kebiasaan dan daftar tugas harian dalam satu pandangan; Habit & Mood Calendar memetakan konsistensi bulanan dan suasana hati secara visual; Time-Blocking Schedule memperjelas alokasi waktu kerja; serta Focus Timer (Pomodoro) terpasang langsung tanpa perlu aplikasi tambahan. Hasilnya, pengguna dapat membangun rutinitas konsisten dengan rasa tenang dan fokus yang terjaga.",
+      },
+    },
+    stack: [
+      "Flutter",
+      "Dart",
+      "Figma",
+      "Apple HIG",
+      "Bento Grid",
+      "Mobile UI/UX",
+      "Pomodoro Engine",
+    ],
+    heroImage: "/project/Gemini_Generated_Image_y8zgkwy8zgkwy8zg.jpg",
+    heroVideo: "/project/Video/mobile apps.mp4",
+    gallery: [
+      "/project/Gemini_Generated_Image_y8zgkwy8zgkwy8zg.jpg",
+    ],
+    liveUrl: "/projects/charmi",
+    sourceUrl: "https://github.com/Dlabsign",
+  },
 ];
 
 export function getProjectBySlug(slug: string): DetailedProject | undefined {

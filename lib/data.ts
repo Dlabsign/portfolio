@@ -200,6 +200,20 @@ export const PROJECTS_DATA: Project[] = [
     client: "Cinema Concept",
     stack: ["Figma", "Mobile UI/UX", "Next.js", "Tailwind CSS", "Framer Motion"],
   },
+  {
+    id: "charmi",
+    number: "07",
+    title: "Charmi — Minimalist Habit Tracker",
+    category: "2026 • HABIT TRACKER & PRODUCTIVITY",
+    year: "2026",
+    image: "/project/Gemini_Generated_Image_y8zgkwy8zgkwy8zg.jpg",
+    video: "/project/Video/mobile apps.mp4",
+    link: "/projects/charmi",
+    summary: "Minimalist habit tracker and daily productivity app inspired by TickTick and Apple HIG, combining Today Hub, Mood Calendar, Time-Blocking, and Focus Timer.",
+    badge: "MOBILE APP",
+    client: "Personal Concept",
+    stack: ["Flutter", "Dart", "Figma", "Apple HIG", "Bento Grid"],
+  },
 ];
 
 export const SKILLS_CATEGORIES: SkillCategory[] = [
